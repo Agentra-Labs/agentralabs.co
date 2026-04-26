@@ -1,0 +1,43 @@
+<!-- Animated Agentra Labs Logo Component -->
+<div class="logo-section">
+  <svg class="logo-svg" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+    <!-- Agentra wordmark outline with tech/agent feel -->
+    <defs>
+      <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" style="stop-color:#58a6ff;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#a371f7;stop-opacity:1" />
+      </linearGradient>
+      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <clipPath id="scanner-clip">
+        <rect x="0" y="0" width="120" height="40" />
+      </clipPath>
+    </defs>
+
+    <!-- Background scan bar -->
+    <rect class="scan-bar" x="0" y="0" width="4" height="40" fill="url(#logoGrad)" opacity="0.8">
+      <animate attributeName="x" from="-10" to="120" dur="2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite" />
+    </rect>
+
+    <!-- Main text: AGENTRA (crisp, with glow filter) -->
+    <text x="8" y="28" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="20" fill="url(#logoGrad)" filter="url(#glow)">
+      AGENTRA
+      <animate attributeName="fill" values="url(#logoGrad);#a371f7;url(#logoGrad)" dur="4s" repeatCount="indefinite" />
+    </text>
+
+    <!-- LABS subtitle -->
+    <text x="8" y="38" font-family="'JetBrains Mono', monospace" font-size="10" fill="#8b949e" letter-spacing="3">
+      LABS
+    </text>
+
+    <!-- Corner bracket accents -->
+    <path d="M0,0 L0,6 L6,0" fill="none" stroke="#58a6ff" stroke-width="1.5" />
+    <path d="M120,40 L120,34 L114,40" fill="none" stroke="#58a6ff" stroke-width="1.5" />
+  </svg>
+</div>

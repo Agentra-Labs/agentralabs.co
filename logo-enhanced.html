@@ -1,0 +1,96 @@
+<!-- Animated Agentra Labs Logo — revisualized -->
+<div class="glitch-container">
+  <svg class="logo-svg" viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Cyan-to-magenta gradient -->
+      <linearGradient id="mainGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#00f0ff"/>
+        <stop offset="50%" stop-color="#ff00ff"/>
+        <stop offset="100%" stop-color="#00f0ff"/>
+      </linearGradient>
+
+      <!-- Glow filters -->
+      <filter id="neonGlow" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+
+      <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+
+      <!-- Scanline pattern -->
+      <pattern id="scanPattern" patternUnits="userSpaceOnUse" width="400" height="4">
+        <line x1="0" y1="0" x2="400" y2="0" stroke="rgba(0,240,255,0.15)" stroke-width="1"/>
+      </pattern>
+
+      <!-- Clip revealing animation -->
+      <clipPath id="revealClip">
+        <rect x="0" y="0" width="0" height="80" class="reveal-rect"/>
+      </clipPath>
+    </defs>
+
+    <!-- Background: faint grid -->
+    <rect x="0" y="0" width="400" height="80" fill="url(#scanPattern)" opacity="0.3"/>
+
+    <!-- Group with reveal clip -->
+    <g clip-path="url(#revealClip)">
+      <!-- "AGENTRA" — glowing, with internal scanning line -->
+      <text x="60" y="50" font-family="'JetBrains Mono', monospace" font-weight="800" font-size="36" fill="url(#mainGrad)" filter="url(#neonGlow)" class="agentra-text">
+        AGENTRA
+        <animate attributeName="fill" values="url(#mainGrad);#ffffff;url(#mainGrad)" dur="3s" repeatCount="indefinite"/>
+      </text>
+
+      <!-- "LABS" — smaller, dimmer, trailing -->
+      <text x="280" y="50" font-family="'JetBrains Mono', monospace" font-weight="400" font-size="24" fill="#666" filter="url(#softGlow)" class="labs-text">
+        LABS
+        <animate attributeName="fill" values="#666;#aaa;#666" dur="2s" repeatCount="indefinite"/>
+      </text>
+
+      <!-- Animated underline that sweeps left→right repeatedly -->
+      <line x1="55" y1="58" x2="360" y2="58" stroke="rgba(0,240,255,0.3)" stroke-width="2">
+        <animate attributeName="stroke" values="rgba(0,240,255,0.3);rgba(255,0,255,0.6);rgba(0,240,255,0.3)" dur="2s" repeatCount="indefinite"/>
+      </line>
+      <circle r="3" fill="#00f0ff" filter="url(#neonGlow)">
+        <animateMotion dur="2s" repeatCount="indefinite">
+          <mpath href="#underlinePath"/>
+        </animateMotion>
+      </circle>
+      <path id="underlinePath" d="M55,58 L360,58" fill="none"/>
+
+      <!-- Dust motes / floating particles -->
+      <g class="particles">
+        <circle cx="100" cy="20" r="1" fill="#00f0ff" opacity="0.6">
+          <animate attributeName="cy" values="20;5;20" dur="3s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="200" cy="15" r="0.8" fill="#ff00ff" opacity="0.5">
+          <animate attributeName="cy" values="15;25;15" dur="2.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="300" cy="22" r="1.2" fill="#00f0ff" opacity="0.7">
+          <animate attributeName="cy" values="22;12;22" dur="3.5s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.7;0.3;0.7" dur="3.5s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+
+    <!-- Corner brackets (HUD style) -->
+    <path d="M10,5 L10,20 L25,5" fill="none" stroke="#00f0ff" stroke-width="1.5" opacity="0.6"/>
+    <path d="M390,5 L390,20 L375,5" fill="none" stroke="#00f0ff" stroke-width="1.5" opacity="0.6"/>
+
+    <!-- Data readout: small flickering numbers on right -->
+    <text x="380" y="75" font-family="'JetBrains Mono', monospace" font-size="8" fill="#00f0ff" text-anchor="end" class="readout">
+      0x4F3A
+      <animate attributeName="opacity" values="1;0.3;1" dur="0.5s" repeatCount="indefinite"/>
+    </text>
+  </svg>
+</div>

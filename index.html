@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agentra-Labs — Autonomous AI Systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="crt-overlay"></div>
+
+  <div class="desktop">
+    <!-- Header -->
+    <header class="top-bar">
+      <div class="window-controls">
+        <span class="control close">✕</span>
+        <span class="control min">—</span>
+        <span class="control max">▢</span>
+      </div>
+      <div class="breadcrumbs">
+        <span>github.com/Agentra-Labs</span>
+        <span class="separator">→</span>
+        <span class="current">README.md</span>
+      </div>
+      <div class="status-right">
+        <span class="indicator online"></span>
+        <span>org</span>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="window hero-window">
+      <div class="title-bar">
+        <span class="icon">💾</span>
+        <span>about_us.exe</span>
+      </div>
+      <div class="content hero-content">
+        <!-- Animated Logo -->
+        <div class="glitch-container">
+          <div class="logo-frame">
+            <img src="logo.webp" alt="Agentra Labs" class="logo-img" />
+            <div class="logo-glow"></div>
+          </div>
+        </div>
+        <p class="tagline">
+          Open-source AI agent company.<br>
+          Radical transparency. Public collaboration. Building the agentic future.
+        </p>
+        <div class="cta-row">
+          <a href="https://github.com/Agentra-Labs" class="btn primary" target="_blank"> ⌨ View GitHub </a>
+          <a href="mailto:hello@agentra.labs" class="btn secondary"> ✉ Contact </a>
+        </div>
+        <div class="scroll-indicator">
+          <span>Scroll</span>
+          <svg width="12" height="12" viewBox="0 0 12 12">
+            <path d="M6 2 L6 9 M6 9 L3 6 M6 9 L9 6" stroke="currentColor" fill="none" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="status-bar">
+        <span id="clock">00:00:00</span>
+        <span>5 public repos</span>
+      </div>
+    </main>
+
+    <!-- Public Repos -->
+    <section class="grid-folder">
+      <h2 class="folder-title">📁 repositories/</h2>
+      <div class="projects">
+        <div class="project-card" tabindex="0">
+          <div class="card-header">
+            <span class="file-icon">📄</span>
+            <span class="file-type">.py</span>
+          </div>
+          <h3>arxiv2product</h3>
+          <p>Multi-agent pipeline: ArXiv papers → ranked startup ideas + market analysis</p>
+          <div class="meta">
+            <span class="lang">Python</span>
+            <span class="stars">★ 14</span>
+          </div>
+          <a href="https://github.com/Agentra-Labs/arxiv2product" target="_blank" class="card-link">↗ open</a>
+        </div>
+
+        <div class="project-card" tabindex="0">
+          <div class="card-header">
+            <span class="file-icon">📦</span>
+            <span class="file-type">.ts</span>
+          </div>
+          <h3>paper2saas</h3>
+          <p>Turns research papers into SaaS products — automated prototype generation</p>
+          <div class="meta">
+            <span class="lang">TypeScript</span>
+            <span class="stars">★ 8</span>
+          </div>
+          <a href="https://github.com/Agentra-Labs/paper2saas" target="_blank" class="card-link">↗ open</a>
+        </div>
+
+        <div class="project-card" tabindex="0">
+          <div class="card-header">
+            <span class="file-icon">🔥</span>
+            <span class="file-type">.py</span>
+          </div>
+          <h3>nova-forge</h3>
+          <p>Agent framework for building autonomous systems</p>
+          <div class="meta">
+            <span class="lang">Python</span>
+            <span class="stars">★ 1</span>
+          </div>
+          <a href="https://github.com/Agentra-Labs/nova-forge" target="_blank" class="card-link">↗ open</a>
+        </div>
+
+        <div class="project-card" tabindex="0">
+          <div class="card-header">
+            <span class="file-icon">📊</span>
+            <span class="file-type">.html</span>
+          </div>
+          <h3>pyDep</h3>
+          <p>Visualize Python dependencies — trace function calls across files</p>
+          <div class="meta">
+            <span class="lang">HTML</span>
+            <span class="stars">★ 0</span>
+          </div>
+          <a href="https://github.com/Agentra-Labs/pyDep" target="_blank" class="card-link">↗ open</a>
+        </div>
+
+        <div class="project-card" tabindex="0">
+          <div class="card-header">
+            <span class="file-icon">📖</span>
+            <span class="file-type">.html</span>
+          </div>
+          <h3>LaMd</h3>
+          <p>LaTeX + Markdown + Python block viewer — structured docs made easy</p>
+          <div class="meta">
+            <span class="lang">HTML</span>
+            <span class="stars">★ 0</span>
+          </div>
+          <a href="https://github.com/Agentra-Labs/LaMd" target="_blank" class="card-link">↗ open</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Manifesto Window -->
+    <section class="window manifesto-window">
+      <div class="title-bar">
+        <span class="icon">📄</span>
+        <span>MANIFESTO.TXT</span>
+      </div>
+      <div class="content manifesto-content">
+        <pre class="typewriter">
+AGENTRA LABS — Autonomous Intelligence, Built Open.
+
+We are an open-source AI agent company.
+Everything we build is public. Every decision is visible.
+No black boxes. No proprietary lock-in.
+
+We're creating the tools that let autonomous
+systems research, code, and grow — with full
+transparency so anyone can inspect, fork, or
+contribute.
+
+This is agentic development, in the open.
+You're welcome to watch, participate, or build
+something better using what we've shared.
+
+Join us. Or fork us. Either way, the code speaks.
+        </pre>
+      </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-value" data-count="5">5</span>
+        <span class="stat-label">public repos</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" data-count="23">23</span>
+        <span class="stat-label">total stars</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" data-count="2">2</span>
+        <span class="stat-label">followers</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" data-count="6">6</span>
+        <span class="stat-label">contributors</span>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://github.com/Agentra-Labs" target="_blank">GitHub</a>
+        <span class="separator">|</span>
+        <a href="mailto:hello@agentra.labs">Email</a>
+        <span class="separator">|</span>
+        <a href="https://x.com/agentralabs" target="_blank">X / Twitter</a>
+      </div>
+      <p class="copyright">
+        © 2026 Agentra-Labs. MIT License.
+      </p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
