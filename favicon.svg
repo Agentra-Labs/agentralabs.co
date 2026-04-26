@@ -1,0 +1,15 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .s1{fill:none;stroke:#647896;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <!-- Five rotated squares, inspired by Agentra Labs mark -->
+  <g transform="translate(50,50)">
+    <rect x="-35" y="-35" width="70" height="70" rx="8" class="s1" transform="rotate(0)"/>
+    <rect x="-35" y="-35" width="70" height="70" rx="8" class="s1" transform="rotate(18)"/>
+    <rect x="-35" y="-35" width="70" height="70" rx="8" class="s1" transform="rotate(36)"/>
+    <rect x="-35" y="-35" width="70" height="70" rx="8" class="s1" transform="rotate(54)"/>
+    <rect x="-35" y="-35" width="70" height="70" rx="8" class="s1" transform="rotate(72)"/>
+  </g>
+</svg>
