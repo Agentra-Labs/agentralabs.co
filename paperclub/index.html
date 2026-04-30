@@ -37,12 +37,162 @@
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Background texture: paper grain */
+    .bg-texture {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+
+    /* Floating paper fragments */
+    .bg-papers {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .paper-frag {
+      position: absolute;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      opacity: 0.04;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .paper-frag::before {
+      content: '';
+      position: absolute;
+      top: 18%;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: var(--border);
+      opacity: 0.6;
+      box-shadow:
+        0 8px 0 var(--border),
+        0 16px 0 var(--border),
+        0 24px 0 var(--border),
+        0 32px 0 var(--border);
+    }
+
+    .paper-frag::after {
+      content: '';
+      position: absolute;
+      top: 52%;
+      left: 12%;
+      width: 35%;
+      height: 1px;
+      background: var(--border);
+      opacity: 0.4;
+    }
+
+    .paper-frag:nth-child(1) {
+      width: 90px; height: 120px;
+      top: 8%; left: 6%;
+      transform: rotate(-12deg);
+      animation: drift1 45s ease-in-out infinite;
+    }
+
+    .paper-frag:nth-child(2) {
+      width: 70px; height: 95px;
+      top: 22%; right: 8%;
+      transform: rotate(8deg);
+      animation: drift2 38s ease-in-out infinite;
+    }
+
+    .paper-frag:nth-child(3) {
+      width: 60px; height: 80px;
+      top: 55%; left: 3%;
+      transform: rotate(-5deg);
+      animation: drift3 50s ease-in-out infinite;
+    }
+
+    .paper-frag:nth-child(4) {
+      width: 80px; height: 105px;
+      top: 68%; right: 5%;
+      transform: rotate(15deg);
+      animation: drift4 42s ease-in-out infinite;
+    }
+
+    .paper-frag:nth-child(5) {
+      width: 55px; height: 75px;
+      top: 40%; right: 12%;
+      transform: rotate(-18deg);
+      animation: drift5 55s ease-in-out infinite;
+    }
+
+    .paper-frag:nth-child(6) {
+      width: 75px; height: 100px;
+      top: 85%; left: 15%;
+      transform: rotate(6deg);
+      animation: drift2 48s ease-in-out infinite reverse;
+    }
+
+    @keyframes drift1 {
+      0%, 100% { transform: rotate(-12deg) translateY(0) translateX(0); }
+      33% { transform: rotate(-10deg) translateY(-12px) translateX(6px); }
+      66% { transform: rotate(-14deg) translateY(8px) translateX(-4px); }
+    }
+
+    @keyframes drift2 {
+      0%, 100% { transform: rotate(8deg) translateY(0) translateX(0); }
+      33% { transform: rotate(10deg) translateY(10px) translateX(-8px); }
+      66% { transform: rotate(6deg) translateY(-6px) translateX(4px); }
+    }
+
+    @keyframes drift3 {
+      0%, 100% { transform: rotate(-5deg) translateY(0) translateX(0); }
+      33% { transform: rotate(-3deg) translateY(-8px) translateX(10px); }
+      66% { transform: rotate(-7deg) translateY(6px) translateX(-6px); }
+    }
+
+    @keyframes drift4 {
+      0%, 100% { transform: rotate(15deg) translateY(0) translateX(0); }
+      33% { transform: rotate(17deg) translateY(12px) translateX(-6px); }
+      66% { transform: rotate(13deg) translateY(-10px) translateX(8px); }
+    }
+
+    @keyframes drift5 {
+      0%, 100% { transform: rotate(-18deg) translateY(0) translateX(0); }
+      33% { transform: rotate(-16deg) translateY(-10px) translateX(-6px); }
+      66% { transform: rotate(-20deg) translateY(8px) translateX(10px); }
+    }
+
+    /* Faint grid lines — like notebook paper */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 100px 100px;
+      opacity: 0.025;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .paper-frag { animation: none; }
     }
 
     .page {
       max-width: 680px;
       margin: 0 auto;
       padding: 0 1.5rem;
+      position: relative;
+      z-index: 1;
     }
 
     /* Header */
@@ -417,6 +567,17 @@
   </style>
 </head>
 <body>
+  <div class="bg-texture"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-papers">
+    <div class="paper-frag"></div>
+    <div class="paper-frag"></div>
+    <div class="paper-frag"></div>
+    <div class="paper-frag"></div>
+    <div class="paper-frag"></div>
+    <div class="paper-frag"></div>
+  </div>
+
   <div class="page">
     <header class="site-header">
       <a href="https://agentralabs.co" class="logo-link">
