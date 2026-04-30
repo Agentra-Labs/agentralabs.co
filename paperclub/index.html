@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agentra Paper Club — Kolkata</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="icon" type="image/svg+xml" href="https://agentralabs.co/favicon.svg">
+  <link rel="icon" type="image/png" href="https://agentralabs.co/favicon.png">
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <a href="https://agentralabs.co" class="logo-link">
+        <img src="https://agentralabs.co/logo.webp" alt="Agentra Labs" class="logo-img" width="40" height="40"/>
+        <span class="logo-text">Agentra Labs</span>
+      </a>
+    </header>
+
+    <main class="content">
+      <section class="hero">
+        <h1 class="title">Agentra Paper Club</h1>
+        <p class="subtitle">Kolkata, India</p>
+      </section>
+
+      <section class="about">
+        <p class="lead">
+          Researchers and builders don't talk to each other enough. So this summer, we're starting the Agentra Paper Club to bring them together.
+        </p>
+        <p>
+          Every few weeks, we'll host a small group to present and discuss five new research papers. One person presents each paper for ten minutes and leads the discussion. Then we'll keep talking over dinner.
+        </p>
+        <p>
+          We'll post the talks online. The dinners stay off the record.
+        </p>
+        <p>
+          We're looking for builders who read papers and researchers interested in how things break in production. The first group will be under 30 people.
+        </p>
+      </section>
+
+      <section class="details">
+        <div class="detail-row">
+          <span class="detail-label">Date</span>
+          <span class="detail-value">Summer 2026 — TBD</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Time</span>
+          <span class="detail-value">5 – 9 pm IST</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Location</span>
+          <span class="detail-value">Kolkata, West Bengal, India</span>
+        </div>
+      </section>
+
+      <section class="rsvp">
+        <h2 class="rsvp-title">Request a spot</h2>
+        <p class="rsvp-note">We'll reach out with details if we're able to confirm your attendance.</p>
+
+        <form class="rsvp-form" action="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP" method="post" enctype="text/plain">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your full name" required />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field">
+            <label for="role">I am a</label>
+            <select id="role" name="role" required>
+              <option value="" disabled selected>Select one</option>
+              <option value="builder">Builder / Engineer</option>
+              <option value="researcher">Researcher</option>
+              <option value="both">Both</option>
+              <option value="student">Student</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="work">What are you building or researching?</label>
+            <textarea id="work" name="work" rows="3" placeholder="A sentence or two is plenty."></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Request a spot</button>
+        </form>
+
+        <p class="rsvp-alt">
+          Or email <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a> directly.
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-links">
+        <a href="https://github.com/Agentra-Labs" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://agentralabs.co" target="_blank" rel="noopener">Agentra Labs</a>
+        <a href="https://x.com/agentralabs" target="_blank" rel="noopener">X / Twitter</a>
+      </div>
+      <p class="copyright">© 2026 Agentra Labs. Open source in the open.</p>
+    </footer>
+  </div>
+</body>
+</html>
