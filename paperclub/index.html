@@ -397,192 +397,388 @@
       color: var(--color-text);
     }
 
-    /* RSVP — white section */
+    /* RSVP — dark terminal section */
     .rsvp-section {
-      background: var(--color-bg);
-      padding: 80px 24px;
+      background: #0a0a0a;
+      padding: 96px 24px 96px;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    /* CRT scanlines on RSVP too */
+    .rsvp-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0px,
+        rgba(0,0,0,0) 2px,
+        rgba(0,0,0,0.2) 3px,
+        rgba(0,0,0,0.2) 4px
+      );
+      z-index: 1;
+    }
+    .rsvp-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
+      z-index: 2;
     }
 
     .rsvp-inner {
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
+      position: relative;
+      z-index: 3;
     }
 
-    .rsvp-header {
-      margin-bottom: 28px;
+    /* Terminal window chrome */
+    .rsvp-terminal {
+      background: #0d0d0d;
+      border: 1px solid rgba(255, 180, 84, 0.35);
+      border-radius: 8px;
+      box-shadow:
+        0 0 0 1px rgba(255, 180, 84, 0.05),
+        0 24px 64px rgba(0, 0, 0, 0.6),
+        0 0 80px rgba(255, 180, 84, 0.08);
+      overflow: hidden;
     }
-
-    .rsvp-title {
-      font-size: 26px;
-      font-weight: 700;
-      line-height: 1.23;
-      letter-spacing: -0.625px;
-      margin-bottom: 6px;
+    .rsvp-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: linear-gradient(to bottom, #1a1a1a, #111);
+      border-bottom: 1px solid rgba(255, 180, 84, 0.25);
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11.5px;
+      color: rgba(245, 233, 200, 0.55);
+      letter-spacing: 0.5px;
     }
-
-    .rsvp-note {
-      color: var(--color-text-secondary);
-      font-size: 16px;
+    .rsvp-titlebar .tb-dots {
+      display: flex;
+      gap: 6px;
+      margin-right: 10px;
     }
+    .rsvp-titlebar .tb-dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .rsvp-titlebar .tb-dots .red { background: #ff5f56; box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset; }
+    .rsvp-titlebar .tb-dots .yel { background: #ffbd2e; box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset; }
+    .rsvp-titlebar .tb-dots .grn { background: #27c93f; box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset; }
+    .rsvp-titlebar .tb-path { flex: 1; }
+    .rsvp-titlebar .tb-meta { color: rgba(255, 180, 84, 0.55); }
 
     .rsvp-form {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 32px;
-      box-shadow: var(--shadow-card);
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 28px 32px 32px;
+      box-shadow: none;
     }
+    /* Kill the old ::before ASCII corner-tag in this dark mode */
+    .rsvp-form::before { display: none; }
+
+    .rsvp-prompt {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12.5px;
+      color: #6fdc8c;
+      margin-bottom: 6px;
+      letter-spacing: 0.4px;
+    }
+    .rsvp-prompt .arg { color: #ffb454; }
+    .rsvp-prompt .flag { color: rgba(245, 233, 200, 0.5); }
+
+    .rsvp-tag-line {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      color: rgba(245, 233, 200, 0.5);
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+    }
+    .rsvp-tag-line .ok { color: #6fdc8c; }
+
+    /* Two-column grid for short fields */
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 18px;
+      margin-bottom: 18px;
+    }
+    .field-grid .field { margin-bottom: 0; }
+    .field-grid .field.full { grid-column: 1 / -1; }
 
     .field {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
-
-    .field:last-of-type { margin-bottom: 24px; }
+    .field:last-of-type { margin-bottom: 22px; }
 
     .field label {
-      display: block;
-      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11.5px;
       font-weight: 500;
+      letter-spacing: 0.5px;
       margin-bottom: 6px;
-      color: var(--color-text);
+      color: rgba(245, 233, 200, 0.65);
+      text-transform: lowercase;
+    }
+    .field label::before {
+      content: '> ';
+      color: #6fdc8c;
+      margin-right: 2px;
+    }
+    .field label .opt {
+      color: rgba(255, 180, 84, 0.7);
+      font-weight: 400;
+      text-transform: lowercase;
+      letter-spacing: 0.5px;
+    }
+    .field label .counter {
+      font-size: 10.5px;
+      color: rgba(245, 233, 200, 0.4);
+      font-family: inherit;
+      letter-spacing: 0.5px;
     }
 
     .field input,
     .field select,
     .field textarea {
       width: 100%;
-      padding: 8px 12px;
-      border: 1px solid #dddddd;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      color: var(--color-text);
-      background: var(--color-bg);
-      transition: border-color 0.15s, box-shadow 0.15s;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 180, 84, 0.18);
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 14px;
+      color: #f5e9c8;
+      background: rgba(255, 180, 84, 0.025);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
       outline: none;
+      caret-color: #ffb454;
     }
 
     .field input::placeholder,
     .field textarea::placeholder {
-      color: var(--color-text-muted);
+      color: rgba(245, 233, 200, 0.25);
+      font-style: normal;
+    }
+
+    .field input:hover,
+    .field select:hover,
+    .field textarea:hover {
+      border-color: rgba(255, 180, 84, 0.35);
     }
 
     .field input:focus,
     .field select:focus,
     .field textarea:focus {
-      border-color: var(--color-accent);
-      box-shadow: 0 0 0 2px var(--color-accent-soft);
+      border-color: #ffb454;
+      background: rgba(255, 180, 84, 0.05);
+      box-shadow:
+        0 0 0 3px rgba(255, 180, 84, 0.08),
+        0 0 12px rgba(255, 180, 84, 0.15);
+    }
+
+    .field input:valid:not(:placeholder-shown),
+    .field textarea:valid:not(:placeholder-shown) {
+      border-color: rgba(111, 220, 140, 0.35);
     }
 
     .field select {
       cursor: pointer;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23615d59' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23ffb454' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 12px center;
       padding-right: 32px;
     }
+    .field select option {
+      background: #0d0d0d;
+      color: #f5e9c8;
+    }
 
     .field textarea {
       resize: vertical;
-      min-height: 90px;
-      line-height: 1.5;
+      min-height: 96px;
+      line-height: 1.55;
     }
 
+    /* Progress bar — terminal style [████████░░] 80% */
+    .rsvp-progress {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      color: rgba(245, 233, 200, 0.55);
+      letter-spacing: 0.5px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .rsvp-progress .label { color: rgba(255, 180, 84, 0.7); flex-shrink: 0; }
+    .rsvp-progress .bar {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 180, 84, 0.08);
+      border: 1px solid rgba(255, 180, 84, 0.18);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+    .rsvp-progress .bar-fill {
+      position: absolute;
+      inset: 0;
+      width: 0%;
+      background: linear-gradient(to right, #ffb454, #ffd089);
+      box-shadow: 0 0 8px rgba(255, 180, 84, 0.5);
+      transition: width 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .rsvp-progress .pct {
+      flex-shrink: 0;
+      width: 48px;
+      text-align: right;
+      color: #ffb454;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Submit button — execute style */
     .btn-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       width: 100%;
-      padding: 8px 16px;
-      background: var(--color-accent);
-      color: #fff;
-      border: 1px solid transparent;
-      border-radius: var(--radius-sm);
-      font-family: var(--font-sans);
-      font-size: 15px;
-      font-weight: 600;
+      padding: 12px 16px;
+      background: #ffb454;
+      color: #0a0a0a;
+      border: 1px solid #ffb454;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
+      transition: background 0.15s, transform 0.08s, box-shadow 0.18s;
+      box-shadow: 0 0 0 0 rgba(255, 180, 84, 0);
     }
-
-    .btn-primary:hover {
-      background: var(--color-accent-hover);
-    }
-
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-    }
-
-    .rsvp-form.sending {
+    .btn-primary::before {
+      content: '$ ';
+      color: #0a0a0a;
       opacity: 0.6;
-      pointer-events: none;
+      font-weight: 400;
+    }
+    .btn-primary:hover {
+      background: #ffd089;
+      box-shadow: 0 0 24px rgba(255, 180, 84, 0.4);
+    }
+    .btn-primary:active {
+      transform: scale(0.985);
+    }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
     }
 
+    .rsvp-form.sending { opacity: 0.5; pointer-events: none; }
+
+    /* Success state — typewriter ASCII */
     .rsvp-success {
       display: none;
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 40px 32px;
-      box-shadow: var(--shadow-card);
-      text-align: center;
+      background: transparent;
+      border: none;
+      padding: 28px 32px 36px;
+      text-align: left;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      box-shadow: none;
     }
-
     .rsvp-success.active {
       display: block;
       animation: fadeUp 0.5s ease both;
     }
-
-    .success-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #e8f5e9;
-      color: #2e7d32;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 16px;
+    .rsvp-success .ok-line {
+      color: #6fdc8c;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
     }
-
+    .rsvp-success .ascii-check {
+      color: #6fdc8c;
+      font-size: 11.5px;
+      line-height: 1.15;
+      white-space: pre;
+      margin-bottom: 18px;
+      text-shadow: 0 0 12px rgba(111, 220, 140, 0.35);
+    }
     .success-title {
-      font-size: 22px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 17px;
       font-weight: 700;
-      letter-spacing: -0.25px;
-      margin-bottom: 8px;
+      letter-spacing: 0;
+      color: #ffb454;
+      margin-bottom: 10px;
     }
-
     .success-body {
-      color: var(--color-text-secondary);
-      font-size: 16px;
-      line-height: 1.6;
+      color: rgba(245, 233, 200, 0.7);
+      font-size: 13.5px;
+      line-height: 1.65;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
     }
+    /* hide the old success-icon inside dark theme */
+    .success-icon { display: none; }
 
     .rsvp-alt {
       margin-top: 20px;
       text-align: center;
-      font-size: 14px;
-      color: var(--color-text-muted);
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12px;
+      color: rgba(245, 233, 200, 0.45);
+      letter-spacing: 0.4px;
     }
-
     .rsvp-alt a {
-      color: var(--color-accent-text);
+      color: #ffb454;
       text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.2s;
+      border-bottom: 1px dashed rgba(255, 180, 84, 0.4);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .rsvp-alt a:hover {
+      color: #ffd089;
+      border-bottom-color: #ffd089;
     }
 
-    .rsvp-alt a:hover {
-      border-color: var(--color-accent-text);
+    /* Override the section-eyebrow + section-h2 colors inside dark RSVP */
+    .rsvp-section .section-eyebrow {
+      color: #6fdc8c;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      letter-spacing: 0.5px;
+      text-transform: none;
+    }
+    .rsvp-section .section-eyebrow.ascii::before {
+      color: #ffb454;
+    }
+    .rsvp-section .section-h2 {
+      color: #ffb454;
+      text-shadow: 0 0 18px rgba(255, 180, 84, 0.25);
+    }
+    .rsvp-section .section-lede {
+      color: rgba(245, 233, 200, 0.65);
+    }
+
+    @media (max-width: 600px) {
+      .rsvp-section { padding: 64px 16px; }
+      .rsvp-form { padding: 22px 20px 24px; }
+      .field-grid { grid-template-columns: 1fr; gap: 14px; }
+      .rsvp-titlebar { font-size: 10.5px; padding: 8px 12px; }
+      .rsvp-titlebar .tb-meta { display: none; }
+      .rsvp-progress { font-size: 11px; gap: 8px; }
     }
 
     /* Footer */
@@ -1407,56 +1603,91 @@
 
     <section class="rsvp-section">
       <div class="rsvp-inner">
-        <div class="rsvp-header">
-          <h2 class="rsvp-title scramble" data-text="Request a spot"></h2>
-          <p class="rsvp-note">We'll reach out with details if we're able to confirm your attendance.</p>
+        <div class="rsvp-header" style="margin-bottom:24px;">
+          <p class="section-eyebrow ascii">Transmission</p>
+          <h2 class="section-h2">Request a spot</h2>
+          <p class="section-lede">Thirty seats. We read every reply. We'll write back with details if we're able to confirm.</p>
         </div>
 
-        <form class="rsvp-form" id="rsvp-form" action="https://formspree.io/f/mqenzovk" method="POST">
-          <input type="hidden" name="_subject" value="Paper Club RSVP" />
-          <input type="hidden" name="event" value="Agentra Paper Club — Kolkata" />
-          <div class="field">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" placeholder="Your full name" required />
+        <div class="rsvp-terminal">
+          <div class="rsvp-titlebar">
+            <div class="tb-dots"><span class="red"></span><span class="yel"></span><span class="grn"></span></div>
+            <span class="tb-path">~/paperclub/rsvp.form</span>
+            <span class="tb-meta">●&nbsp;UTF-8&nbsp;·&nbsp;LF&nbsp;·&nbsp;READY</span>
           </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required />
-          </div>
-          <div class="field">
-            <label for="linkedin">LinkedIn profile</label>
-            <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/username" required />
-          </div>
-          <div class="field">
-            <label for="xprofile">X (Twitter) profile <span style="font-weight:400;color:var(--color-text-muted);">— optional</span></label>
-            <input type="url" id="xprofile" name="xprofile" placeholder="https://x.com/username" />
-          </div>
-          <div class="field">
-            <label for="role">I am a</label>
-            <select id="role" name="role" required>
-              <option value="" disabled selected>Select one</option>
-              <option value="builder">Builder / Engineer</option>
-              <option value="researcher">Researcher</option>
-              <option value="both">Both</option>
-              <option value="student">Student</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="work">What are you building or researching?</label>
-            <textarea id="work" name="work" rows="3" placeholder="A sentence or two is plenty."></textarea>
-          </div>
-          <button type="submit" class="btn-primary" id="submit-btn">Request a spot</button>
-        </form>
 
-        <div class="rsvp-success" id="rsvp-success">
-          <div class="success-icon">✓</div>
-          <h3 class="success-title">You're on the list</h3>
-          <p class="success-body">We'll reach out with details if we're able to confirm your spot. Keep an eye on your inbox.</p>
+          <form class="rsvp-form" id="rsvp-form" action="https://formspree.io/f/mqenzovk" method="POST">
+            <input type="hidden" name="_subject" value="Paper Club RSVP" />
+            <input type="hidden" name="event" value="Agentra Paper Club — Kolkata" />
+
+            <div class="rsvp-prompt">
+              agentra@kolkata:~/paperclub$
+              <span class="arg">submit-rsvp</span>
+              <span class="flag">--seats=30 --remaining=<span id="seats-left">30</span></span>
+            </div>
+            <div class="rsvp-tag-line">
+              <span class="ok">[ ok ]</span> connection established. fill 4 required fields to unlock transmission.
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="name">name</label>
+                <input type="text" id="name" name="name" placeholder="full_name" required autocomplete="name" />
+              </div>
+              <div class="field">
+                <label for="email">email</label>
+                <input type="email" id="email" name="email" placeholder="you@domain.tld" required autocomplete="email" />
+              </div>
+              <div class="field">
+                <label for="linkedin">linkedin</label>
+                <input type="url" id="linkedin" name="linkedin" placeholder="linkedin.com/in/..." required />
+              </div>
+              <div class="field">
+                <label for="xprofile">x_profile <span class="opt">// optional</span></label>
+                <input type="url" id="xprofile" name="xprofile" placeholder="x.com/handle" />
+              </div>
+              <div class="field full">
+                <label for="role">role</label>
+                <select id="role" name="role" required>
+                  <option value="" disabled selected>select_one()</option>
+                  <option value="builder">Builder / Engineer</option>
+                  <option value="researcher">Researcher</option>
+                  <option value="both">Both</option>
+                  <option value="student">Student</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="work">
+                  what_are_you_working_on <span class="opt">// optional</span>
+                  <span class="counter"><span id="work-count">0</span>/280</span>
+                </label>
+                <textarea id="work" name="work" rows="3" maxlength="280" placeholder="A sentence or two is plenty. Building, researching, breaking — anything goes."></textarea>
+              </div>
+            </div>
+
+            <div class="rsvp-progress">
+              <span class="label">progress</span>
+              <div class="bar"><div class="bar-fill" id="bar-fill"></div></div>
+              <span class="pct" id="bar-pct">0%</span>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submit-btn">execute_rsvp</button>
+          </form>
+
+          <div class="rsvp-success" id="rsvp-success">
+            <div class="ok-line">[ 200 OK ] · transmission accepted · ack received</div>
+            <div class="ascii-check">    _________
+   /         \
+  |  ✓ ROGER  |
+   \_________/</div>
+            <div class="success-title">You're on the list.</div>
+            <div class="success-body">We read every reply. If we're able to confirm your seat, we'll write back with date, address, and reading list. Until then — keep building, keep reading.</div>
+          </div>
         </div>
 
         <p class="rsvp-alt">
-          Or email <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a>
+          // or transmit manually: <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a>
         </p>
       </div>
     </section>
@@ -1743,19 +1974,49 @@
       });
     });
 
-    // RSVP form handling
+    // RSVP form handling — sending state + progress + character counter
     (function() {
       const form = document.getElementById('rsvp-form');
       const success = document.getElementById('rsvp-success');
       const btn = document.getElementById('submit-btn');
+      const barFill = document.getElementById('bar-fill');
+      const barPct = document.getElementById('bar-pct');
+      const workEl = document.getElementById('work');
+      const workCount = document.getElementById('work-count');
 
-      if (!form || form.action.includes('YOUR_FORM_ID')) return;
+      if (!form) return;
+
+      // Live character counter on textarea
+      if (workEl && workCount) {
+        workEl.addEventListener('input', () => {
+          workCount.textContent = workEl.value.length;
+        });
+      }
+
+      // Progress bar — counts required fields filled
+      const required = form.querySelectorAll('[required]');
+      function updateProgress() {
+        let filled = 0;
+        required.forEach(el => {
+          if (el.value && el.value.trim() !== '') filled++;
+        });
+        const pct = Math.round((filled / required.length) * 100);
+        if (barFill) barFill.style.width = pct + '%';
+        if (barPct) barPct.textContent = pct + '%';
+      }
+      required.forEach(el => {
+        el.addEventListener('input', updateProgress);
+        el.addEventListener('change', updateProgress);
+      });
+      updateProgress();
+
+      if (form.action.includes('YOUR_FORM_ID')) return;
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         form.classList.add('sending');
         btn.disabled = true;
-        btn.textContent = 'Sending…';
+        btn.textContent = 'transmitting…';
 
         try {
           const response = await fetch(form.action, {
@@ -1772,9 +2033,9 @@
           }
         } catch (err) {
           btn.disabled = false;
-          btn.textContent = 'Request a spot';
+          btn.textContent = 'execute_rsvp';
           form.classList.remove('sending');
-          alert('Something went wrong. Please email us directly at hello@agentralabs.co');
+          alert('Transmission failed. Try emailing hello@agentralabs.co directly.');
         }
       });
     })();
