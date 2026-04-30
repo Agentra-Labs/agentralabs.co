@@ -6,23 +6,42 @@
   <title>Agentra Paper Club — Kolkata</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="https://agentralabs.co/favicon.svg">
   <link rel="icon" type="image/png" href="https://agentralabs.co/favicon.png">
   <style>
     :root {
-      --paper: #faf8f5;
-      --ink: #111111;
-      --ink-soft: #444444;
-      --muted: #888888;
-      --border: #e8e4df;
-      --surface: #ffffff;
-      --accent: #c73e1d;
-      --accent-soft: rgba(199, 62, 29, 0.08);
-      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --mono: 'JetBrains Mono', ui-monospace, monospace;
-      --radius: 10px;
-      --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+      --color-bg: #ffffff;
+      --color-bg-warm: #f6f5f4;
+      --color-text: rgba(0,0,0,0.95);
+      --color-text-secondary: #615d59;
+      --color-text-muted: #a39e98;
+      --color-border: rgba(0,0,0,0.1);
+      --color-border-light: #e8e4df;
+      --color-accent: #0075de;
+      --color-accent-hover: #005bab;
+      --color-accent-soft: #f2f9ff;
+      --color-accent-text: #097fe8;
+      --color-shadow-1: rgba(0,0,0,0.01);
+      --color-shadow-2: rgba(0,0,0,0.02);
+      --color-shadow-3: rgba(0,0,0,0.027);
+      --color-shadow-4: rgba(0,0,0,0.04);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-pill: 9999px;
+      --shadow-card:
+        0px 0.175px 1.04062px var(--color-shadow-1),
+        0px 0.8px 2.925px var(--color-shadow-2),
+        0px 2.025px 7.84688px var(--color-shadow-3),
+        0px 4px 18px var(--color-shadow-4);
+      --shadow-deep:
+        0px 1px 3px var(--color-shadow-1),
+        0px 3px 7px var(--color-shadow-2),
+        0px 7px 15px var(--color-shadow-2),
+        0px 14px 28px var(--color-shadow-4),
+        0px 23px 52px rgba(0,0,0,0.05);
+      --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,15 +49,21 @@
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-sans);
       font-size: 16px;
-      line-height: 1.6;
+      line-height: 1.50;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       position: relative;
       overflow-x: hidden;
+    }
+
+    /* Whisper borders on everything */
+    hr, .divider {
+      border: none;
+      border-top: 1px solid var(--color-border);
     }
 
     /* Background texture: paper grain */
@@ -47,7 +72,7 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.35;
+      opacity: 0.25;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
       background-repeat: repeat;
       background-size: 200px 200px;
@@ -64,10 +89,10 @@
 
     .paper-frag {
       position: absolute;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border-light);
       border-radius: 2px;
-      opacity: 0.04;
+      opacity: 0.035;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
@@ -78,13 +103,13 @@
       left: 12%;
       right: 12%;
       height: 1px;
-      background: var(--border);
+      background: var(--color-border-light);
       opacity: 0.6;
       box-shadow:
-        0 8px 0 var(--border),
-        0 16px 0 var(--border),
-        0 24px 0 var(--border),
-        0 32px 0 var(--border);
+        0 8px 0 var(--color-border-light),
+        0 16px 0 var(--color-border-light),
+        0 24px 0 var(--color-border-light),
+        0 32px 0 var(--color-border-light);
     }
 
     .paper-frag::after {
@@ -94,7 +119,7 @@
       left: 12%;
       width: 35%;
       height: 1px;
-      background: var(--border);
+      background: var(--color-border-light);
       opacity: 0.4;
     }
 
@@ -104,35 +129,30 @@
       transform: rotate(-12deg);
       animation: drift1 45s ease-in-out infinite;
     }
-
     .paper-frag:nth-child(2) {
       width: 70px; height: 95px;
       top: 22%; right: 8%;
       transform: rotate(8deg);
       animation: drift2 38s ease-in-out infinite;
     }
-
     .paper-frag:nth-child(3) {
       width: 60px; height: 80px;
       top: 55%; left: 3%;
       transform: rotate(-5deg);
       animation: drift3 50s ease-in-out infinite;
     }
-
     .paper-frag:nth-child(4) {
       width: 80px; height: 105px;
       top: 68%; right: 5%;
       transform: rotate(15deg);
       animation: drift4 42s ease-in-out infinite;
     }
-
     .paper-frag:nth-child(5) {
       width: 55px; height: 75px;
       top: 40%; right: 12%;
       transform: rotate(-18deg);
       animation: drift5 55s ease-in-out infinite;
     }
-
     .paper-frag:nth-child(6) {
       width: 75px; height: 100px;
       top: 85%; left: 15%;
@@ -145,61 +165,44 @@
       33% { transform: rotate(-10deg) translateY(-12px) translateX(6px); }
       66% { transform: rotate(-14deg) translateY(8px) translateX(-4px); }
     }
-
     @keyframes drift2 {
       0%, 100% { transform: rotate(8deg) translateY(0) translateX(0); }
       33% { transform: rotate(10deg) translateY(10px) translateX(-8px); }
       66% { transform: rotate(6deg) translateY(-6px) translateX(4px); }
     }
-
     @keyframes drift3 {
       0%, 100% { transform: rotate(-5deg) translateY(0) translateX(0); }
       33% { transform: rotate(-3deg) translateY(-8px) translateX(10px); }
       66% { transform: rotate(-7deg) translateY(6px) translateX(-6px); }
     }
-
     @keyframes drift4 {
       0%, 100% { transform: rotate(15deg) translateY(0) translateX(0); }
       33% { transform: rotate(17deg) translateY(12px) translateX(-6px); }
       66% { transform: rotate(13deg) translateY(-10px) translateX(8px); }
     }
-
     @keyframes drift5 {
       0%, 100% { transform: rotate(-18deg) translateY(0) translateX(0); }
       33% { transform: rotate(-16deg) translateY(-10px) translateX(-6px); }
       66% { transform: rotate(-20deg) translateY(8px) translateX(10px); }
     }
 
-    /* Faint grid lines — like notebook paper */
-    .bg-grid {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 100px 100px;
-      opacity: 0.025;
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .paper-frag { animation: none; }
     }
 
+    /* Page layout */
     .page {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
       position: relative;
       z-index: 1;
     }
 
     /* Header */
     .site-header {
-      padding: 2rem 0 3rem;
-      display: flex;
-      align-items: center;
+      padding: 24px 0;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
     }
 
     .logo-link {
@@ -207,10 +210,9 @@
       align-items: center;
       gap: 0.6rem;
       text-decoration: none;
-      color: var(--ink);
+      color: var(--color-text);
       font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: -0.01em;
+      font-size: 15px;
       transition: opacity 0.2s;
     }
 
@@ -219,44 +221,50 @@
     .logo-img {
       width: 28px;
       height: 28px;
-      border-radius: 6px;
+      border-radius: var(--radius-md);
       object-fit: cover;
     }
 
-    /* Hero */
-    .hero {
-      margin-bottom: 3.5rem;
+    /* Hero — warm white section */
+    .hero-section {
+      background: var(--color-bg-warm);
+      padding: 80px 24px 96px;
+    }
+
+    .hero-inner {
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
     .eyebrow {
-      font-family: var(--mono);
-      font-size: 0.75rem;
+      font-size: 12px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      font-weight: 500;
-      margin-bottom: 1rem;
+      letter-spacing: 0.125px;
+      color: var(--color-accent);
+      margin-bottom: 16px;
       min-height: 1.2em;
     }
 
     .title {
-      font-size: clamp(2.4rem, 6vw, 3.4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-      margin-bottom: 1rem;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.00;
+      letter-spacing: -2.125px;
+      margin-bottom: 20px;
       min-height: 1.2em;
     }
 
     .subtitle {
-      font-size: 1.1rem;
-      color: var(--ink-soft);
-      font-weight: 400;
-      letter-spacing: -0.01em;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.27;
+      letter-spacing: -0.25px;
+      color: var(--color-text-secondary);
       min-height: 1.4em;
     }
 
-    /* Scramble effect cursor */
+    /* Scramble cursor */
     .scramble[data-done="true"] {
       position: relative;
     }
@@ -268,7 +276,7 @@
       top: 0.1em;
       width: 2px;
       height: 0.85em;
-      background: var(--accent);
+      background: var(--color-accent);
       animation: blink 1s step-end infinite;
       opacity: 0.6;
     }
@@ -278,27 +286,25 @@
       50% { opacity: 0; }
     }
 
-    /* Meta tags */
+    /* Pill badges */
     .meta-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1.75rem;
+      gap: 8px;
+      margin-top: 28px;
     }
 
     .tag {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      font-weight: 500;
-      padding: 0.35rem 0.7rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      color: var(--ink-soft);
-      letter-spacing: 0.02em;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 8px;
+      background: var(--color-accent-soft);
+      color: var(--color-accent-text);
+      border-radius: var(--radius-pill);
+      letter-spacing: 0.125px;
       opacity: 0;
-      transform: translateY(8px);
-      animation: tagIn 0.5s ease forwards;
+      transform: translateY(6px);
+      animation: tagIn 0.4s ease forwards;
     }
 
     .tag:nth-child(1) { animation-delay: 1.2s; }
@@ -310,27 +316,33 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* About */
-    .about {
-      margin-bottom: 3.5rem;
+    /* About — white section */
+    .about-section {
+      background: var(--color-bg);
+      padding: 80px 24px;
+    }
+
+    .about-inner {
+      max-width: 680px;
+      margin: 0 auto;
     }
 
     .about p {
-      margin-bottom: 1.15rem;
-      color: var(--ink-soft);
+      margin-bottom: 20px;
+      color: var(--color-text-secondary);
+      font-size: 16px;
       line-height: 1.75;
-      font-size: 1.05rem;
       opacity: 0;
       transform: translateY(12px);
       animation: fadeUp 0.7s ease forwards;
     }
 
     .about .lead {
-      font-size: 1.25rem;
-      font-weight: 500;
-      line-height: 1.55;
-      color: var(--ink);
-      letter-spacing: -0.01em;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.40;
+      letter-spacing: -0.125px;
+      color: var(--color-text);
     }
 
     .about p:nth-child(1) { animation-delay: 1.4s; }
@@ -342,121 +354,133 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Details card */
-    .details {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.75rem 2rem;
-      margin-bottom: 3.5rem;
-      box-shadow: var(--shadow);
+    /* Details — warm white section */
+    .details-section {
+      background: var(--color-bg-warm);
+      padding: 80px 24px;
+    }
+
+    .details-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .details-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
     }
 
     .detail-row {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      padding: 0.7rem 0;
-      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--color-border);
     }
 
     .detail-row:last-child { border-bottom: none; padding-bottom: 0; }
     .detail-row:first-child { padding-top: 0; }
 
     .detail-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
+      font-size: 14px;
       font-weight: 500;
+      color: var(--color-text-muted);
     }
 
     .detail-value {
       font-weight: 500;
+      font-size: 15px;
       text-align: right;
-      font-size: 0.95rem;
+      color: var(--color-text);
     }
 
-    /* RSVP */
-    .rsvp {
-      margin-bottom: 4rem;
+    /* RSVP — white section */
+    .rsvp-section {
+      background: var(--color-bg);
+      padding: 80px 24px;
+    }
+
+    .rsvp-inner {
+      max-width: 680px;
+      margin: 0 auto;
     }
 
     .rsvp-header {
-      margin-bottom: 1.75rem;
+      margin-bottom: 28px;
     }
 
     .rsvp-title {
-      font-size: 1.5rem;
+      font-size: 26px;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.4rem;
+      line-height: 1.23;
+      letter-spacing: -0.625px;
+      margin-bottom: 6px;
     }
 
     .rsvp-note {
-      color: var(--muted);
-      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      font-size: 16px;
     }
 
     .rsvp-form {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--shadow);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-card);
     }
 
     .field {
-      margin-bottom: 1.25rem;
+      margin-bottom: 20px;
     }
 
-    .field:last-of-type { margin-bottom: 1.75rem; }
+    .field:last-of-type { margin-bottom: 24px; }
 
     .field label {
       display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: var(--ink);
-      letter-spacing: -0.01em;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--color-text);
     }
 
     .field input,
     .field select,
     .field textarea {
       width: 100%;
-      padding: 0.75rem 0.9rem;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      color: var(--ink);
-      background: var(--paper);
-      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      padding: 8px 12px;
+      border: 1px solid #dddddd;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      color: var(--color-text);
+      background: var(--color-bg);
+      transition: border-color 0.15s, box-shadow 0.15s;
       outline: none;
     }
 
     .field input::placeholder,
     .field textarea::placeholder {
-      color: var(--muted);
+      color: var(--color-text-muted);
     }
 
     .field input:focus,
     .field select:focus,
     .field textarea:focus {
-      border-color: var(--accent);
-      background: var(--surface);
-      box-shadow: 0 0 0 3px var(--accent-soft);
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 2px var(--color-accent-soft);
     }
 
     .field select {
       cursor: pointer;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23615d59' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 0.9rem center;
-      padding-right: 2.5rem;
+      background-position: right 12px center;
+      padding-right: 32px;
     }
 
     .field textarea {
@@ -470,49 +494,31 @@
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: 0.85rem 1.5rem;
-      background: var(--accent);
+      padding: 8px 16px;
+      background: var(--color-accent);
       color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-family: var(--sans);
-      font-size: 0.95rem;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 15px;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.1s, box-shadow 0.2s, background 0.2s;
-      letter-spacing: -0.01em;
+      transition: background 0.15s, transform 0.1s;
     }
 
     .btn-primary:hover {
-      background: #b33517;
-      box-shadow: 0 4px 12px rgba(199, 62, 29, 0.25);
+      background: var(--color-accent-hover);
     }
 
     .btn-primary:active {
-      transform: translateY(1px);
+      transform: scale(0.98);
     }
 
-    .rsvp-alt {
-      margin-top: 1.25rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--muted);
+    .btn-primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
 
-    .rsvp-alt a {
-      color: var(--ink-soft);
-      text-decoration: none;
-      font-weight: 500;
-      border-bottom: 1px solid var(--border);
-      transition: border-color 0.2s, color 0.2s;
-    }
-
-    .rsvp-alt a:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-
-    /* Form states */
     .rsvp-form.sending {
       opacity: 0.6;
       pointer-events: none;
@@ -520,11 +526,11 @@
 
     .rsvp-success {
       display: none;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2.5rem 2rem;
-      box-shadow: var(--shadow);
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      box-shadow: var(--shadow-card);
       text-align: center;
     }
 
@@ -542,85 +548,104 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
     }
 
     .success-title {
-      font-size: 1.25rem;
+      font-size: 22px;
       font-weight: 700;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.25px;
+      margin-bottom: 8px;
     }
 
     .success-body {
-      color: var(--muted);
-      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      font-size: 16px;
       line-height: 1.6;
     }
 
-    .btn-primary:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
+    .rsvp-alt {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--color-text-muted);
+    }
+
+    .rsvp-alt a {
+      color: var(--color-accent-text);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .rsvp-alt a:hover {
+      border-color: var(--color-accent-text);
     }
 
     /* Footer */
     .site-footer {
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 0 3rem;
+      border-top: 1px solid var(--color-border);
+      padding: 48px 24px 64px;
       text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 680px;
+      margin: 0 auto;
     }
 
     .footer-links {
       display: flex;
       justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 1rem;
+      gap: 24px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
     }
 
     .footer-links a {
-      font-size: 0.85rem;
-      color: var(--muted);
-      text-decoration: none;
+      font-size: 15px;
       font-weight: 500;
+      color: var(--color-text-secondary);
+      text-decoration: none;
       transition: color 0.2s;
     }
 
     .footer-links a:hover {
-      color: var(--ink);
+      color: var(--color-text);
+      text-decoration: underline;
     }
 
     .copyright {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--color-text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero-section { padding: 48px 20px 64px; }
+      .about-section, .details-section, .rsvp-section { padding: 48px 20px; }
+      .site-footer { padding: 32px 20px 48px; }
+      .title { font-size: 2rem; letter-spacing: -1.5px; }
+      .subtitle { font-size: 18px; }
+      .about .lead { font-size: 18px; }
+      .rsvp-form { padding: 24px; }
+      .detail-row { flex-direction: column; gap: 4px; }
+      .detail-value { text-align: left; }
+      .footer-links { gap: 16px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .tag, .about p { animation: none; opacity: 1; transform: none; }
+      .paper-frag { animation: none; }
       .scramble[data-done="true"]::after { animation: none; opacity: 0; }
-    }
-
-    @media (max-width: 520px) {
-      .page { padding: 0 1.25rem; }
-      .site-header { padding: 1.5rem 0 2rem; }
-      .hero { margin-bottom: 2.5rem; }
-      .title { font-size: 2rem; }
-      .about .lead { font-size: 1.1rem; }
-      .about p { font-size: 1rem; }
-      .details { padding: 1.25rem 1.5rem; }
-      .detail-row { flex-direction: column; gap: 0.15rem; }
-      .detail-value { text-align: left; }
-      .rsvp-form { padding: 1.5rem; }
-      .meta-tags { gap: 0.4rem; }
-      .tag { font-size: 0.65rem; padding: 0.3rem 0.55rem; }
     }
   </style>
 </head>
 <body>
   <div class="bg-texture"></div>
-  <div class="bg-grid"></div>
   <div class="bg-papers">
     <div class="paper-frag"></div>
     <div class="paper-frag"></div>
@@ -638,8 +663,8 @@
       </a>
     </header>
 
-    <main>
-      <section class="hero">
+    <section class="hero-section">
+      <div class="hero-inner">
         <p class="eyebrow scramble" data-text="SUMMER 2026 — KOLKATA"></p>
         <h1 class="title scramble" data-text="Agentra Paper Club"></h1>
         <p class="subtitle scramble" data-text="Where researchers and builders meet."></p>
@@ -649,9 +674,11 @@
           <span class="tag">10 min each</span>
           <span class="tag">Dinner included</span>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="about">
+    <section class="about-section">
+      <div class="about-inner about">
         <p class="lead">
           Researchers and builders don't talk to each other enough. So this summer, we're starting the Agentra Paper Club to bring them together.
         </p>
@@ -664,24 +691,30 @@
         <p>
           We're looking for builders who read papers and researchers interested in how things break in production. The first group will be under 30 people.
         </p>
-      </section>
+      </div>
+    </section>
 
-      <section class="details">
-        <div class="detail-row">
-          <span class="detail-label">Date</span>
-          <span class="detail-value">Summer 2026 — TBD</span>
+    <section class="details-section">
+      <div class="details-inner">
+        <div class="details-card">
+          <div class="detail-row">
+            <span class="detail-label">Date</span>
+            <span class="detail-value">Summer 2026 — TBD</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Time</span>
+            <span class="detail-value">5 – 9 pm IST</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Location</span>
+            <span class="detail-value">Kolkata, West Bengal, India</span>
+          </div>
         </div>
-        <div class="detail-row">
-          <span class="detail-label">Time</span>
-          <span class="detail-value">5 – 9 pm IST</span>
-        </div>
-        <div class="detail-row">
-          <span class="detail-label">Location</span>
-          <span class="detail-value">Kolkata, West Bengal, India</span>
-        </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="rsvp">
+    <section class="rsvp-section">
+      <div class="rsvp-inner">
         <div class="rsvp-header">
           <h2 class="rsvp-title scramble" data-text="Request a spot"></h2>
           <p class="rsvp-note">We'll reach out with details if we're able to confirm your attendance.</p>
@@ -725,16 +758,18 @@
         <p class="rsvp-alt">
           Or email <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a>
         </p>
-      </section>
-    </main>
+      </div>
+    </section>
 
     <footer class="site-footer">
-      <div class="footer-links">
-        <a href="https://github.com/Agentra-Labs" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://agentralabs.co" target="_blank" rel="noopener">Agentra Labs</a>
-        <a href="https://x.com/agentralabs" target="_blank" rel="noopener">X / Twitter</a>
+      <div class="footer-inner">
+        <div class="footer-links">
+          <a href="https://github.com/Agentra-Labs" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://agentralabs.co" target="_blank" rel="noopener">Agentra Labs</a>
+          <a href="https://x.com/agentralabs" target="_blank" rel="noopener">X / Twitter</a>
+        </div>
+        <p class="copyright">© 2026 Agentra Labs. Open source in the open.</p>
       </div>
-      <p class="copyright">© 2026 Agentra Labs. Open source in the open.</p>
     </footer>
   </div>
 
@@ -805,7 +840,6 @@
       }
     }
 
-    // Initialize scramble effects with staggered delays
     document.addEventListener('DOMContentLoaded', () => {
       const elements = document.querySelectorAll('.scramble');
       elements.forEach((el, i) => {
@@ -824,10 +858,7 @@
       const success = document.getElementById('rsvp-success');
       const btn = document.getElementById('submit-btn');
 
-      if (!form || form.action.includes('YOUR_FORM_ID')) {
-        // Formspree not configured yet — keep default behavior
-        return;
-      }
+      if (!form || form.action.includes('YOUR_FORM_ID')) return;
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
