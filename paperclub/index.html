@@ -6,24 +6,407 @@
   <title>Agentra Paper Club — Kolkata</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="https://agentralabs.co/favicon.svg">
   <link rel="icon" type="image/png" href="https://agentralabs.co/favicon.png">
+  <style>
+    :root {
+      --paper: #faf8f5;
+      --ink: #111111;
+      --ink-soft: #444444;
+      --muted: #888888;
+      --border: #e8e4df;
+      --surface: #ffffff;
+      --accent: #c73e1d;
+      --accent-soft: rgba(199, 62, 29, 0.08);
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --radius: 10px;
+      --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header */
+    .site-header {
+      padding: 2rem 0 3rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: -0.01em;
+      transition: opacity 0.2s;
+    }
+
+    .logo-link:hover { opacity: 0.6; }
+
+    .logo-img {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 3.5rem;
+      animation: fadeUp 0.8s ease-out both;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .title {
+      font-size: clamp(2.4rem, 6vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    /* Meta tags */
+    .meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.75rem;
+      animation: fadeUp 0.8s ease-out 0.15s both;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.35rem 0.7rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--ink-soft);
+      letter-spacing: 0.02em;
+    }
+
+    /* About */
+    .about {
+      margin-bottom: 3.5rem;
+      animation: fadeUp 0.8s ease-out 0.2s both;
+    }
+
+    .about p {
+      margin-bottom: 1.15rem;
+      color: var(--ink-soft);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    .about .lead {
+      font-size: 1.25rem;
+      font-weight: 500;
+      line-height: 1.55;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    /* Details card */
+    .details {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin-bottom: 3.5rem;
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.8s ease-out 0.3s both;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .detail-row:first-child { padding-top: 0; }
+
+    .detail-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .detail-value {
+      font-weight: 500;
+      text-align: right;
+      font-size: 0.95rem;
+    }
+
+    /* RSVP */
+    .rsvp {
+      margin-bottom: 4rem;
+      animation: fadeUp 0.8s ease-out 0.35s both;
+    }
+
+    .rsvp-header {
+      margin-bottom: 1.75rem;
+    }
+
+    .rsvp-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .rsvp-note {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .rsvp-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    .field:last-of-type { margin-bottom: 1.75rem; }
+
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: var(--paper);
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+      outline: none;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--accent);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .field select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.9rem center;
+      padding-right: 2.5rem;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.5;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.2s, background 0.2s;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-primary:hover {
+      background: #b33517;
+      box-shadow: 0 4px 12px rgba(199, 62, 29, 0.25);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .rsvp-alt {
+      margin-top: 1.25rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .rsvp-alt a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .rsvp-alt a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0 3rem;
+      text-align: center;
+      animation: fadeUp 0.8s ease-out 0.4s both;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--ink);
+    }
+
+    .copyright {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero, .about, .details, .rsvp, .site-footer {
+        animation: none;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      .page { padding: 0 1.25rem; }
+      .site-header { padding: 1.5rem 0 2rem; }
+      .hero { margin-bottom: 2.5rem; }
+      .title { font-size: 2rem; }
+      .about .lead { font-size: 1.1rem; }
+      .about p { font-size: 1rem; }
+      .details { padding: 1.25rem 1.5rem; }
+      .detail-row { flex-direction: column; gap: 0.15rem; }
+      .detail-value { text-align: left; }
+      .rsvp-form { padding: 1.5rem; }
+      .meta-tags { gap: 0.4rem; }
+      .tag { font-size: 0.65rem; padding: 0.3rem 0.55rem; }
+    }
+  </style>
 </head>
 <body>
   <div class="page">
     <header class="site-header">
       <a href="https://agentralabs.co" class="logo-link">
-        <img src="https://agentralabs.co/logo.webp" alt="Agentra Labs" class="logo-img" width="40" height="40"/>
-        <span class="logo-text">Agentra Labs</span>
+        <img src="https://agentralabs.co/logo.webp" alt="Agentra Labs" class="logo-img" width="28" height="28"/>
+        <span>Agentra Labs</span>
       </a>
     </header>
 
-    <main class="content">
+    <main>
       <section class="hero">
+        <p class="eyebrow">Summer 2026 — Kolkata</p>
         <h1 class="title">Agentra Paper Club</h1>
-        <p class="subtitle">Kolkata, India</p>
+        <p class="subtitle">Where researchers and builders meet.</p>
+        <div class="meta-tags">
+          <span class="tag">30 spots</span>
+          <span class="tag">5 papers</span>
+          <span class="tag">10 min each</span>
+          <span class="tag">Dinner included</span>
+        </div>
       </section>
 
       <section class="about">
@@ -57,8 +440,10 @@
       </section>
 
       <section class="rsvp">
-        <h2 class="rsvp-title">Request a spot</h2>
-        <p class="rsvp-note">We'll reach out with details if we're able to confirm your attendance.</p>
+        <div class="rsvp-header">
+          <h2 class="rsvp-title">Request a spot</h2>
+          <p class="rsvp-note">We'll reach out with details if we're able to confirm your attendance.</p>
+        </div>
 
         <form class="rsvp-form" action="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP" method="post" enctype="text/plain">
           <div class="field">
@@ -88,7 +473,7 @@
         </form>
 
         <p class="rsvp-alt">
-          Or email <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a> directly.
+          Or email <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a>
         </p>
       </section>
     </main>
