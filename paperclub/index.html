@@ -512,6 +512,58 @@
       border-color: var(--accent);
     }
 
+    /* Form states */
+    .rsvp-form.sending {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .rsvp-success {
+      display: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .rsvp-success.active {
+      display: block;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .success-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #e8f5e9;
+      color: #2e7d32;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .success-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .success-body {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
     /* Footer */
     .site-footer {
       border-top: 1px solid var(--border);
@@ -635,7 +687,9 @@
           <p class="rsvp-note">We'll reach out with details if we're able to confirm your attendance.</p>
         </div>
 
-        <form class="rsvp-form" action="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP" method="post" enctype="text/plain">
+        <form class="rsvp-form" id="rsvp-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <input type="hidden" name="_subject" value="Paper Club RSVP" />
+          <input type="hidden" name="event" value="Agentra Paper Club — Kolkata" />
           <div class="field">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" placeholder="Your full name" required />
@@ -659,8 +713,14 @@
             <label for="work">What are you building or researching?</label>
             <textarea id="work" name="work" rows="3" placeholder="A sentence or two is plenty."></textarea>
           </div>
-          <button type="submit" class="btn-primary">Request a spot</button>
+          <button type="submit" class="btn-primary" id="submit-btn">Request a spot</button>
         </form>
+
+        <div class="rsvp-success" id="rsvp-success">
+          <div class="success-icon">✓</div>
+          <h3 class="success-title">You're on the list</h3>
+          <p class="success-body">We'll reach out with details if we're able to confirm your spot. Keep an eye on your inbox.</p>
+        </div>
 
         <p class="rsvp-alt">
           Or email <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a>
@@ -757,6 +817,45 @@
         }, i * 350);
       });
     });
+
+    // RSVP form handling
+    (function() {
+      const form = document.getElementById('rsvp-form');
+      const success = document.getElementById('rsvp-success');
+      const btn = document.getElementById('submit-btn');
+
+      if (!form || form.action.includes('YOUR_FORM_ID')) {
+        // Formspree not configured yet — keep default behavior
+        return;
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        form.classList.add('sending');
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' }
+          });
+
+          if (response.ok) {
+            form.style.display = 'none';
+            success.classList.add('active');
+          } else {
+            throw new Error('Submission failed');
+          }
+        } catch (err) {
+          btn.disabled = false;
+          btn.textContent = 'Request a spot';
+          form.classList.remove('sending');
+          alert('Something went wrong. Please email us directly at hello@agentralabs.co');
+        }
+      });
+    })();
   </script>
 </body>
 </html>
