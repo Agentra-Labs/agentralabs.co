@@ -887,6 +887,249 @@
       .timeline-row { grid-template-columns: 64px 1fr; gap: 16px; }
       .stats-strip { grid-template-columns: repeat(3, 1fr); gap: 16px; }
     }
+
+    /* ============================================================
+       RETRO LAYER — terminal bar, scanlines, ASCII accents
+       ============================================================ */
+
+    /* Top terminal status bar */
+    .tty-bar {
+      position: relative;
+      z-index: 5;
+      background: #0a0a0a;
+      color: #ffb454;
+      font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 11.5px;
+      letter-spacing: 0.5px;
+      padding: 6px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 1px solid #ffb454;
+      box-shadow: 0 0 24px rgba(255, 180, 84, 0.15) inset;
+    }
+    .tty-bar .tty-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #6fdc8c;
+      box-shadow: 0 0 8px #6fdc8c;
+      animation: tty-pulse 1.6s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    .tty-bar .tty-sep { color: #444; }
+    .tty-bar .tty-blink {
+      display: inline-block;
+      width: 7px;
+      background: #ffb454;
+      animation: tty-blink 1s step-end infinite;
+      align-self: stretch;
+      margin-left: 4px;
+    }
+    @keyframes tty-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    @keyframes tty-blink {
+      0%, 50% { opacity: 1; }
+      50.01%, 100% { opacity: 0; }
+    }
+
+    /* Hero CRT terminal — replaces the old white hero */
+    .hero-crt {
+      background: #0a0a0a;
+      color: #f5e9c8;
+      padding: 64px 24px 80px;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    /* Scanlines overlay */
+    .hero-crt::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 180, 84, 0.0) 0px,
+        rgba(255, 180, 84, 0.0) 2px,
+        rgba(0, 0, 0, 0.18) 3px,
+        rgba(0, 0, 0, 0.18) 4px
+      );
+      z-index: 2;
+      mix-blend-mode: multiply;
+    }
+    /* CRT vignette */
+    .hero-crt::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
+      z-index: 3;
+    }
+    .hero-crt-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .hero-prompt {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 12.5px;
+      color: #6fdc8c;
+      margin-bottom: 18px;
+      letter-spacing: 0.4px;
+    }
+    .hero-prompt .hero-cmd { color: #ffb454; }
+    .hero-prompt .hero-flag { color: #888; }
+
+    .hero-title-amber {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.00;
+      letter-spacing: -2.125px;
+      margin-bottom: 18px;
+      color: #ffb454;
+      text-shadow: 0 0 24px rgba(255, 180, 84, 0.35), 0 0 2px rgba(255, 180, 84, 0.6);
+      min-height: 1.2em;
+    }
+    .hero-subtitle-crt {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 1.35;
+      letter-spacing: -0.2px;
+      color: #f5e9c8;
+      max-width: 620px;
+      min-height: 1.4em;
+      margin-bottom: 28px;
+    }
+
+    /* Pretext canvas wrapper */
+    .pretext-stage {
+      position: relative;
+      width: 100%;
+      max-width: 920px;
+      margin: 32px auto 0;
+      aspect-ratio: 16 / 9;
+      background: rgba(255, 180, 84, 0.02);
+      border: 1px solid rgba(255, 180, 84, 0.18);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: grab;
+    }
+    .pretext-stage:active { cursor: grabbing; }
+    .pretext-stage canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .pretext-hint {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10.5px;
+      color: rgba(255, 180, 84, 0.5);
+      letter-spacing: 0.5px;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    /* Retro tags (override the old) */
+    .hero-crt .meta-tags { margin-top: 24px; }
+    .hero-crt .tag {
+      background: rgba(255, 180, 84, 0.1);
+      color: #ffb454;
+      border: 1px solid rgba(255, 180, 84, 0.3);
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .hero-crt .stats-strip {
+      border-top-color: rgba(255, 180, 84, 0.25);
+      max-width: 540px;
+    }
+    .hero-crt .stat-num {
+      color: #ffb454;
+      text-shadow: 0 0 16px rgba(255, 180, 84, 0.3);
+    }
+    .hero-crt .stat-label { color: rgba(245, 233, 200, 0.5); }
+
+    /* Scramble cursor inside CRT — amber instead of accent blue */
+    .hero-crt .scramble[data-done="true"]::after {
+      background: #ffb454;
+      box-shadow: 0 0 6px rgba(255, 180, 84, 0.6);
+    }
+    .hero-crt .eyebrow {
+      color: #6fdc8c;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      letter-spacing: 0.5px;
+      text-transform: none;
+    }
+
+    /* ASCII divider between sections */
+    .ascii-divider {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      color: var(--color-text-muted);
+      text-align: center;
+      padding: 24px 16px;
+      letter-spacing: 0;
+      line-height: 1.2;
+      white-space: pre;
+      overflow-x: auto;
+      background: var(--color-bg);
+      opacity: 0.55;
+    }
+    .ascii-divider.warm { background: var(--color-bg-warm); }
+
+    /* ASCII section eyebrow accent — a tiny paper stack */
+    .section-eyebrow.ascii::before {
+      content: '[ ]==[ ] ';
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      color: var(--color-accent);
+      letter-spacing: 0;
+      margin-right: 6px;
+    }
+
+    /* RSVP form — ASCII frame mode */
+    .rsvp-form {
+      position: relative;
+    }
+    .rsvp-form::before {
+      content: '┌─[ TRANSMIT ]──────────────────────────────────────────────┐';
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      right: 12px;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 10.5px;
+      color: var(--color-text-muted);
+      background: var(--color-bg);
+      padding: 0 6px;
+      letter-spacing: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
+    }
+
+    @media (max-width: 600px) {
+      .hero-crt { padding: 48px 20px 64px; }
+      .pretext-stage { aspect-ratio: 4/5; }
+      .tty-bar { font-size: 10px; padding: 5px 12px; gap: 8px; }
+      .tty-bar .tty-mobile-hide { display: none; }
+      .ascii-divider { font-size: 9px; padding: 18px 12px; }
+      .rsvp-form::before { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tty-bar .tty-dot, .tty-bar .tty-blink { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -901,6 +1144,18 @@
   </div>
 
   <div class="page">
+    <div class="tty-bar">
+      <span class="tty-dot"></span>
+      <span>AGENTRA-TTY</span>
+      <span class="tty-sep">·</span>
+      <span>paperclub.session.001</span>
+      <span class="tty-sep tty-mobile-hide">·</span>
+      <span class="tty-mobile-hide">geo: 22.5726°N, 88.3639°E</span>
+      <span class="tty-sep">·</span>
+      <span>STATUS: ESTABLISHED</span>
+      <span class="tty-blink"></span>
+    </div>
+
     <header class="site-header">
       <a href="https://agentralabs.co" class="logo-link">
         <img src="https://agentralabs.co/logo.webp" alt="Agentra Labs" class="logo-img" width="28" height="28"/>
@@ -908,11 +1163,22 @@
       </a>
     </header>
 
-    <section class="hero-section">
-      <div class="hero-inner">
-        <p class="eyebrow scramble" data-text="SUMMER 2026 — KOLKATA"></p>
-        <h1 class="title scramble" data-text="Agentra Paper Club"></h1>
-        <p class="subtitle scramble" data-text="Where researchers and builders meet."></p>
+    <section class="hero-crt">
+      <div class="hero-crt-inner">
+        <div class="hero-prompt">
+          <span style="color:#6fdc8c;">agentra@kolkata</span>:<span style="color:#7aa6da;">~/paperclub</span>$
+          <span class="hero-cmd">./session</span>
+          <span class="hero-flag">--invite-only --papers=5 --dinner=on</span>
+        </div>
+        <p class="eyebrow scramble" data-text="// SUMMER 2026 — KOLKATA"></p>
+        <h1 class="hero-title-amber scramble" data-text="Agentra Paper Club"></h1>
+        <p class="hero-subtitle-crt scramble" data-text="Where researchers and builders meet."></p>
+
+        <div class="pretext-stage" id="pretext-stage">
+          <canvas id="pretext-canvas"></canvas>
+          <div class="pretext-hint">DRAG_THE_ORB &gt;_</div>
+        </div>
+
         <div class="meta-tags">
           <span class="tag">30 spots</span>
           <span class="tag">5 papers</span>
@@ -937,6 +1203,14 @@
       </div>
     </section>
 
+    <pre class="ascii-divider warm">     ___      ___      ___      ___      ___      ___
+    /\__\    /\  \    /\  \    /\  \    /\  \    /\__\
+   /:/ _/_  /::\  \  /::\  \  /::\  \  /::\  \  /:/  /
+  /::-"\__\/:/\:\__\/:/\:\__\/:/\:\__\/:/\:\__\/:/__/
+  \;:;-",-"\:\/:/  /\:\ \/__/\:\/:/  /\:\/:/  /\:\  \
+   |:|  |   \::/  /  \:\__\   \::/  /  \::/  /  \:\__\
+    \|__|    \/__/    \/__/    \/__/    \/__/    \/__/</pre>
+
     <section class="about-section">
       <div class="about-inner about">
         <p class="lead">
@@ -956,7 +1230,7 @@
 
     <section class="reading-section">
       <div class="reading-inner">
-        <p class="section-eyebrow">On the table</p>
+        <p class="section-eyebrow ascii">On the table</p>
         <h2 class="section-h2">A taste of the reading list</h2>
         <p class="section-lede">Recent papers we'd love to dissect over chai and biryani. The actual five for night one will be voted on by the room.</p>
         <div class="paper-list">
@@ -1012,9 +1286,11 @@
       </div>
     </section>
 
+    <pre class="ascii-divider">  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·</pre>
+
     <section class="schedule-section">
       <div class="schedule-inner">
-        <p class="section-eyebrow">How a night runs</p>
+        <p class="section-eyebrow ascii">How a night runs</p>
         <h2 class="section-h2">A four-hour evening</h2>
         <p class="section-lede">No keynote, no Q&amp;A queue, no name badges. Just five papers, real arguments, and food.</p>
         <div class="timeline">
@@ -1057,9 +1333,11 @@
       </div>
     </section>
 
+    <pre class="ascii-divider warm">  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·</pre>
+
     <section class="faq-section">
       <div class="faq-inner">
-        <p class="section-eyebrow">Before you ask</p>
+        <p class="section-eyebrow ascii">Before you ask</p>
         <h2 class="section-h2">Questions, answered</h2>
         <div class="faq-list">
           <div class="faq-item" data-open="false">
@@ -1185,6 +1463,7 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
+        <pre class="ascii-divider" style="background:transparent;padding:0 0 16px;opacity:0.4;">[ END_OF_TRANSMISSION ]   ·   <3   ·   /agentra-labs</pre>
         <div class="footer-links">
           <a href="https://github.com/Agentra-Labs" target="_blank" rel="noopener">GitHub</a>
           <a href="https://agentralabs.co" target="_blank" rel="noopener">Agentra Labs</a>
@@ -1194,6 +1473,196 @@
       </div>
     </footer>
   </div>
+
+  <script type="module">
+    // ============================================================
+    // PRETEXT — text reflowing around a draggable orb
+    // ============================================================
+    import {
+      prepareWithSegments,
+      layoutNextLineRange,
+      materializeLineRange,
+    } from "https://esm.sh/@chenglou/pretext@0.0.6";
+
+    const stage = document.getElementById('pretext-stage');
+    const canvas = document.getElementById('pretext-canvas');
+    if (canvas && stage) {
+      const ctx = canvas.getContext('2d');
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const MANIFESTO =
+        "We are five papers and a long table. We are the moment a researcher and a builder argue about the same equation from opposite sides. We are off-the-record dinners where someone says the half-formed thing they would not tweet. We are convinced that progress in machine learning is bottlenecked less by compute than by conversation — that the most useful insights live in the gap between people who write the papers and people who ship the systems. So we are starting small. Thirty seats. Five papers. Ten minutes each. Real food, real disagreement, no badges. Bring a paper you cannot stop thinking about. Bring a deployment war story. Bring questions you are tired of asking the LLM. The room will do the rest.";
+
+      const FONT = "15px 'JetBrains Mono', ui-monospace, SF Mono, monospace";
+      const LINE_HEIGHT = 22;
+      const COLOR_TEXT = '#f5e9c8';
+      const COLOR_TEXT_DIM = 'rgba(245, 233, 200, 0.45)';
+      const COLOR_ORB = '#ffb454';
+
+      let prepared;
+      try {
+        prepared = prepareWithSegments(MANIFESTO, FONT);
+      } catch (e) {
+        console.error('pretext prepare failed:', e);
+        return;
+      }
+
+      // Orb state
+      const orb = {
+        x: 0, y: 0,
+        radius: 0,
+        targetX: 0, targetY: 0,
+        dragging: false,
+        autoT: 0,
+      };
+
+      let dpr = 1, W = 0, H = 0;
+
+      function resize() {
+        const rect = stage.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = rect.width;
+        H = rect.height;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        orb.radius = Math.min(W, H) * 0.22;
+        if (orb.x === 0 && orb.y === 0) {
+          orb.x = W * 0.5;
+          orb.y = H * 0.5;
+          orb.targetX = orb.x;
+          orb.targetY = orb.y;
+        }
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Width-of-corridor at y, given orb position.
+      // Returns array of [leftEdge, rightEdge] segments (x in canvas coords).
+      function corridorAt(y) {
+        const dy = y - orb.y;
+        if (Math.abs(dy) >= orb.radius) {
+          return [[16, W - 16]];
+        }
+        const dx = Math.sqrt(orb.radius * orb.radius - dy * dy);
+        const left = orb.x - dx;
+        const right = orb.x + dx;
+        const segs = [];
+        if (left > 16) segs.push([16, Math.floor(left) - 6]);
+        if (right < W - 16) segs.push([Math.ceil(right) + 6, W - 16]);
+        return segs;
+      }
+
+      function drawFrame() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Background subtle scanline glow
+        ctx.fillStyle = 'rgba(255, 180, 84, 0.03)';
+        ctx.fillRect(0, 0, W, H);
+
+        // Smooth orb toward target
+        if (!reduce) {
+          orb.x += (orb.targetX - orb.x) * 0.18;
+          orb.y += (orb.targetY - orb.y) * 0.18;
+          // idle drift if not dragging
+          if (!orb.dragging) {
+            orb.autoT += 0.008;
+            const cx = W * 0.5 + Math.cos(orb.autoT) * W * 0.18;
+            const cy = H * 0.5 + Math.sin(orb.autoT * 1.3) * H * 0.18;
+            orb.targetX = cx;
+            orb.targetY = cy;
+          }
+        }
+
+        // Reflow text around orb using layoutNextLineRange
+        ctx.font = FONT;
+        ctx.fillStyle = COLOR_TEXT;
+        ctx.textBaseline = 'top';
+
+        let cursor = { segmentIndex: 0, graphemeIndex: 0 };
+        let y = 18;
+        const maxY = H - LINE_HEIGHT;
+        let safety = 0;
+
+        while (y < maxY && safety++ < 200) {
+          const segs = corridorAt(y + LINE_HEIGHT * 0.5);
+          let placedAny = false;
+
+          for (const [lx, rx] of segs) {
+            const w = rx - lx;
+            if (w < 60) continue; // too narrow, skip segment
+            const range = layoutNextLineRange(prepared, cursor, w);
+            if (!range) { y = maxY + 1; break; }
+            const line = materializeLineRange(prepared, range);
+            // Soft fade as text approaches orb
+            const dy = Math.abs(y + LINE_HEIGHT * 0.5 - orb.y);
+            const proximity = Math.max(0, 1 - Math.max(0, orb.radius * 1.4 - dy) / (orb.radius * 1.4));
+            ctx.fillStyle = `rgba(245, 233, 200, ${0.5 + 0.45 * proximity})`;
+            ctx.fillText(line.text, lx, y);
+            cursor = range.end;
+            placedAny = true;
+          }
+          if (!placedAny) {
+            // No segment was wide enough — skip a row rather than infinite loop
+          }
+          y += LINE_HEIGHT;
+
+          // Restart corpus when exhausted
+          if (cursor.segmentIndex >= 9999) break;
+        }
+
+        // Orb — amber CRT phosphor with glow halo
+        const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius * 1.3);
+        grad.addColorStop(0, 'rgba(255, 200, 120, 0.95)');
+        grad.addColorStop(0.6, 'rgba(255, 180, 84, 0.35)');
+        grad.addColorStop(1, 'rgba(255, 180, 84, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.radius * 1.3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Inner orb core
+        ctx.fillStyle = COLOR_ORB;
+        ctx.beginPath();
+        ctx.arc(orb.x, orb.y, orb.radius * 0.55, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Cross-hair on orb (CRT marker)
+        ctx.strokeStyle = 'rgba(10, 10, 10, 0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(orb.x - orb.radius * 0.35, orb.y);
+        ctx.lineTo(orb.x + orb.radius * 0.35, orb.y);
+        ctx.moveTo(orb.x, orb.y - orb.radius * 0.35);
+        ctx.lineTo(orb.x, orb.y + orb.radius * 0.35);
+        ctx.stroke();
+
+        requestAnimationFrame(drawFrame);
+      }
+      requestAnimationFrame(drawFrame);
+
+      // Drag interaction
+      function getPos(e) {
+        const rect = stage.getBoundingClientRect();
+        const t = e.touches ? e.touches[0] : e;
+        return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+      }
+      stage.addEventListener('pointerdown', (e) => {
+        orb.dragging = true;
+        const p = getPos(e);
+        orb.targetX = p.x; orb.targetY = p.y;
+        stage.setPointerCapture(e.pointerId);
+      });
+      stage.addEventListener('pointermove', (e) => {
+        if (!orb.dragging) return;
+        const p = getPos(e);
+        orb.targetX = Math.max(orb.radius * 0.5, Math.min(W - orb.radius * 0.5, p.x));
+        orb.targetY = Math.max(orb.radius * 0.5, Math.min(H - orb.radius * 0.5, p.y));
+      });
+      stage.addEventListener('pointerup', () => { orb.dragging = false; });
+      stage.addEventListener('pointercancel', () => { orb.dragging = false; });
+    }
+  </script>
 
   <script>
     // Text scramble / hacker decode effect
