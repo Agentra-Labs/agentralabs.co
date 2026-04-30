@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>OG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #0a0a0a;
+    color: #f5e9c8;
+    font-family: 'Inter', system-ui, sans-serif;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  /* Scanlines */
+  body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0px,
+      rgba(0,0,0,0) 3px,
+      rgba(0,0,0,0.22) 4px,
+      rgba(0,0,0,0.22) 5px
+    );
+    pointer-events: none;
+    z-index: 5;
+  }
+  /* Vignette */
+  body::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.65) 100%);
+    pointer-events: none;
+    z-index: 6;
+  }
+
+  /* Top TTY bar */
+  .tty {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 44px;
+    background: #0d0d0d;
+    border-bottom: 1px solid #ffb454;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #ffb454;
+    letter-spacing: 0.6px;
+    z-index: 4;
+    box-shadow: 0 0 24px rgba(255, 180, 84, 0.15) inset;
+  }
+  .tty-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #6fdc8c;
+    box-shadow: 0 0 10px #6fdc8c;
+  }
+  .tty-sep { color: #444; }
+  .tty-blink {
+    width: 9px; height: 18px;
+    background: #ffb454;
+    margin-left: 4px;
+  }
+
+  /* Main content area */
+  .stage {
+    position: absolute;
+    inset: 64px 60px 60px 60px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: #6fdc8c;
+    letter-spacing: 0.3px;
+    margin-bottom: 24px;
+  }
+  .prompt .arg { color: #ffb454; }
+  .prompt .flag { color: rgba(245, 233, 200, 0.5); }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: #6fdc8c;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 96px;
+    font-weight: 800;
+    line-height: 0.96;
+    letter-spacing: -4.5px;
+    color: #ffb454;
+    text-shadow:
+      0 0 30px rgba(255, 180, 84, 0.45),
+      0 0 4px rgba(255, 180, 84, 0.7);
+    margin-bottom: 22px;
+  }
+
+  .subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: #f5e9c8;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
+    max-width: 880px;
+    margin-bottom: 38px;
+  }
+
+  .tags {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ffb454;
+    background: rgba(255, 180, 84, 0.08);
+    border: 1px solid rgba(255, 180, 84, 0.4);
+    padding: 8px 14px;
+    border-radius: 4px;
+  }
+
+  /* Bottom strip */
+  .footer {
+    position: absolute;
+    bottom: 32px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: rgba(245, 233, 200, 0.55);
+    letter-spacing: 0.5px;
+    z-index: 4;
+  }
+  .footer .brand {
+    color: #ffb454;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+  .footer .url {
+    color: rgba(245, 233, 200, 0.7);
+  }
+
+  /* ASCII corner accent */
+  .corner {
+    position: absolute;
+    top: 64px;
+    right: 60px;
+    z-index: 4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.2;
+    color: rgba(255, 180, 84, 0.5);
+    text-align: right;
+    white-space: pre;
+  }
+</style>
+</head>
+<body>
+  <div class="tty">
+    <span class="tty-dot"></span>
+    <span>AGENTRA-TTY</span>
+    <span class="tty-sep">·</span>
+    <span>paperclub.session.001</span>
+    <span class="tty-sep">·</span>
+    <span>KOLKATA</span>
+    <span class="tty-sep">·</span>
+    <span>STATUS: ESTABLISHED</span>
+    <span class="tty-blink"></span>
+  </div>
+
+  <div class="corner">[ ]==[ ]==[ ]
+ 5 papers
+ 30 seats
+ 1 long table</div>
+
+  <div class="stage">
+    <div class="prompt">
+      <span style="color:#6fdc8c;">agentra@kolkata</span>:<span style="color:#7aa6da;">~/paperclub</span>$
+      <span class="arg">./session</span>
+      <span class="flag">--invite-only --papers=5 --dinner=on</span>
+    </div>
+    <div class="eyebrow">// SUMMER 2026 — KOLKATA, INDIA</div>
+    <h1>Agentra<br/>Paper Club</h1>
+    <div class="subtitle">Where researchers and builders meet.<br/>Five papers. Ten minutes each. Off-the-record dinner.</div>
+    <div class="tags">
+      <div class="tag">30 SEATS</div>
+      <div class="tag">5 PAPERS</div>
+      <div class="tag">DINNER INCLUDED</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="brand">⌬ AGENTRA LABS</span>
+    <span class="url">events.agentralabs.co/paperclub</span>
+  </div>
+</body>
+</html>
