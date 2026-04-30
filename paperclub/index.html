@@ -33,46 +33,25 @@
   <meta name="twitter:image:alt" content="Agentra Paper Club — retro CRT terminal showing event details: Summer 2026, Kolkata, 30 seats, 5 papers, dinner included." />
 
   <!-- Theme -->
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#020202" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="https://agentralabs.co/favicon.svg">
   <link rel="icon" type="image/png" href="https://agentralabs.co/favicon.png">
+
   <style>
     :root {
-      --color-bg: #ffffff;
-      --color-bg-warm: #f6f5f4;
-      --color-text: rgba(0,0,0,0.95);
-      --color-text-secondary: #615d59;
-      --color-text-muted: #a39e98;
-      --color-border: rgba(0,0,0,0.1);
-      --color-border-light: #e8e4df;
-      --color-accent: #0075de;
-      --color-accent-hover: #005bab;
-      --color-accent-soft: #f2f9ff;
-      --color-accent-text: #097fe8;
-      --color-shadow-1: rgba(0,0,0,0.01);
-      --color-shadow-2: rgba(0,0,0,0.02);
-      --color-shadow-3: rgba(0,0,0,0.027);
-      --color-shadow-4: rgba(0,0,0,0.04);
-      --radius-sm: 4px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --radius-pill: 9999px;
-      --shadow-card:
-        0px 0.175px 1.04062px var(--color-shadow-1),
-        0px 0.8px 2.925px var(--color-shadow-2),
-        0px 2.025px 7.84688px var(--color-shadow-3),
-        0px 4px 18px var(--color-shadow-4);
-      --shadow-deep:
-        0px 1px 3px var(--color-shadow-1),
-        0px 3px 7px var(--color-shadow-2),
-        0px 7px 15px var(--color-shadow-2),
-        0px 14px 28px var(--color-shadow-4),
-        0px 23px 52px rgba(0,0,0,0.05);
-      --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --bg: #020202;
+      --panel: rgba(5,5,5,0.65);
+      --text: #c8c0b0;
+      --text-dim: #8a8478;
+      --amber: #ffb454;
+      --amber-dim: rgba(255,180,84,0.3);
+      --green: #6fdc8c;
+      --font: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      --font-sans: 'Inter', system-ui, sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -80,953 +59,298 @@
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--color-bg);
-      color: var(--color-text);
-      font-family: var(--font-sans);
-      font-size: 16px;
-      line-height: 1.50;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      position: relative;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
-    /* Whisper borders on everything */
-    hr, .divider {
-      border: none;
-      border-top: 1px solid var(--color-border);
-    }
-
-    /* Background texture: paper grain */
-    .bg-texture {
+    /* WebGL background canvas */
+    #gl {
       position: fixed;
       inset: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: 0;
-      pointer-events: none;
-      opacity: 0.25;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
-      background-repeat: repeat;
-      background-size: 200px 200px;
+      display: block;
     }
 
-    /* Floating paper fragments */
-    .bg-papers {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      overflow: hidden;
+    /* Fallback gradient when WebGL not available */
+    .no-webgl #gl { display: none; }
+    .no-webgl body {
+      background: radial-gradient(ellipse at 30% 50%, #0d0a05 0%, var(--bg) 60%);
     }
 
-    .paper-frag {
-      position: absolute;
-      background: var(--color-bg);
-      border: 1px solid var(--color-border-light);
-      border-radius: 2px;
-      opacity: 0.035;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    .paper-frag::before {
-      content: '';
-      position: absolute;
-      top: 18%;
-      left: 12%;
-      right: 12%;
-      height: 1px;
-      background: var(--color-border-light);
-      opacity: 0.6;
-      box-shadow:
-        0 8px 0 var(--color-border-light),
-        0 16px 0 var(--color-border-light),
-        0 24px 0 var(--color-border-light),
-        0 32px 0 var(--color-border-light);
-    }
-
-    .paper-frag::after {
-      content: '';
-      position: absolute;
-      top: 52%;
-      left: 12%;
-      width: 35%;
-      height: 1px;
-      background: var(--color-border-light);
-      opacity: 0.4;
-    }
-
-    .paper-frag:nth-child(1) {
-      width: 90px; height: 120px;
-      top: 8%; left: 6%;
-      transform: rotate(-12deg);
-      animation: drift1 45s ease-in-out infinite;
-    }
-    .paper-frag:nth-child(2) {
-      width: 70px; height: 95px;
-      top: 22%; right: 8%;
-      transform: rotate(8deg);
-      animation: drift2 38s ease-in-out infinite;
-    }
-    .paper-frag:nth-child(3) {
-      width: 60px; height: 80px;
-      top: 55%; left: 3%;
-      transform: rotate(-5deg);
-      animation: drift3 50s ease-in-out infinite;
-    }
-    .paper-frag:nth-child(4) {
-      width: 80px; height: 105px;
-      top: 68%; right: 5%;
-      transform: rotate(15deg);
-      animation: drift4 42s ease-in-out infinite;
-    }
-    .paper-frag:nth-child(5) {
-      width: 55px; height: 75px;
-      top: 40%; right: 12%;
-      transform: rotate(-18deg);
-      animation: drift5 55s ease-in-out infinite;
-    }
-    .paper-frag:nth-child(6) {
-      width: 75px; height: 100px;
-      top: 85%; left: 15%;
-      transform: rotate(6deg);
-      animation: drift2 48s ease-in-out infinite reverse;
-    }
-
-    @keyframes drift1 {
-      0%, 100% { transform: rotate(-12deg) translateY(0) translateX(0); }
-      33% { transform: rotate(-10deg) translateY(-12px) translateX(6px); }
-      66% { transform: rotate(-14deg) translateY(8px) translateX(-4px); }
-    }
-    @keyframes drift2 {
-      0%, 100% { transform: rotate(8deg) translateY(0) translateX(0); }
-      33% { transform: rotate(10deg) translateY(10px) translateX(-8px); }
-      66% { transform: rotate(6deg) translateY(-6px) translateX(4px); }
-    }
-    @keyframes drift3 {
-      0%, 100% { transform: rotate(-5deg) translateY(0) translateX(0); }
-      33% { transform: rotate(-3deg) translateY(-8px) translateX(10px); }
-      66% { transform: rotate(-7deg) translateY(6px) translateX(-6px); }
-    }
-    @keyframes drift4 {
-      0%, 100% { transform: rotate(15deg) translateY(0) translateX(0); }
-      33% { transform: rotate(17deg) translateY(12px) translateX(-6px); }
-      66% { transform: rotate(13deg) translateY(-10px) translateX(8px); }
-    }
-    @keyframes drift5 {
-      0%, 100% { transform: rotate(-18deg) translateY(0) translateX(0); }
-      33% { transform: rotate(-16deg) translateY(-10px) translateX(-6px); }
-      66% { transform: rotate(-20deg) translateY(8px) translateX(10px); }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .paper-frag { animation: none; }
-    }
-
-    /* Page layout */
-    .page {
+    /* Content layer above WebGL */
+    .content {
       position: relative;
-      z-index: 1;
-    }
-
-    /* Header */
-    .site-header {
-      padding: 24px 0;
-      max-width: 1000px;
+      z-index: 10;
+      max-width: 640px;
       margin: 0 auto;
-      padding-left: 24px;
-      padding-right: 24px;
+      padding: 0 24px;
     }
 
-    .logo-link {
+    /* ===== Fixed header ===== */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      background: linear-gradient(to bottom, rgba(2,2,2,0.92) 0%, rgba(2,2,2,0.4) 60%, transparent 100%);
+      pointer-events: none;
+    }
+    .site-header a {
+      color: var(--text-dim);
+      text-decoration: none;
+      pointer-events: auto;
+      transition: color 0.2s ease;
+    }
+    .site-header a:hover { color: var(--amber); }
+    .site-header .logo {
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
-      text-decoration: none;
-      color: var(--color-text);
-      font-weight: 600;
-      font-size: 15px;
-      transition: opacity 0.2s;
+      gap: 8px;
+    }
+    .site-header .logo img {
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      opacity: 0.7;
     }
 
-    .logo-link:hover { opacity: 0.6; }
-
-    .logo-img {
-      width: 28px;
-      height: 28px;
-      border-radius: var(--radius-md);
-      object-fit: cover;
+    /* ===== Hero ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 0 80px;
     }
 
-    /* Hero — warm white section */
-    .hero-section {
-      background: var(--color-bg-warm);
-      padding: 80px 24px 96px;
-    }
-
-    .hero-inner {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .eyebrow {
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.125px;
-      color: var(--color-accent);
+    .hero h1 {
+      font-family: var(--font-sans);
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 0.98;
+      letter-spacing: -3px;
+      color: var(--amber);
+      text-shadow: 0 0 50px rgba(255,180,84,0.2), 0 0 2px rgba(255,180,84,0.4);
       margin-bottom: 16px;
+    }
+
+    .hero .meta {
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+      margin-bottom: 48px;
+    }
+
+    /* Scramble cursor effect */
+    .scramble {
       min-height: 1.2em;
     }
-
-    .title {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 700;
-      line-height: 1.00;
-      letter-spacing: -2.125px;
-      margin-bottom: 20px;
-      min-height: 1.2em;
-    }
-
-    .subtitle {
-      font-size: 22px;
-      font-weight: 500;
-      line-height: 1.27;
-      letter-spacing: -0.25px;
-      color: var(--color-text-secondary);
-      min-height: 1.4em;
-    }
-
-    /* Scramble cursor */
     .scramble[data-done="true"] {
       position: relative;
     }
-
     .scramble[data-done="true"]::after {
       content: '';
       position: absolute;
-      right: -2px;
+      right: -3px;
       top: 0.1em;
       width: 2px;
       height: 0.85em;
-      background: var(--color-accent);
+      background: var(--amber);
+      box-shadow: 0 0 6px rgba(255,180,84,0.6);
       animation: blink 1s step-end infinite;
-      opacity: 0.6;
+      opacity: 0.7;
     }
-
     @keyframes blink {
-      0%, 100% { opacity: 0.6; }
+      0%, 100% { opacity: 0.7; }
       50% { opacity: 0; }
     }
 
-    /* Pill badges */
-    .meta-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 28px;
-    }
-
-    .tag {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 8px;
-      background: var(--color-accent-soft);
-      color: var(--color-accent-text);
-      border-radius: var(--radius-pill);
-      letter-spacing: 0.125px;
-      opacity: 0;
-      transform: translateY(6px);
-      animation: tagIn 0.4s ease forwards;
-    }
-
-    .tag:nth-child(1) { animation-delay: 1.2s; }
-    .tag:nth-child(2) { animation-delay: 1.35s; }
-    .tag:nth-child(3) { animation-delay: 1.5s; }
-    .tag:nth-child(4) { animation-delay: 1.65s; }
-
-    @keyframes tagIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* About — white section */
-    .about-section {
-      background: var(--color-bg);
-      padding: 80px 24px;
-    }
-
-    .about-inner {
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .about p {
-      margin-bottom: 20px;
-      color: var(--color-text-secondary);
-      font-size: 16px;
-      line-height: 1.75;
-      opacity: 0;
-      transform: translateY(12px);
-      animation: fadeUp 0.7s ease forwards;
-    }
-
-    .about .lead {
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1.40;
-      letter-spacing: -0.125px;
-      color: var(--color-text);
-    }
-
-    .about p:nth-child(1) { animation-delay: 1.4s; }
-    .about p:nth-child(2) { animation-delay: 1.55s; }
-    .about p:nth-child(3) { animation-delay: 1.7s; }
-    .about p:nth-child(4) { animation-delay: 1.85s; }
-
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Details — warm white section */
-    .details-section {
-      background: var(--color-bg-warm);
-      padding: 80px 24px;
-    }
-
-    .details-inner {
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .details-card {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .detail-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .detail-row:first-child { padding-top: 0; }
-
-    .detail-label {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--color-text-muted);
-    }
-
-    .detail-value {
-      font-weight: 500;
-      font-size: 15px;
-      text-align: right;
-      color: var(--color-text);
-    }
-
-    /* RSVP — dark terminal section */
-    .rsvp-section {
-      background: #0a0a0a;
-      padding: 96px 24px 96px;
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-    }
-    /* CRT scanlines on RSVP too */
-    .rsvp-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(0,0,0,0) 0px,
-        rgba(0,0,0,0) 2px,
-        rgba(0,0,0,0.2) 3px,
-        rgba(0,0,0,0.2) 4px
-      );
-      z-index: 1;
-    }
-    .rsvp-section::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
-      z-index: 2;
-    }
-
-    .rsvp-inner {
-      max-width: 720px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 3;
-    }
-
-    /* Terminal window chrome */
-    .rsvp-terminal {
-      background: #0d0d0d;
-      border: 1px solid rgba(255, 180, 84, 0.35);
-      border-radius: 8px;
-      box-shadow:
-        0 0 0 1px rgba(255, 180, 84, 0.05),
-        0 24px 64px rgba(0, 0, 0, 0.6),
-        0 0 80px rgba(255, 180, 84, 0.08);
-      overflow: hidden;
-    }
-    .rsvp-titlebar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      background: linear-gradient(to bottom, #1a1a1a, #111);
-      border-bottom: 1px solid rgba(255, 180, 84, 0.25);
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 11.5px;
-      color: rgba(245, 233, 200, 0.55);
-      letter-spacing: 0.5px;
-    }
-    .rsvp-titlebar .tb-dots {
-      display: flex;
-      gap: 6px;
-      margin-right: 10px;
-    }
-    .rsvp-titlebar .tb-dots span {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-    }
-    .rsvp-titlebar .tb-dots .red { background: #ff5f56; box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset; }
-    .rsvp-titlebar .tb-dots .yel { background: #ffbd2e; box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset; }
-    .rsvp-titlebar .tb-dots .grn { background: #27c93f; box-shadow: 0 0 0 1px rgba(0,0,0,0.3) inset; }
-    .rsvp-titlebar .tb-path { flex: 1; }
-    .rsvp-titlebar .tb-meta { color: rgba(255, 180, 84, 0.55); }
-
-    .rsvp-form {
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 28px 32px 32px;
-      box-shadow: none;
-    }
-    /* Kill the old ::before ASCII corner-tag in this dark mode */
-    .rsvp-form::before { display: none; }
-
-    .rsvp-prompt {
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 12.5px;
-      color: #6fdc8c;
-      margin-bottom: 6px;
-      letter-spacing: 0.4px;
-    }
-    .rsvp-prompt .arg { color: #ffb454; }
-    .rsvp-prompt .flag { color: rgba(245, 233, 200, 0.5); }
-
-    .rsvp-tag-line {
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 12px;
-      color: rgba(245, 233, 200, 0.5);
-      margin-bottom: 24px;
-      letter-spacing: 0.3px;
-    }
-    .rsvp-tag-line .ok { color: #6fdc8c; }
-
-    /* Two-column grid for short fields */
-    .field-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px 18px;
-      margin-bottom: 18px;
-    }
-    .field-grid .field { margin-bottom: 0; }
-    .field-grid .field.full { grid-column: 1 / -1; }
-
-    .field {
-      margin-bottom: 18px;
-    }
-    .field:last-of-type { margin-bottom: 22px; }
-
-    .field label {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 11.5px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-      color: rgba(245, 233, 200, 0.65);
-      text-transform: lowercase;
-    }
-    .field label::before {
-      content: '> ';
-      color: #6fdc8c;
-      margin-right: 2px;
-    }
-    .field label .opt {
-      color: rgba(255, 180, 84, 0.7);
-      font-weight: 400;
-      text-transform: lowercase;
-      letter-spacing: 0.5px;
-    }
-    .field label .counter {
-      font-size: 10.5px;
-      color: rgba(245, 233, 200, 0.4);
-      font-family: inherit;
-      letter-spacing: 0.5px;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
+    /* Pretext hero canvas */
+    .pretext-wrap {
       width: 100%;
-      padding: 10px 12px;
-      border: 1px solid rgba(255, 180, 84, 0.18);
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 14px;
-      color: #f5e9c8;
-      background: rgba(255, 180, 84, 0.025);
-      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-      outline: none;
-      caret-color: #ffb454;
-    }
-
-    .field input::placeholder,
-    .field textarea::placeholder {
-      color: rgba(245, 233, 200, 0.25);
-      font-style: normal;
-    }
-
-    .field input:hover,
-    .field select:hover,
-    .field textarea:hover {
-      border-color: rgba(255, 180, 84, 0.35);
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: #ffb454;
-      background: rgba(255, 180, 84, 0.05);
-      box-shadow:
-        0 0 0 3px rgba(255, 180, 84, 0.08),
-        0 0 12px rgba(255, 180, 84, 0.15);
-    }
-
-    .field input:valid:not(:placeholder-shown),
-    .field textarea:valid:not(:placeholder-shown) {
-      border-color: rgba(111, 220, 140, 0.35);
-    }
-
-    .field select {
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23ffb454' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 32px;
-    }
-    .field select option {
-      background: #0d0d0d;
-      color: #f5e9c8;
-    }
-
-    .field textarea {
-      resize: vertical;
-      min-height: 96px;
-      line-height: 1.55;
-    }
-
-    /* Progress bar — terminal style [████████░░] 80% */
-    .rsvp-progress {
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 12px;
-      color: rgba(245, 233, 200, 0.55);
-      letter-spacing: 0.5px;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .rsvp-progress .label { color: rgba(255, 180, 84, 0.7); flex-shrink: 0; }
-    .rsvp-progress .bar {
-      flex: 1;
-      height: 8px;
-      background: rgba(255, 180, 84, 0.08);
-      border: 1px solid rgba(255, 180, 84, 0.18);
-      border-radius: 2px;
+      height: 260px;
+      margin-bottom: 40px;
       position: relative;
       overflow: hidden;
     }
-    .rsvp-progress .bar-fill {
-      position: absolute;
-      inset: 0;
-      width: 0%;
-      background: linear-gradient(to right, #ffb454, #ffd089);
-      box-shadow: 0 0 8px rgba(255, 180, 84, 0.5);
-      transition: width 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+    .pretext-wrap canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
-    .rsvp-progress .pct {
-      flex-shrink: 0;
-      width: 48px;
-      text-align: right;
-      color: #ffb454;
+    .pretext-hint {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 10px;
+      color: rgba(200,192,176,0.25);
+      letter-spacing: 0.5px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Stats strip */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 420px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,180,84,0.1);
+    }
+    .stat-num {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--amber);
+      text-shadow: 0 0 12px rgba(255,180,84,0.25);
+      line-height: 1;
       font-variant-numeric: tabular-nums;
     }
-
-    /* Submit button — execute style */
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 12px 16px;
-      background: #ffb454;
-      color: #0a0a0a;
-      border: 1px solid #ffb454;
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 13.5px;
-      font-weight: 700;
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      margin-top: 6px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.08s, box-shadow 0.18s;
-      box-shadow: 0 0 0 0 rgba(255, 180, 84, 0);
-    }
-    .btn-primary::before {
-      content: '$ ';
-      color: #0a0a0a;
-      opacity: 0.6;
-      font-weight: 400;
-    }
-    .btn-primary:hover {
-      background: #ffd089;
-      box-shadow: 0 0 24px rgba(255, 180, 84, 0.4);
-    }
-    .btn-primary:active {
-      transform: scale(0.985);
-    }
-    .btn-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      box-shadow: none;
     }
 
-    .rsvp-form.sending { opacity: 0.5; pointer-events: none; }
+    /* ===== Panels ===== */
+    .panel {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255,180,84,0.06);
+    }
 
-    /* Success state — typewriter ASCII */
-    .rsvp-success {
-      display: none;
-      background: transparent;
-      border: none;
-      padding: 28px 32px 36px;
-      text-align: left;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      box-shadow: none;
+    .panel.glass {
+      background: var(--panel);
+      backdrop-filter: blur(28px) saturate(1.3);
+      -webkit-backdrop-filter: blur(28px) saturate(1.3);
+      border: 1px solid rgba(255,180,84,0.08);
+      border-radius: 14px;
+      padding: 40px 32px;
+      margin: 48px 0;
     }
-    .rsvp-success.active {
-      display: block;
-      animation: fadeUp 0.5s ease both;
-    }
-    .rsvp-success .ok-line {
-      color: #6fdc8c;
-      font-size: 13px;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-    .rsvp-success .ascii-check {
-      color: #6fdc8c;
-      font-size: 11.5px;
-      line-height: 1.15;
-      white-space: pre;
-      margin-bottom: 18px;
-      text-shadow: 0 0 12px rgba(111, 220, 140, 0.35);
-    }
-    .success-title {
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 17px;
+
+    .panel h2 {
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0;
-      color: #ffb454;
-      margin-bottom: 10px;
-    }
-    .success-body {
-      color: rgba(245, 233, 200, 0.7);
-      font-size: 13.5px;
-      line-height: 1.65;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-    }
-    /* hide the old success-icon inside dark theme */
-    .success-icon { display: none; }
-
-    .rsvp-alt {
-      margin-top: 20px;
-      text-align: center;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 12px;
-      color: rgba(245, 233, 200, 0.45);
-      letter-spacing: 0.4px;
-    }
-    .rsvp-alt a {
-      color: #ffb454;
-      text-decoration: none;
-      border-bottom: 1px dashed rgba(255, 180, 84, 0.4);
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .rsvp-alt a:hover {
-      color: #ffd089;
-      border-bottom-color: #ffd089;
-    }
-
-    /* Override the section-eyebrow + section-h2 colors inside dark RSVP */
-    .rsvp-section .section-eyebrow {
-      color: #6fdc8c;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      letter-spacing: 0.5px;
-      text-transform: none;
-    }
-    .rsvp-section .section-eyebrow.ascii::before {
-      color: #ffb454;
-    }
-    .rsvp-section .section-h2 {
-      color: #ffb454;
-      text-shadow: 0 0 18px rgba(255, 180, 84, 0.25);
-    }
-    .rsvp-section .section-lede {
-      color: rgba(245, 233, 200, 0.65);
-    }
-
-    @media (max-width: 600px) {
-      .rsvp-section { padding: 64px 16px; }
-      .rsvp-form { padding: 22px 20px 24px; }
-      .field-grid { grid-template-columns: 1fr; gap: 14px; }
-      .rsvp-titlebar { font-size: 10.5px; padding: 8px 12px; }
-      .rsvp-titlebar .tb-meta { display: none; }
-      .rsvp-progress { font-size: 11px; gap: 8px; }
-    }
-
-    /* Footer */
-    .site-footer {
-      border-top: 1px solid var(--color-border);
-      padding: 48px 24px 64px;
-      text-align: center;
-    }
-
-    .footer-inner {
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--color-text-secondary);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover {
-      color: var(--color-text);
-      text-decoration: underline;
-    }
-
-    .copyright {
-      font-size: 14px;
-      color: var(--color-text-muted);
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .hero-section { padding: 48px 20px 64px; }
-      .about-section, .details-section, .rsvp-section { padding: 48px 20px; }
-      .site-footer { padding: 32px 20px 48px; }
-      .title { font-size: 2rem; letter-spacing: -1.5px; }
-      .subtitle { font-size: 18px; }
-      .about .lead { font-size: 18px; }
-      .rsvp-form { padding: 24px; }
-      .detail-row { flex-direction: column; gap: 4px; }
-      .detail-value { text-align: left; }
-      .footer-links { gap: 16px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .tag, .about p { animation: none; opacity: 1; transform: none; }
-      .paper-frag { animation: none; }
-      .scramble[data-done="true"]::after { animation: none; opacity: 0; }
-    }
-
-    /* === Reading list section === */
-    .reading-section {
-      background: var(--color-bg);
-      padding: 80px 24px;
-    }
-    .reading-inner { max-width: 880px; margin: 0 auto; }
-    .section-eyebrow {
-      font-size: 12px;
-      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.125px;
-      color: var(--color-accent);
-      margin-bottom: 12px;
-    }
-    .section-h2 {
-      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-      font-weight: 700;
-      letter-spacing: -1.25px;
-      line-height: 1.05;
-      margin-bottom: 16px;
-    }
-    .section-lede {
-      font-size: 17px;
-      color: var(--color-text-secondary);
-      max-width: 560px;
-      margin-bottom: 40px;
-      line-height: 1.55;
-    }
-    .paper-list {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-      border-top: 1px solid var(--color-border);
-    }
-    .paper-row {
-      display: grid;
-      grid-template-columns: 56px 1fr auto;
-      gap: 20px;
-      align-items: start;
-      padding: 22px 0;
-      border-bottom: 1px solid var(--color-border);
-      text-decoration: none;
-      color: var(--color-text);
-      transition: background 0.18s ease, padding-left 0.18s ease;
-    }
-    .paper-row:hover {
-      background: var(--color-bg-warm);
-      padding-left: 12px;
-      padding-right: 12px;
-    }
-    .paper-num {
-      font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      font-size: 13px;
-      color: var(--color-text-muted);
-      letter-spacing: 0.5px;
-      padding-top: 2px;
-    }
-    .paper-body { min-width: 0; }
-    .paper-title {
-      font-size: 17px;
-      font-weight: 600;
-      line-height: 1.35;
-      letter-spacing: -0.2px;
-      margin-bottom: 6px;
-    }
-    .paper-meta {
-      font-size: 13.5px;
-      color: var(--color-text-muted);
-      font-weight: 500;
-    }
-    .paper-meta .dot { margin: 0 6px; opacity: 0.5; }
-    .paper-arrow {
-      align-self: center;
-      font-size: 18px;
-      color: var(--color-text-muted);
-      transition: transform 0.2s ease, color 0.2s ease;
-    }
-    .paper-row:hover .paper-arrow {
-      transform: translateX(4px);
-      color: var(--color-accent);
+      letter-spacing: 2.5px;
+      color: var(--amber);
+      margin-bottom: 32px;
     }
 
-    /* === Schedule / format timeline === */
-    .schedule-section {
-      background: var(--color-bg-warm);
-      padding: 80px 24px;
+    .panel p {
+      margin-bottom: 16px;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.65;
     }
-    .schedule-inner { max-width: 720px; margin: 0 auto; }
+    .panel p.lead {
+      font-size: 16px;
+      font-weight: 600;
+      color: #ddd8ce;
+      line-height: 1.5;
+    }
+
+    /* ===== Reading list ===== */
+    .paper-list { list-style: none; }
+    .paper-list li {
+      border-bottom: 1px solid rgba(255,180,84,0.06);
+    }
+    .paper-list a {
+      display: block;
+      padding: 16px 0;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.15s ease, transform 0.15s ease;
+    }
+    .paper-list a:hover {
+      color: var(--amber);
+      transform: translateX(4px);
+    }
+    .paper-list .num {
+      color: var(--text-dim);
+      font-size: 10px;
+      margin-right: 12px;
+      letter-spacing: 0.5px;
+    }
+    .paper-list .title {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .paper-list .meta {
+      color: var(--text-dim);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+    .paper-list .meta .dot {
+      margin: 0 6px;
+      opacity: 0.4;
+    }
+
+    /* ===== Timeline ===== */
     .timeline {
       position: relative;
-      margin-top: 32px;
+      border-left: 1px solid rgba(255,180,84,0.12);
+      padding-left: 20px;
     }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 11px;
-      top: 8px;
-      bottom: 8px;
-      width: 1px;
-      background: var(--color-border);
-    }
-    .timeline-row {
+    .timeline-item {
       position: relative;
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: 28px;
-      padding: 14px 0;
-      align-items: baseline;
+      padding-bottom: 28px;
     }
-    .timeline-row::before {
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before {
       content: '';
       position: absolute;
-      left: 6px;
-      top: 22px;
-      width: 11px;
-      height: 11px;
+      left: -25px;
+      top: 3px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
-      background: var(--color-bg);
-      border: 1.5px solid var(--color-accent);
-      box-shadow: 0 0 0 4px var(--color-bg-warm);
+      background: var(--bg);
+      border: 1.5px solid var(--amber);
+      box-shadow: 0 0 0 3px var(--bg);
     }
     .timeline-time {
-      padding-left: 28px;
-      font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--color-accent);
-      letter-spacing: 0.25px;
-    }
-    .timeline-content {
-      font-size: 15.5px;
-      color: var(--color-text);
-      line-height: 1.45;
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 1px;
+      margin-bottom: 4px;
     }
     .timeline-content strong {
+      color: #ddd8ce;
       font-weight: 600;
       display: block;
       margin-bottom: 2px;
-    }
-    .timeline-content span {
-      color: var(--color-text-muted);
       font-size: 14px;
     }
+    .timeline-content span {
+      color: var(--text-dim);
+      font-size: 13px;
+      line-height: 1.5;
+    }
 
-    /* === FAQ accordion === */
-    .faq-section {
-      background: var(--color-bg);
-      padding: 80px 24px;
-    }
-    .faq-inner { max-width: 720px; margin: 0 auto; }
-    .faq-list {
-      margin-top: 32px;
-      border-top: 1px solid var(--color-border);
-    }
-    .faq-item {
-      border-bottom: 1px solid var(--color-border);
-    }
+    /* ===== FAQ ===== */
+    .faq-list { border-top: 1px solid rgba(255,180,84,0.06); }
+    .faq-item { border-bottom: 1px solid rgba(255,180,84,0.06); }
     .faq-q {
       display: flex;
       width: 100%;
@@ -1035,901 +359,1046 @@
       gap: 16px;
       background: none;
       border: none;
-      padding: 22px 0;
+      padding: 20px 0;
       cursor: pointer;
       text-align: left;
       font: inherit;
-      font-size: 16.5px;
+      font-size: 14px;
       font-weight: 600;
-      color: var(--color-text);
-      letter-spacing: -0.15px;
-      transition: color 0.18s;
+      color: var(--text);
+      letter-spacing: -0.1px;
+      transition: color 0.15s ease;
     }
-    .faq-q:hover { color: var(--color-accent); }
+    .faq-q:hover { color: var(--amber); }
     .faq-icon {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
       position: relative;
     }
     .faq-icon::before, .faq-icon::after {
       content: '';
       position: absolute;
-      background: var(--color-text-muted);
-      transition: transform 0.25s ease, background 0.18s;
+      background: var(--text-dim);
+      transition: transform 0.25s ease, background 0.18s ease;
     }
     .faq-icon::before {
-      top: 9px; left: 2px; right: 2px; height: 1.5px;
+      top: 8px; left: 2px; right: 2px; height: 1.5px;
     }
     .faq-icon::after {
-      left: 9px; top: 2px; bottom: 2px; width: 1.5px;
+      left: 8px; top: 2px; bottom: 2px; width: 1.5px;
     }
     .faq-item[data-open="true"] .faq-icon::after { transform: rotate(90deg); }
     .faq-item[data-open="true"] .faq-icon::before,
-    .faq-item[data-open="true"] .faq-icon::after { background: var(--color-accent); }
+    .faq-item[data-open="true"] .faq-icon::after { background: var(--amber); }
     .faq-a {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.32s ease;
+      transition: max-height 0.35s ease;
     }
     .faq-a-inner {
-      padding-bottom: 22px;
-      font-size: 15.5px;
+      padding-bottom: 20px;
+      font-size: 13px;
       line-height: 1.65;
-      color: var(--color-text-secondary);
+      color: var(--text-dim);
     }
-    .faq-a-inner a { color: var(--color-accent); text-decoration: none; }
-    .faq-a-inner a:hover { text-decoration: underline; }
+    .faq-a-inner a {
+      color: var(--amber);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,180,84,0.3);
+      transition: border-color 0.2s;
+    }
+    .faq-a-inner a:hover { border-bottom-color: var(--amber); }
 
-    /* === Animated stats counter on hero === */
-    .stats-strip {
+    /* ===== RSVP — minimal terminal inline ===== */
+    .rsvp-form { margin-top: 8px; }
+    .rsvp-prompt {
+      font-size: 12px;
+      color: var(--green);
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+    .rsvp-prompt .arg { color: var(--amber); }
+    .rsvp-prompt .flag { color: var(--text-dim); }
+
+    .field-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      margin-top: 40px;
-      padding-top: 32px;
-      border-top: 1px solid var(--color-border);
-      max-width: 480px;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 16px;
+      margin-bottom: 4px;
     }
-    .stat-num {
-      font-size: clamp(1.75rem, 3vw, 2.25rem);
-      font-weight: 700;
-      letter-spacing: -1px;
-      line-height: 1;
-      color: var(--color-text);
-      font-variant-numeric: tabular-nums;
-    }
-    .stat-label {
-      font-size: 12.5px;
-      font-weight: 500;
-      color: var(--color-text-muted);
-      margin-top: 6px;
-      letter-spacing: 0.2px;
-    }
+    .field-grid .field { margin-bottom: 0; }
+    .field-grid .field.full { grid-column: 1 / -1; }
 
-    @media (max-width: 600px) {
-      .reading-section, .schedule-section, .faq-section { padding: 56px 20px; }
-      .paper-row { grid-template-columns: 32px 1fr; gap: 12px; }
-      .paper-arrow { display: none; }
-      .timeline-row { grid-template-columns: 64px 1fr; gap: 16px; }
-      .stats-strip { grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    }
+    .field { margin-bottom: 16px; }
+    .field:last-of-type { margin-bottom: 20px; }
 
-    /* ============================================================
-       RETRO LAYER — terminal bar, scanlines, ASCII accents
-       ============================================================ */
-
-    /* Top terminal status bar */
-    .tty-bar {
-      position: relative;
-      z-index: 5;
-      background: #0a0a0a;
-      color: #ffb454;
-      font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      font-size: 11.5px;
-      letter-spacing: 0.5px;
-      padding: 6px 16px;
+    .field label {
       display: flex;
-      gap: 12px;
-      align-items: center;
-      overflow: hidden;
-      white-space: nowrap;
-      border-bottom: 1px solid #ffb454;
-      box-shadow: 0 0 24px rgba(255, 180, 84, 0.15) inset;
+      justify-content: space-between;
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      margin-bottom: 5px;
+      color: var(--text-dim);
+      text-transform: lowercase;
     }
-    .tty-bar .tty-dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #6fdc8c;
-      box-shadow: 0 0 8px #6fdc8c;
-      animation: tty-pulse 1.6s ease-in-out infinite;
+    .field label::before {
+      content: '> ';
+      color: var(--green);
+      margin-right: 2px;
+    }
+    .field label .opt {
+      color: var(--amber-dim);
+      font-weight: 400;
+    }
+    .field label .counter {
+      font-size: 10px;
+      color: rgba(200,192,176,0.35);
+      font-family: inherit;
+      letter-spacing: 0.5px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 8px 0;
+      border: none;
+      border-bottom: 1px solid rgba(255,180,84,0.12);
+      border-radius: 0;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--text);
+      background: transparent;
+      outline: none;
+      caret-color: var(--amber);
+      transition: border-color 0.2s ease;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: rgba(200,192,176,0.25);
+    }
+    .field input:hover,
+    .field select:hover,
+    .field textarea:hover {
+      border-bottom-color: rgba(255,180,84,0.25);
+    }
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-bottom-color: var(--amber);
+    }
+    .field input:valid:not(:placeholder-shown) {
+      border-bottom-color: rgba(111,220,140,0.3);
+    }
+    .field select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23ffb454' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0 center;
+      padding-right: 20px;
+    }
+    .field select option {
+      background: #0a0a0a;
+      color: var(--text);
+    }
+    .field textarea {
+      resize: vertical;
+      min-height: 72px;
+      line-height: 1.55;
+    }
+
+    .rsvp-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0 24px;
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
+    }
+    .rsvp-progress .label {
+      color: var(--amber-dim);
       flex-shrink: 0;
     }
-    .tty-bar .tty-sep { color: #444; }
-    .tty-bar .tty-blink {
-      display: inline-block;
-      width: 7px;
-      background: #ffb454;
-      animation: tty-blink 1s step-end infinite;
-      align-self: stretch;
-      margin-left: 4px;
-    }
-    @keyframes tty-pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.35; }
-    }
-    @keyframes tty-blink {
-      0%, 50% { opacity: 1; }
-      50.01%, 100% { opacity: 0; }
-    }
-
-    /* Hero CRT terminal — replaces the old white hero */
-    .hero-crt {
-      background: #0a0a0a;
-      color: #f5e9c8;
-      padding: 64px 24px 80px;
+    .rsvp-progress .bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,180,84,0.06);
+      border: 1px solid rgba(255,180,84,0.1);
+      border-radius: 2px;
       position: relative;
       overflow: hidden;
-      isolation: isolate;
     }
-    /* Scanlines overlay */
-    .hero-crt::before {
-      content: '';
+    .rsvp-progress .bar-fill {
       position: absolute;
       inset: 0;
-      pointer-events: none;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255, 180, 84, 0.0) 0px,
-        rgba(255, 180, 84, 0.0) 2px,
-        rgba(0, 0, 0, 0.18) 3px,
-        rgba(0, 0, 0, 0.18) 4px
-      );
-      z-index: 2;
-      mix-blend-mode: multiply;
+      width: 0%;
+      background: linear-gradient(to right, var(--amber), #ffd089);
+      box-shadow: 0 0 8px rgba(255,180,84,0.4);
+      transition: width 0.35s cubic-bezier(0.65, 0, 0.35, 1);
     }
-    /* CRT vignette */
-    .hero-crt::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
-      z-index: 3;
+    .rsvp-progress .pct {
+      flex-shrink: 0;
+      width: 40px;
+      text-align: right;
+      color: var(--amber);
+      font-variant-numeric: tabular-nums;
     }
-    .hero-crt-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 1000px;
-      margin: 0 auto;
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--amber);
+      color: var(--bg);
+      border: none;
+      border-radius: 3px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: box-shadow 0.2s ease, transform 0.08s ease;
+      box-shadow: 0 0 0 0 rgba(255,180,84,0);
     }
-    .hero-prompt {
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 12.5px;
-      color: #6fdc8c;
-      margin-bottom: 18px;
+    .btn-primary::before {
+      content: '$ ';
+      opacity: 0.5;
+      font-weight: 400;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 24px rgba(255,180,84,0.4);
+    }
+    .btn-primary:active {
+      transform: scale(0.985);
+    }
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .rsvp-form.sending { opacity: 0.4; pointer-events: none; }
+
+    .rsvp-success {
+      display: none;
+      font-family: var(--font);
+      padding: 8px 0;
+    }
+    .rsvp-success.active {
+      display: block;
+      animation: fadeUp 0.5s ease both;
+    }
+    .rsvp-success .ok-line {
+      color: var(--green);
+      font-size: 12px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+    .rsvp-success .ascii-check {
+      color: var(--green);
+      font-size: 11px;
+      line-height: 1.15;
+      white-space: pre;
+      margin-bottom: 16px;
+      text-shadow: 0 0 10px rgba(111,220,140,0.25);
+    }
+    .rsvp-success .success-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+    .rsvp-success .success-body {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .rsvp-alt {
+      margin-top: 20px;
+      font-size: 11px;
+      color: rgba(200,192,176,0.35);
       letter-spacing: 0.4px;
     }
-    .hero-prompt .hero-cmd { color: #ffb454; }
-    .hero-prompt .hero-flag { color: #888; }
+    .rsvp-alt a {
+      color: var(--amber);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,180,84,0.3);
+      transition: border-color 0.2s;
+    }
+    .rsvp-alt a:hover { border-bottom-color: var(--amber); }
 
-    .hero-title-amber {
-      font-size: clamp(2.5rem, 6vw, 4rem);
-      font-weight: 700;
-      line-height: 1.00;
-      letter-spacing: -2.125px;
-      margin-bottom: 18px;
-      color: #ffb454;
-      text-shadow: 0 0 24px rgba(255, 180, 84, 0.35), 0 0 2px rgba(255, 180, 84, 0.6);
-      min-height: 1.2em;
-    }
-    .hero-subtitle-crt {
-      font-size: 20px;
-      font-weight: 500;
-      line-height: 1.35;
-      letter-spacing: -0.2px;
-      color: #f5e9c8;
-      max-width: 620px;
-      min-height: 1.4em;
-      margin-bottom: 28px;
-    }
-
-    /* Pretext canvas wrapper */
-    .pretext-stage {
-      position: relative;
-      width: 100%;
-      max-width: 920px;
-      margin: 32px auto 0;
-      aspect-ratio: 16 / 9;
-      background: rgba(255, 180, 84, 0.02);
-      border: 1px solid rgba(255, 180, 84, 0.18);
-      border-radius: 6px;
-      overflow: hidden;
-      cursor: grab;
-    }
-    .pretext-stage:active { cursor: grabbing; }
-    .pretext-stage canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-    .pretext-hint {
-      position: absolute;
-      bottom: 10px;
-      right: 12px;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 10.5px;
-      color: rgba(255, 180, 84, 0.5);
-      letter-spacing: 0.5px;
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    /* Retro tags (override the old) */
-    .hero-crt .meta-tags { margin-top: 24px; }
-    .hero-crt .tag {
-      background: rgba(255, 180, 84, 0.1);
-      color: #ffb454;
-      border: 1px solid rgba(255, 180, 84, 0.3);
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .hero-crt .stats-strip {
-      border-top-color: rgba(255, 180, 84, 0.25);
-      max-width: 540px;
-    }
-    .hero-crt .stat-num {
-      color: #ffb454;
-      text-shadow: 0 0 16px rgba(255, 180, 84, 0.3);
-    }
-    .hero-crt .stat-label { color: rgba(245, 233, 200, 0.5); }
-
-    /* Scramble cursor inside CRT — amber instead of accent blue */
-    .hero-crt .scramble[data-done="true"]::after {
-      background: #ffb454;
-      box-shadow: 0 0 6px rgba(255, 180, 84, 0.6);
-    }
-    .hero-crt .eyebrow {
-      color: #6fdc8c;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      letter-spacing: 0.5px;
-      text-transform: none;
-    }
-
-    /* ASCII divider between sections */
-    .ascii-divider {
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 11px;
-      color: var(--color-text-muted);
+    /* ===== Footer ===== */
+    .site-footer {
+      padding: 60px 0 48px;
       text-align: center;
-      padding: 24px 16px;
-      letter-spacing: 0;
-      line-height: 1.2;
-      white-space: pre;
-      overflow-x: auto;
-      background: var(--color-bg);
-      opacity: 0.55;
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.5px;
     }
-    .ascii-divider.warm { background: var(--color-bg-warm); }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--amber); }
 
-    /* ASCII section eyebrow accent — a tiny paper stack */
-    .section-eyebrow.ascii::before {
-      content: '[ ]==[ ] ';
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      color: var(--color-accent);
-      letter-spacing: 0;
-      margin-right: 6px;
+    /* ===== Scroll-triggered animations ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-
-    /* RSVP form — ASCII frame mode */
-    .rsvp-form {
-      position: relative;
-    }
-    .rsvp-form::before {
-      content: '┌─[ TRANSMIT ]──────────────────────────────────────────────┐';
-      position: absolute;
-      top: -10px;
-      left: 12px;
-      right: 12px;
-      font-family: 'JetBrains Mono', ui-monospace, monospace;
-      font-size: 10.5px;
-      color: var(--color-text-muted);
-      background: var(--color-bg);
-      padding: 0 6px;
-      letter-spacing: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: clip;
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Responsive ===== */
     @media (max-width: 600px) {
-      .hero-crt { padding: 48px 20px 64px; }
-      .pretext-stage { aspect-ratio: 4/5; }
-      .tty-bar { font-size: 10px; padding: 5px 12px; gap: 8px; }
-      .tty-bar .tty-mobile-hide { display: none; }
-      .ascii-divider { font-size: 9px; padding: 18px 12px; }
-      .rsvp-form::before { display: none; }
+      .content { padding: 0 16px; }
+      .hero { padding: 100px 0 60px; }
+      .hero h1 { font-size: 2rem; letter-spacing: -1.5px; }
+      .stats { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .stat-num { font-size: 22px; }
+      .panel.glass { padding: 32px 20px; margin: 32px 0; }
+      .field-grid { grid-template-columns: 1fr; gap: 16px; }
+      .pretext-wrap { height: 200px; }
+      .timeline { padding-left: 16px; }
+      .timeline-item::before { left: -21px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .tty-bar .tty-dot, .tty-bar .tty-blink { animation: none; }
+      .scramble[data-done="true"]::after { animation: none; opacity: 0; }
+      .reveal { transition: none; opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
-  <div class="bg-texture"></div>
-  <div class="bg-papers">
-    <div class="paper-frag"></div>
-    <div class="paper-frag"></div>
-    <div class="paper-frag"></div>
-    <div class="paper-frag"></div>
-    <div class="paper-frag"></div>
-    <div class="paper-frag"></div>
-  </div>
+  <canvas id="gl"></canvas>
 
-  <div class="page">
-    <div class="tty-bar">
-      <span class="tty-dot"></span>
-      <span>AGENTRA-TTY</span>
-      <span class="tty-sep">·</span>
-      <span>paperclub.session.001</span>
-      <span class="tty-sep tty-mobile-hide">·</span>
-      <span class="tty-mobile-hide">geo: 22.5726°N, 88.3639°E</span>
-      <span class="tty-sep">·</span>
-      <span>STATUS: ESTABLISHED</span>
-      <span class="tty-blink"></span>
-    </div>
-
+  <div class="content">
     <header class="site-header">
-      <a href="https://agentralabs.co" class="logo-link">
-        <img src="https://agentralabs.co/logo.webp" alt="Agentra Labs" class="logo-img" width="28" height="28"/>
+      <a href="https://agentralabs.co" class="logo">
+        <img src="https://agentralabs.co/logo.webp" alt="" width="18" height="18"/>
         <span>Agentra Labs</span>
       </a>
+      <a href="https://x.com/agentralabs" target="_blank" rel="noopener">@agentralabs</a>
     </header>
 
-    <section class="hero-crt">
-      <div class="hero-crt-inner">
-        <div class="hero-prompt">
-          <span style="color:#6fdc8c;">agentra@kolkata</span>:<span style="color:#7aa6da;">~/paperclub</span>$
-          <span class="hero-cmd">./session</span>
-          <span class="hero-flag">--invite-only --papers=5 --dinner=on</span>
-        </div>
-        <p class="eyebrow scramble" data-text="// SUMMER 2026 — KOLKATA"></p>
-        <h1 class="hero-title-amber scramble" data-text="Agentra Paper Club"></h1>
-        <p class="hero-subtitle-crt scramble" data-text="Where researchers and builders meet."></p>
+    <section class="hero">
+      <h1 class="scramble" data-text="Agentra Paper Club"></h1>
+      <p class="meta">Summer 2026 · Kolkata, India · 30 seats</p>
 
-        <div class="pretext-stage" id="pretext-stage">
-          <canvas id="pretext-canvas"></canvas>
-          <div class="pretext-hint">DRAG_THE_ORB &gt;_</div>
-        </div>
+      <div class="pretext-wrap" id="pretext-hero-wrap">
+        <canvas id="pretext-canvas"></canvas>
+        <div class="pretext-hint">DRAG_ORB</div>
+      </div>
 
-        <div class="meta-tags">
-          <span class="tag">30 spots</span>
-          <span class="tag">5 papers</span>
-          <span class="tag">10 min each</span>
-          <span class="tag">Dinner included</span>
+      <div class="stats">
+        <div>
+          <div class="stat-num" data-count="5">0</div>
+          <div class="stat-label">Papers / Night</div>
         </div>
+        <div>
+          <div class="stat-num" data-count="50" data-suffix="m">0m</div>
+          <div class="stat-label">Deep Discussion</div>
+        </div>
+        <div>
+          <div class="stat-num" data-count="30">0</div>
+          <div class="stat-label">People / Session</div>
+        </div>
+      </div>
+    </section>
 
-        <div class="stats-strip">
-          <div>
-            <div class="stat-num" data-count="5">0</div>
-            <div class="stat-label">PAPERS / NIGHT</div>
+    <section class="panel about glass reveal">
+      <p class="lead">
+        Researchers and builders don't talk to each other enough. So this summer, we're starting the Agentra Paper Club to bring them together.
+      </p>
+      <p>
+        Every few weeks, we'll host a small group to present and discuss five new research papers. One person presents each paper for ten minutes and leads the discussion. Then we'll keep talking over dinner.
+      </p>
+      <p>
+        We'll post the talks online. The dinners stay off the record.
+      </p>
+      <p>
+        We're looking for builders who read papers and researchers interested in how things break in production. The first group will be under 30 people.
+      </p>
+    </section>
+
+    <section class="panel reading reveal">
+      <h2>On the table</h2>
+      <p style="margin-bottom:24px;color:var(--text-dim);font-size:13px;">Recent papers we'd love to dissect over chai and biryani. The actual five for night one will be voted on by the room.</p>
+      <ul class="paper-list">
+        <li>
+          <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener">
+            <span class="num">001</span>
+            <span class="title">DeepSeek-R1: Incentivizing Reasoning in LLMs via RL</span>
+            <div class="meta">DeepSeek-AI<span class="dot">·</span>arXiv 2501.12948<span class="dot">·</span>Reasoning</div>
+          </a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2407.21787" target="_blank" rel="noopener">
+            <span class="num">002</span>
+            <span class="title">The Llama 3 Herd of Models</span>
+            <div class="meta">Meta AI<span class="dot">·</span>arXiv 2407.21787<span class="dot">·</span>Open weights</div>
+          </a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2310.11453" target="_blank" rel="noopener">
+            <span class="num">003</span>
+            <span class="title">BitNet: Scaling 1-bit Transformers for LLMs</span>
+            <div class="meta">Microsoft Research<span class="dot">·</span>arXiv 2310.11453<span class="dot">·</span>Efficiency</div>
+          </a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2402.17764" target="_blank" rel="noopener">
+            <span class="num">004</span>
+            <span class="title">Mamba: Linear-Time Sequence Modeling with Selective State Spaces</span>
+            <div class="meta">Gu &amp; Dao<span class="dot">·</span>arXiv 2312.00752<span class="dot">·</span>Architectures</div>
+          </a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2406.07496" target="_blank" rel="noopener">
+            <span class="num">005</span>
+            <span class="title">TextGrad: Automatic "Differentiation" via Text</span>
+            <div class="meta">Stanford<span class="dot">·</span>arXiv 2406.07496<span class="dot">·</span>Agents</div>
+          </a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">
+            <span class="num">006</span>
+            <span class="title">Direct Preference Optimization: Your LM is Secretly a Reward Model</span>
+            <div class="meta">Rafailov et al.<span class="dot">·</span>arXiv 2305.18290<span class="dot">·</span>Alignment</div>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="panel schedule glass reveal">
+      <h2>How a night runs</h2>
+      <p style="margin-bottom:28px;color:var(--text-dim);font-size:13px;">No keynote, no Q&amp;A queue, no name badges. Just five papers, real arguments, and food.</p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-time">5:00 PM</div>
+          <div class="timeline-content">
+            <strong>Doors open</strong>
+            <span>Chai, intros, the awkward 15 minutes before strangers stop being strangers.</span>
           </div>
-          <div>
-            <div class="stat-num" data-count="50" data-suffix="m">0m</div>
-            <div class="stat-label">DEEP DISCUSSION</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">5:30 PM</div>
+          <div class="timeline-content">
+            <strong>Paper 1 — 2 — 3</strong>
+            <span>Ten minutes each, then twenty minutes of group dissection. Repeat.</span>
           </div>
-          <div>
-            <div class="stat-num" data-count="30">0</div>
-            <div class="stat-label">PEOPLE / SESSION</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">7:00 PM</div>
+          <div class="timeline-content">
+            <strong>Break</strong>
+            <span>Stretch, refill, find the person whose paper you're about to argue with.</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">7:15 PM</div>
+          <div class="timeline-content">
+            <strong>Paper 4 — 5</strong>
+            <span>The two we couldn't shake. Discussions usually run long.</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">8:30 PM</div>
+          <div class="timeline-content">
+            <strong>Dinner</strong>
+            <span>Off the record. Bring the half-formed idea you wouldn't tweet yet.</span>
           </div>
         </div>
       </div>
     </section>
 
-    <pre class="ascii-divider warm">     ___      ___      ___      ___      ___      ___
-    /\__\    /\  \    /\  \    /\  \    /\  \    /\__\
-   /:/ _/_  /::\  \  /::\  \  /::\  \  /::\  \  /:/  /
-  /::-"\__\/:/\:\__\/:/\:\__\/:/\:\__\/:/\:\__\/:/__/
-  \;:;-",-"\:\/:/  /\:\ \/__/\:\/:/  /\:\/:/  /\:\  \
-   |:|  |   \::/  /  \:\__\   \::/  /  \::/  /  \:\__\
-    \|__|    \/__/    \/__/    \/__/    \/__/    \/__/</pre>
-
-    <section class="about-section">
-      <div class="about-inner about">
-        <p class="lead">
-          Researchers and builders don't talk to each other enough. So this summer, we're starting the Agentra Paper Club to bring them together.
-        </p>
-        <p>
-          Every few weeks, we'll host a small group to present and discuss five new research papers. One person presents each paper for ten minutes and leads the discussion. Then we'll keep talking over dinner.
-        </p>
-        <p>
-          We'll post the talks online. The dinners stay off the record.
-        </p>
-        <p>
-          We're looking for builders who read papers and researchers interested in how things break in production. The first group will be under 30 people.
-        </p>
-      </div>
-    </section>
-
-    <section class="reading-section">
-      <div class="reading-inner">
-        <p class="section-eyebrow ascii">On the table</p>
-        <h2 class="section-h2">A taste of the reading list</h2>
-        <p class="section-lede">Recent papers we'd love to dissect over chai and biryani. The actual five for night one will be voted on by the room.</p>
-        <div class="paper-list">
-          <a href="https://arxiv.org/abs/2501.12948" target="_blank" rel="noopener" class="paper-row">
-            <span class="paper-num">001</span>
-            <div class="paper-body">
-              <div class="paper-title">DeepSeek-R1: Incentivizing Reasoning in LLMs via RL</div>
-              <div class="paper-meta">DeepSeek-AI<span class="dot">·</span>arXiv 2501.12948<span class="dot">·</span>Reasoning</div>
-            </div>
-            <span class="paper-arrow">→</span>
-          </a>
-          <a href="https://arxiv.org/abs/2407.21787" target="_blank" rel="noopener" class="paper-row">
-            <span class="paper-num">002</span>
-            <div class="paper-body">
-              <div class="paper-title">The Llama 3 Herd of Models</div>
-              <div class="paper-meta">Meta AI<span class="dot">·</span>arXiv 2407.21787<span class="dot">·</span>Open weights</div>
-            </div>
-            <span class="paper-arrow">→</span>
-          </a>
-          <a href="https://arxiv.org/abs/2310.11453" target="_blank" rel="noopener" class="paper-row">
-            <span class="paper-num">003</span>
-            <div class="paper-body">
-              <div class="paper-title">BitNet: Scaling 1-bit Transformers for LLMs</div>
-              <div class="paper-meta">Microsoft Research<span class="dot">·</span>arXiv 2310.11453<span class="dot">·</span>Efficiency</div>
-            </div>
-            <span class="paper-arrow">→</span>
-          </a>
-          <a href="https://arxiv.org/abs/2402.17764" target="_blank" rel="noopener" class="paper-row">
-            <span class="paper-num">004</span>
-            <div class="paper-body">
-              <div class="paper-title">Mamba: Linear-Time Sequence Modeling with Selective State Spaces</div>
-              <div class="paper-meta">Gu &amp; Dao<span class="dot">·</span>arXiv 2312.00752<span class="dot">·</span>Architectures</div>
-            </div>
-            <span class="paper-arrow">→</span>
-          </a>
-          <a href="https://arxiv.org/abs/2406.07496" target="_blank" rel="noopener" class="paper-row">
-            <span class="paper-num">005</span>
-            <div class="paper-body">
-              <div class="paper-title">TextGrad: Automatic "Differentiation" via Text</div>
-              <div class="paper-meta">Stanford<span class="dot">·</span>arXiv 2406.07496<span class="dot">·</span>Agents</div>
-            </div>
-            <span class="paper-arrow">→</span>
-          </a>
-          <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener" class="paper-row">
-            <span class="paper-num">006</span>
-            <div class="paper-body">
-              <div class="paper-title">Direct Preference Optimization: Your LM is Secretly a Reward Model</div>
-              <div class="paper-meta">Rafailov et al.<span class="dot">·</span>arXiv 2305.18290<span class="dot">·</span>Alignment</div>
-            </div>
-            <span class="paper-arrow">→</span>
-          </a>
+    <section class="panel faq reveal">
+      <h2>Questions, answered</h2>
+      <div class="faq-list">
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" type="button" aria-expanded="false">
+            Do I need to have published a paper to come?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">No. We want builders who read papers and researchers who care about deployment. Half the room won't have published anything. The bar is curiosity, not credentials.</div></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" type="button" aria-expanded="false">
+            How do you pick the five papers?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">A week before each session, attendees vote on a shortlist of ~15 papers we've curated. Top five make the cut. If you want to present one, just claim it on the form.</div></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" type="button" aria-expanded="false">
+            Will the dinner conversations be recorded?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">No. The talks are filmed and posted publicly. Everything past 8:30 PM is off the record so people can be wrong out loud.</div></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" type="button" aria-expanded="false">
+            I'm not in Kolkata. Can I still join?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">The first edition is in-person only — that's the whole point. If we run virtual rooms or expand to other cities, we'll announce it. RSVP anyway and we'll keep you in the loop.</div></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" type="button" aria-expanded="false">
+            Is there a cost?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">Free. Dinner is on Agentra Labs. If your company wants to sponsor a future session, ping <a href="mailto:hello@agentralabs.co">hello@agentralabs.co</a>.</div></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" type="button" aria-expanded="false">
+            What if I can't read all five papers beforehand?
+            <span class="faq-icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-a"><div class="faq-a-inner">Skim them. The presenters do the heavy lifting; you just need enough context to argue. Reading abstracts and conclusions of all five takes about 30 minutes.</div></div>
         </div>
       </div>
     </section>
 
-    <pre class="ascii-divider">  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·</pre>
+    <section class="panel rsvp glass reveal">
+      <h2>Request a spot</h2>
+      <p style="margin-bottom:20px;color:var(--text-dim);font-size:13px;">Thirty seats. We read every reply. We'll write back with details if we're able to confirm.</p>
 
-    <section class="schedule-section">
-      <div class="schedule-inner">
-        <p class="section-eyebrow ascii">How a night runs</p>
-        <h2 class="section-h2">A four-hour evening</h2>
-        <p class="section-lede">No keynote, no Q&amp;A queue, no name badges. Just five papers, real arguments, and food.</p>
-        <div class="timeline">
-          <div class="timeline-row">
-            <div class="timeline-time">5:00 PM</div>
-            <div class="timeline-content">
-              <strong>Doors open</strong>
-              <span>Chai, intros, the awkward 15 minutes before strangers stop being strangers.</span>
-            </div>
-          </div>
-          <div class="timeline-row">
-            <div class="timeline-time">5:30 PM</div>
-            <div class="timeline-content">
-              <strong>Paper 1 — 2 — 3</strong>
-              <span>Ten minutes each, then twenty minutes of group dissection. Repeat.</span>
-            </div>
-          </div>
-          <div class="timeline-row">
-            <div class="timeline-time">7:00 PM</div>
-            <div class="timeline-content">
-              <strong>Break</strong>
-              <span>Stretch, refill, find the person whose paper you're about to argue with.</span>
-            </div>
-          </div>
-          <div class="timeline-row">
-            <div class="timeline-time">7:15 PM</div>
-            <div class="timeline-content">
-              <strong>Paper 4 — 5</strong>
-              <span>The two we couldn't shake. Discussions usually run long.</span>
-            </div>
-          </div>
-          <div class="timeline-row">
-            <div class="timeline-time">8:30 PM</div>
-            <div class="timeline-content">
-              <strong>Dinner</strong>
-              <span>Off the record. Bring the half-formed idea you wouldn't tweet yet.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+      <form class="rsvp-form" id="rsvp-form" action="https://formspree.io/f/mqenzovk" method="POST">
+        <input type="hidden" name="_subject" value="Paper Club RSVP" />
+        <input type="hidden" name="event" value="Agentra Paper Club — Kolkata" />
 
-    <pre class="ascii-divider warm">  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·</pre>
-
-    <section class="faq-section">
-      <div class="faq-inner">
-        <p class="section-eyebrow ascii">Before you ask</p>
-        <h2 class="section-h2">Questions, answered</h2>
-        <div class="faq-list">
-          <div class="faq-item" data-open="false">
-            <button class="faq-q" type="button" aria-expanded="false">
-              Do I need to have published a paper to come?
-              <span class="faq-icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq-a"><div class="faq-a-inner">No. We want builders who read papers and researchers who care about deployment. Half the room won't have published anything. The bar is curiosity, not credentials.</div></div>
-          </div>
-          <div class="faq-item" data-open="false">
-            <button class="faq-q" type="button" aria-expanded="false">
-              How do you pick the five papers?
-              <span class="faq-icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq-a"><div class="faq-a-inner">A week before each session, attendees vote on a shortlist of ~15 papers we've curated. Top five make the cut. If you want to present one, just claim it on the form.</div></div>
-          </div>
-          <div class="faq-item" data-open="false">
-            <button class="faq-q" type="button" aria-expanded="false">
-              Will the dinner conversations be recorded?
-              <span class="faq-icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq-a"><div class="faq-a-inner">No. The talks are filmed and posted publicly. Everything past 8:30 PM is off the record so people can be wrong out loud.</div></div>
-          </div>
-          <div class="faq-item" data-open="false">
-            <button class="faq-q" type="button" aria-expanded="false">
-              I'm not in Kolkata. Can I still join?
-              <span class="faq-icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq-a"><div class="faq-a-inner">The first edition is in-person only — that's the whole point. If we run virtual rooms or expand to other cities, we'll announce it. RSVP anyway and we'll keep you in the loop.</div></div>
-          </div>
-          <div class="faq-item" data-open="false">
-            <button class="faq-q" type="button" aria-expanded="false">
-              Is there a cost?
-              <span class="faq-icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq-a"><div class="faq-a-inner">Free. Dinner is on Agentra Labs. If your company wants to sponsor a future session, ping <a href="mailto:hello@agentralabs.co">hello@agentralabs.co</a>.</div></div>
-          </div>
-          <div class="faq-item" data-open="false">
-            <button class="faq-q" type="button" aria-expanded="false">
-              What if I can't read all five papers beforehand?
-              <span class="faq-icon" aria-hidden="true"></span>
-            </button>
-            <div class="faq-a"><div class="faq-a-inner">Skim them. The presenters do the heavy lifting; you just need enough context to argue. Reading abstracts and conclusions of all five takes about 30 minutes.</div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="details-section">
-      <div class="details-inner">
-        <div class="details-card">
-          <div class="detail-row">
-            <span class="detail-label">Date</span>
-            <span class="detail-value">Summer 2026 — TBD</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Time</span>
-            <span class="detail-value">5 – 9 pm IST</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Location</span>
-            <span class="detail-value">Kolkata, West Bengal, India</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="rsvp-section">
-      <div class="rsvp-inner">
-        <div class="rsvp-header" style="margin-bottom:24px;">
-          <p class="section-eyebrow ascii">Transmission</p>
-          <h2 class="section-h2">Request a spot</h2>
-          <p class="section-lede">Thirty seats. We read every reply. We'll write back with details if we're able to confirm.</p>
+        <div class="rsvp-prompt">
+          agentra@kolkata:~/paperclub$ <span class="arg">submit-rsvp</span> <span class="flag">--seats=30</span>
         </div>
 
-        <div class="rsvp-terminal">
-          <div class="rsvp-titlebar">
-            <div class="tb-dots"><span class="red"></span><span class="yel"></span><span class="grn"></span></div>
-            <span class="tb-path">~/paperclub/rsvp.form</span>
-            <span class="tb-meta">●&nbsp;UTF-8&nbsp;·&nbsp;LF&nbsp;·&nbsp;READY</span>
+        <div class="field-grid">
+          <div class="field">
+            <label for="name">name</label>
+            <input type="text" id="name" name="name" placeholder="full_name" required autocomplete="name" />
           </div>
+          <div class="field">
+            <label for="email">email</label>
+            <input type="email" id="email" name="email" placeholder="you@domain.tld" required autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="linkedin">linkedin</label>
+            <input type="url" id="linkedin" name="linkedin" placeholder="linkedin.com/in/..." required />
+          </div>
+          <div class="field">
+            <label for="xprofile">x_profile <span class="opt">// optional</span></label>
+            <input type="url" id="xprofile" name="xprofile" placeholder="x.com/handle" />
+          </div>
+          <div class="field full">
+            <label for="role">role</label>
+            <select id="role" name="role" required>
+              <option value="" disabled selected>select_one()</option>
+              <option value="builder">Builder / Engineer</option>
+              <option value="researcher">Researcher</option>
+              <option value="both">Both</option>
+              <option value="student">Student</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field full">
+            <label for="work">
+              what_are_you_working_on <span class="opt">// optional</span>
+              <span class="counter"><span id="work-count">0</span>/280</span>
+            </label>
+            <textarea id="work" name="work" rows="3" maxlength="280" placeholder="A sentence or two is plenty. Building, researching, breaking — anything goes."></textarea>
+          </div>
+        </div>
 
-          <form class="rsvp-form" id="rsvp-form" action="https://formspree.io/f/mqenzovk" method="POST">
-            <input type="hidden" name="_subject" value="Paper Club RSVP" />
-            <input type="hidden" name="event" value="Agentra Paper Club — Kolkata" />
+        <div class="rsvp-progress">
+          <span class="label">progress</span>
+          <div class="bar"><div class="bar-fill" id="bar-fill"></div></div>
+          <span class="pct" id="bar-pct">0%</span>
+        </div>
 
-            <div class="rsvp-prompt">
-              agentra@kolkata:~/paperclub$
-              <span class="arg">submit-rsvp</span>
-              <span class="flag">--seats=30 --remaining=<span id="seats-left">30</span></span>
-            </div>
-            <div class="rsvp-tag-line">
-              <span class="ok">[ ok ]</span> connection established. fill 4 required fields to unlock transmission.
-            </div>
+        <button type="submit" class="btn-primary" id="submit-btn">execute_rsvp</button>
+      </form>
 
-            <div class="field-grid">
-              <div class="field">
-                <label for="name">name</label>
-                <input type="text" id="name" name="name" placeholder="full_name" required autocomplete="name" />
-              </div>
-              <div class="field">
-                <label for="email">email</label>
-                <input type="email" id="email" name="email" placeholder="you@domain.tld" required autocomplete="email" />
-              </div>
-              <div class="field">
-                <label for="linkedin">linkedin</label>
-                <input type="url" id="linkedin" name="linkedin" placeholder="linkedin.com/in/..." required />
-              </div>
-              <div class="field">
-                <label for="xprofile">x_profile <span class="opt">// optional</span></label>
-                <input type="url" id="xprofile" name="xprofile" placeholder="x.com/handle" />
-              </div>
-              <div class="field full">
-                <label for="role">role</label>
-                <select id="role" name="role" required>
-                  <option value="" disabled selected>select_one()</option>
-                  <option value="builder">Builder / Engineer</option>
-                  <option value="researcher">Researcher</option>
-                  <option value="both">Both</option>
-                  <option value="student">Student</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div class="field full">
-                <label for="work">
-                  what_are_you_working_on <span class="opt">// optional</span>
-                  <span class="counter"><span id="work-count">0</span>/280</span>
-                </label>
-                <textarea id="work" name="work" rows="3" maxlength="280" placeholder="A sentence or two is plenty. Building, researching, breaking — anything goes."></textarea>
-              </div>
-            </div>
-
-            <div class="rsvp-progress">
-              <span class="label">progress</span>
-              <div class="bar"><div class="bar-fill" id="bar-fill"></div></div>
-              <span class="pct" id="bar-pct">0%</span>
-            </div>
-
-            <button type="submit" class="btn-primary" id="submit-btn">execute_rsvp</button>
-          </form>
-
-          <div class="rsvp-success" id="rsvp-success">
-            <div class="ok-line">[ 200 OK ] · transmission accepted · ack received</div>
-            <div class="ascii-check">    _________
+      <div class="rsvp-success" id="rsvp-success">
+        <div class="ok-line">[ 200 OK ] · transmission accepted · ack received</div>
+        <div class="ascii-check">    _________
    /         \
   |  ✓ ROGER  |
    \_________/</div>
-            <div class="success-title">You're on the list.</div>
-            <div class="success-body">We read every reply. If we're able to confirm your seat, we'll write back with date, address, and reading list. Until then — keep building, keep reading.</div>
-          </div>
-        </div>
-
-        <p class="rsvp-alt">
-          // or transmit manually: <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a>
-        </p>
+        <div class="success-title">You're on the list.</div>
+        <div class="success-body">We read every reply. If we're able to confirm your seat, we'll write back with date, address, and reading list. Until then — keep building, keep reading.</div>
       </div>
+
+      <p class="rsvp-alt">
+        // or transmit manually: <a href="mailto:hello@agentralabs.co?subject=Paper%20Club%20RSVP">hello@agentralabs.co</a>
+      </p>
     </section>
 
     <footer class="site-footer">
-      <div class="footer-inner">
-        <pre class="ascii-divider" style="background:transparent;padding:0 0 16px;opacity:0.4;">[ END_OF_TRANSMISSION ]   ·   <3   ·   /agentra-labs</pre>
-        <div class="footer-links">
-          <a href="https://github.com/Agentra-Labs" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://agentralabs.co" target="_blank" rel="noopener">Agentra Labs</a>
-          <a href="https://x.com/agentralabs" target="_blank" rel="noopener">X / Twitter</a>
-        </div>
-        <p class="copyright">© 2026 Agentra Labs. Open source in the open.</p>
+      <div class="footer-links">
+        <a href="https://github.com/Agentra-Labs" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://agentralabs.co" target="_blank" rel="noopener">Agentra Labs</a>
+        <a href="https://x.com/agentralabs" target="_blank" rel="noopener">X / Twitter</a>
       </div>
+      <p>© 2026 Agentra Labs. Open source in the open.</p>
     </footer>
   </div>
 
+  <!-- ============================================================
+       WEBGL — Raymarched SDF Background
+       ============================================================ -->
+  <script>
+    (function() {
+      const canvas = document.getElementById('gl');
+      const gl = canvas.getContext('webgl', { alpha: false, antialias: false });
+      if (!gl) {
+        document.body.classList.add('no-webgl');
+        return;
+      }
+
+      // Check for reduced motion preference
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Compile shader
+      function compile(type, src) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+          console.error(gl.getShaderInfoLog(s));
+          return null;
+        }
+        return s;
+      }
+
+      const vsSrc = `
+        attribute vec2 a_pos;
+        void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+      `;
+
+      const fsSrc = `
+        precision highp float;
+        uniform vec2 u_res;
+        uniform float u_time;
+        uniform vec2 u_mouse;
+
+        #define MAX_STEPS 80
+        #define MAX_DIST 50.0
+        #define SURF_DIST 0.002
+
+        mat2 rot(float a) {
+          float c = cos(a), s = sin(a);
+          return mat2(c, -s, s, c);
+        }
+
+        float sdSphere(vec3 p, float s) { return length(p) - s; }
+        float sdBox(vec3 p, vec3 b) {
+          vec3 q = abs(p) - b;
+          return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+        }
+        float sdPlane(vec3 p) { return p.y + 2.0; }
+
+        float smin(float a, float b, float k) {
+          float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+          return mix(b, a, h) - k * h * (1.0 - h);
+        }
+
+        float map(vec3 p) {
+          float d = sdPlane(p);
+
+          // Central amber orb
+          vec3 op = vec3(0.0, 0.5, 0.0);
+          float orb = sdSphere(p - op, 1.2);
+          d = smin(d, orb, 0.5);
+
+          // Floating paper boxes
+          for (int i = 0; i < 7; i++) {
+            float fi = float(i);
+            float t = u_time * (0.25 + fi * 0.06) + fi * 2.1;
+            float rad = 2.8 + fi * 0.85;
+            vec3 pos = vec3(
+              cos(t) * rad,
+              0.4 + sin(u_time * 0.35 + fi * 1.7) * 0.55,
+              sin(t) * rad
+            );
+            vec3 pp = p - pos;
+            float ca = cos(t * 0.4 + fi), sa = sin(t * 0.4 + fi);
+            pp.xy = mat2(ca, -sa, sa, ca) * pp.xy;
+            ca = cos(t * 0.25 + fi * 1.5); sa = sin(t * 0.25 + fi * 1.5);
+            pp.yz = mat2(ca, -sa, sa, ca) * pp.yz;
+            float box = sdBox(pp, vec3(0.45, 0.7, 0.03));
+            d = min(d, box);
+          }
+
+          return d;
+        }
+
+        vec3 calcNormal(vec3 p) {
+          vec2 e = vec2(0.001, 0.0);
+          return normalize(vec3(
+            map(p + e.xyy) - map(p - e.xyy),
+            map(p + e.yxy) - map(p - e.yxy),
+            map(p + e.yyx) - map(p - e.yyx)
+          ));
+        }
+
+        float calcSoftshadow(vec3 ro, vec3 rd, float mint, float maxt, float k) {
+          float res = 1.0, ph = 1e20, t = mint;
+          for (int i = 0; i < 24; i++) {
+            float h = map(ro + rd * t);
+            if (h < 0.001) return 0.0;
+            float y = h * h / (2.0 * ph);
+            float d = sqrt(h * h - y * y);
+            res = min(res, k * d / max(0.0, t - y));
+            ph = h;
+            t += h;
+            if (t > maxt) break;
+          }
+          return clamp(res, 0.0, 1.0);
+        }
+
+        float raymarch(vec3 ro, vec3 rd) {
+          float t = 0.0;
+          for (int i = 0; i < MAX_STEPS; i++) {
+            vec3 p = ro + rd * t;
+            float h = map(p);
+            t += h;
+            if (h < SURF_DIST || t > MAX_DIST) break;
+          }
+          return t;
+        }
+
+        void main() {
+          vec2 uv = (gl_FragCoord.xy - 0.5 * u_res.xy) / u_res.y;
+
+          // Mouse influence
+          vec2 m = (u_mouse - 0.5 * u_res.xy) / u_res.xy;
+
+          // Camera
+          float theta = u_time * 0.07 + m.x * 3.0;
+          float phi = 1.15 + m.y * 0.5;
+          float camR = 10.0;
+          vec3 ro = vec3(
+            camR * sin(phi) * cos(theta),
+            camR * cos(phi),
+            camR * sin(phi) * sin(theta)
+          );
+          vec3 ta = vec3(0.0, 0.5, 0.0);
+          vec3 ww = normalize(ta - ro);
+          vec3 uu = normalize(cross(vec3(0.0, 1.0, 0.0), ww));
+          vec3 vv = cross(ww, uu);
+          vec3 rd = normalize(ww + uv.x * uu + uv.y * vv);
+
+          // Trace
+          float dist = raymarch(ro, rd);
+          vec3 p = ro + rd * dist;
+          vec3 n = calcNormal(p);
+
+          // Check if we hit the orb
+          float orbDist = sdSphere(p - vec3(0.0, 0.5, 0.0), 1.25);
+          bool isOrb = orbDist < 0.05;
+
+          // Lighting
+          vec3 lp = vec3(4.0, 7.0, 5.0);
+          vec3 l = normalize(lp - p);
+          float diff = max(dot(n, l), 0.0);
+          vec3 amb = vec3(0.015, 0.012, 0.008);
+
+          float sha = 1.0;
+          if (diff > 0.0) sha = calcSoftshadow(p + n * 0.02, l, 0.02, 18.0, 5.0);
+
+          vec3 col;
+          if (isOrb) {
+            col = vec3(1.0, 0.62, 0.22) * 0.6 + vec3(1.0, 0.72, 0.35) * diff * sha;
+            col += vec3(1.0, 0.45, 0.08) * 0.35; // emission
+          } else {
+            col = amb + vec3(0.85, 0.65, 0.38) * diff * sha * 0.55;
+            // Fresnel on edges
+            float fresnel = pow(1.0 - max(dot(n, -rd), 0.0), 4.0);
+            col += vec3(1.0, 0.75, 0.4) * fresnel * 0.12;
+          }
+
+          // Ground grid
+          if (p.y < -1.95) {
+            vec2 grid = abs(fract(p.xz * 0.5) - 0.5);
+            float line = min(grid.x, grid.y);
+            float gridMask = smoothstep(0.03, 0.0, line);
+            col += vec3(0.25, 0.2, 0.12) * gridMask * 0.25;
+          }
+
+          // Fog
+          float fog = 1.0 - exp(-dist * dist * 0.005);
+          col = mix(col, vec3(0.025, 0.02, 0.015), fog);
+
+          // Vignette
+          col *= 1.0 - dot(uv, uv) * 0.35;
+
+          // Tone mapping
+          col = col / (1.0 + col);
+          col = pow(col, vec3(0.4545));
+
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `;
+
+      const vs = compile(gl.VERTEX_SHADER, vsSrc);
+      const fs = compile(gl.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return;
+
+      const prog = gl.createProgram();
+      gl.attachShader(prog, vs);
+      gl.attachShader(prog, fs);
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.error(gl.getProgramInfoLog(prog));
+        return;
+      }
+      gl.useProgram(prog);
+
+      // Fullscreen quad
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+      const aPos = gl.getAttribLocation(prog, 'a_pos');
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+      // Uniforms
+      const uRes = gl.getUniformLocation(prog, 'u_res');
+      const uTime = gl.getUniformLocation(prog, 'u_time');
+      const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+      let mouseX = 0, mouseY = 0;
+      let targetMouseX = 0, targetMouseY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        targetMouseX = e.clientX;
+        targetMouseY = (window.innerHeight - e.clientY); // flip Y for GL
+      });
+
+      let startTime = performance.now();
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = Math.floor(window.innerWidth * dpr);
+        const h = Math.floor(window.innerHeight * dpr);
+        canvas.width = w;
+        canvas.height = h;
+        gl.viewport(0, 0, w, h);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function render() {
+        if (!reduced) {
+          mouseX += (targetMouseX * dpr - mouseX) * 0.05;
+          mouseY += (targetMouseY * dpr - mouseY) * 0.05;
+        }
+
+        const time = reduced ? 0 : (performance.now() - startTime) * 0.001;
+
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uTime, time);
+        gl.uniform2f(uMouse, mouseX, mouseY);
+
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        if (!reduced) requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+    })();
+  </script>
+
+  <!-- ============================================================
+       PRETEXT — Hero Manifesto Canvas
+       ============================================================ -->
   <script type="module">
-    // ============================================================
-    // PRETEXT — text reflowing around a draggable orb
-    // ============================================================
     import {
       prepareWithSegments,
       layoutNextLineRange,
       materializeLineRange,
     } from "https://esm.sh/@chenglou/pretext@0.0.6";
 
-    const stage = document.getElementById('pretext-stage');
     const canvas = document.getElementById('pretext-canvas');
-    if (canvas && stage) {
-      const ctx = canvas.getContext('2d');
-      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const wrap = document.getElementById('pretext-hero-wrap');
+    if (!canvas || !wrap) return;
 
-      const MANIFESTO =
-        "We are five papers and a long table. We are the moment a researcher and a builder argue about the same equation from opposite sides. We are off-the-record dinners where someone says the half-formed thing they would not tweet. We are convinced that progress in machine learning is bottlenecked less by compute than by conversation — that the most useful insights live in the gap between people who write the papers and people who ship the systems. So we are starting small. Thirty seats. Five papers. Ten minutes each. Real food, real disagreement, no badges. Bring a paper you cannot stop thinking about. Bring a deployment war story. Bring questions you are tired of asking the LLM. The room will do the rest.";
+    const ctx = canvas.getContext('2d');
+    const FONT = "13px 'JetBrains Mono', ui-monospace, monospace";
+    const LINE_HEIGHT = 20;
+    const COLOR_TEXT = 'rgba(200, 192, 176, 0.75)';
+    const COLOR_GLOW = 'rgba(255, 180, 84, 0.9)';
 
-      const FONT = "15px 'JetBrains Mono', ui-monospace, SF Mono, monospace";
-      const LINE_HEIGHT = 22;
-      const COLOR_TEXT = '#f5e9c8';
-      const COLOR_TEXT_DIM = 'rgba(245, 233, 200, 0.45)';
-      const COLOR_ORB = '#ffb454';
+    const MANIFESTO =
+      "We are five papers and a long table. We are the moment a researcher and a builder argue about the same equation from opposite sides. We are off-the-record dinners where someone says the half-formed thing they would not tweet. We are convinced that progress in machine learning is bottlenecked less by compute than by conversation — that the most useful insights live in the gap between people who write the papers and people who ship the systems. So we are starting small. Thirty seats. Five papers. Ten minutes each. Real food, real disagreement, no badges.";
 
-      let prepared;
-      try {
-        prepared = prepareWithSegments(MANIFESTO, FONT);
-      } catch (e) {
-        console.error('pretext prepare failed:', e);
-        return;
-      }
-
-      // Orb state
-      const orb = {
-        x: 0, y: 0,
-        radius: 0,
-        targetX: 0, targetY: 0,
-        dragging: false,
-        autoT: 0,
-      };
-
-      let dpr = 1, W = 0, H = 0;
-
-      function resize() {
-        const rect = stage.getBoundingClientRect();
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        W = rect.width;
-        H = rect.height;
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        orb.radius = Math.min(W, H) * 0.22;
-        if (orb.x === 0 && orb.y === 0) {
-          orb.x = W * 0.5;
-          orb.y = H * 0.5;
-          orb.targetX = orb.x;
-          orb.targetY = orb.y;
-        }
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      // Width-of-corridor at y, given orb position.
-      // Returns array of [leftEdge, rightEdge] segments (x in canvas coords).
-      function corridorAt(y) {
-        const dy = y - orb.y;
-        if (Math.abs(dy) >= orb.radius) {
-          return [[16, W - 16]];
-        }
-        const dx = Math.sqrt(orb.radius * orb.radius - dy * dy);
-        const left = orb.x - dx;
-        const right = orb.x + dx;
-        const segs = [];
-        if (left > 16) segs.push([16, Math.floor(left) - 6]);
-        if (right < W - 16) segs.push([Math.ceil(right) + 6, W - 16]);
-        return segs;
-      }
-
-      function drawFrame() {
-        ctx.clearRect(0, 0, W, H);
-
-        // Background subtle scanline glow
-        ctx.fillStyle = 'rgba(255, 180, 84, 0.03)';
-        ctx.fillRect(0, 0, W, H);
-
-        // Smooth orb toward target
-        if (!reduce) {
-          orb.x += (orb.targetX - orb.x) * 0.18;
-          orb.y += (orb.targetY - orb.y) * 0.18;
-          // idle drift if not dragging
-          if (!orb.dragging) {
-            orb.autoT += 0.008;
-            const cx = W * 0.5 + Math.cos(orb.autoT) * W * 0.18;
-            const cy = H * 0.5 + Math.sin(orb.autoT * 1.3) * H * 0.18;
-            orb.targetX = cx;
-            orb.targetY = cy;
-          }
-        }
-
-        // Reflow text around orb using layoutNextLineRange
-        ctx.font = FONT;
-        ctx.fillStyle = COLOR_TEXT;
-        ctx.textBaseline = 'top';
-
-        let cursor = { segmentIndex: 0, graphemeIndex: 0 };
-        let y = 18;
-        const maxY = H - LINE_HEIGHT;
-        let safety = 0;
-
-        while (y < maxY && safety++ < 200) {
-          const segs = corridorAt(y + LINE_HEIGHT * 0.5);
-          let placedAny = false;
-
-          for (const [lx, rx] of segs) {
-            const w = rx - lx;
-            if (w < 60) continue; // too narrow, skip segment
-            const range = layoutNextLineRange(prepared, cursor, w);
-            if (!range) { y = maxY + 1; break; }
-            const line = materializeLineRange(prepared, range);
-            // Soft fade as text approaches orb
-            const dy = Math.abs(y + LINE_HEIGHT * 0.5 - orb.y);
-            const proximity = Math.max(0, 1 - Math.max(0, orb.radius * 1.4 - dy) / (orb.radius * 1.4));
-            ctx.fillStyle = `rgba(245, 233, 200, ${0.5 + 0.45 * proximity})`;
-            ctx.fillText(line.text, lx, y);
-            cursor = range.end;
-            placedAny = true;
-          }
-          if (!placedAny) {
-            // No segment was wide enough — skip a row rather than infinite loop
-          }
-          y += LINE_HEIGHT;
-
-          // Restart corpus when exhausted
-          if (cursor.segmentIndex >= 9999) break;
-        }
-
-        // Orb — amber CRT phosphor with glow halo
-        const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius * 1.3);
-        grad.addColorStop(0, 'rgba(255, 200, 120, 0.95)');
-        grad.addColorStop(0.6, 'rgba(255, 180, 84, 0.35)');
-        grad.addColorStop(1, 'rgba(255, 180, 84, 0)');
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(orb.x, orb.y, orb.radius * 1.3, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Inner orb core
-        ctx.fillStyle = COLOR_ORB;
-        ctx.beginPath();
-        ctx.arc(orb.x, orb.y, orb.radius * 0.55, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Cross-hair on orb (CRT marker)
-        ctx.strokeStyle = 'rgba(10, 10, 10, 0.5)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(orb.x - orb.radius * 0.35, orb.y);
-        ctx.lineTo(orb.x + orb.radius * 0.35, orb.y);
-        ctx.moveTo(orb.x, orb.y - orb.radius * 0.35);
-        ctx.lineTo(orb.x, orb.y + orb.radius * 0.35);
-        ctx.stroke();
-
-        requestAnimationFrame(drawFrame);
-      }
-      requestAnimationFrame(drawFrame);
-
-      // Drag interaction
-      function getPos(e) {
-        const rect = stage.getBoundingClientRect();
-        const t = e.touches ? e.touches[0] : e;
-        return { x: t.clientX - rect.left, y: t.clientY - rect.top };
-      }
-      stage.addEventListener('pointerdown', (e) => {
-        orb.dragging = true;
-        const p = getPos(e);
-        orb.targetX = p.x; orb.targetY = p.y;
-        stage.setPointerCapture(e.pointerId);
-      });
-      stage.addEventListener('pointermove', (e) => {
-        if (!orb.dragging) return;
-        const p = getPos(e);
-        orb.targetX = Math.max(orb.radius * 0.5, Math.min(W - orb.radius * 0.5, p.x));
-        orb.targetY = Math.max(orb.radius * 0.5, Math.min(H - orb.radius * 0.5, p.y));
-      });
-      stage.addEventListener('pointerup', () => { orb.dragging = false; });
-      stage.addEventListener('pointercancel', () => { orb.dragging = false; });
+    let prepared;
+    try {
+      prepared = prepareWithSegments(MANIFESTO, FONT);
+    } catch (e) {
+      console.error('pretext prepare failed:', e);
+      return;
     }
+
+    const orb = { x: 0, y: 0, radius: 0, targetX: 0, targetY: 0, dragging: false, autoT: 0 };
+    let dpr = 1, W = 0, H = 0;
+
+    function resize() {
+      const rect = wrap.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = rect.width;
+      H = rect.height;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      orb.radius = Math.min(W, H) * 0.18;
+      if (orb.x === 0 && orb.y === 0) {
+        orb.x = W * 0.65;
+        orb.y = H * 0.5;
+        orb.targetX = orb.x;
+        orb.targetY = orb.y;
+      }
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function corridorAt(y) {
+      const dy = y - orb.y;
+      if (Math.abs(dy) >= orb.radius) return [[14, W - 14]];
+      const dx = Math.sqrt(orb.radius * orb.radius - dy * dy);
+      const left = orb.x - dx;
+      const right = orb.x + dx;
+      const segs = [];
+      if (left > 14) segs.push([14, Math.floor(left) - 5]);
+      if (right < W - 14) segs.push([Math.ceil(right) + 5, W - 14]);
+      return segs;
+    }
+
+    function drawFrame() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Smooth orb
+      if (!reduced) {
+        orb.x += (orb.targetX - orb.x) * 0.18;
+        orb.y += (orb.targetY - orb.y) * 0.18;
+        if (!orb.dragging) {
+          orb.autoT += 0.007;
+          orb.targetX = W * 0.65 + Math.cos(orb.autoT) * W * 0.15;
+          orb.targetY = H * 0.5 + Math.sin(orb.autoT * 1.3) * H * 0.2;
+        }
+      }
+
+      // Draw orb glow
+      const grad = ctx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.radius * 1.4);
+      grad.addColorStop(0, 'rgba(255, 200, 120, 0.12)');
+      grad.addColorStop(0.5, 'rgba(255, 180, 84, 0.04)');
+      grad.addColorStop(1, 'rgba(255, 180, 84, 0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(orb.x, orb.y, orb.radius * 1.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw orb core
+      ctx.fillStyle = 'rgba(255, 180, 84, 0.25)';
+      ctx.beginPath();
+      ctx.arc(orb.x, orb.y, orb.radius * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw crosshair
+      ctx.strokeStyle = 'rgba(255, 180, 84, 0.15)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(orb.x - orb.radius * 0.25, orb.y);
+      ctx.lineTo(orb.x + orb.radius * 0.25, orb.y);
+      ctx.moveTo(orb.x, orb.y - orb.radius * 0.25);
+      ctx.lineTo(orb.x, orb.y + orb.radius * 0.25);
+      ctx.stroke();
+
+      // Reflow text
+      ctx.font = FONT;
+      ctx.textBaseline = 'top';
+      let cursor = { segmentIndex: 0, graphemeIndex: 0 };
+      let y = 14;
+      const maxY = H - LINE_HEIGHT;
+      let safety = 0;
+
+      while (y < maxY && safety++ < 200) {
+        const segs = corridorAt(y + LINE_HEIGHT * 0.5);
+        let placedAny = false;
+        for (const [lx, rx] of segs) {
+          const w = rx - lx;
+          if (w < 50) continue;
+          const range = layoutNextLineRange(prepared, cursor, w);
+          if (!range) { y = maxY + 1; break; }
+          const line = materializeLineRange(prepared, range);
+          const dy = Math.abs(y + LINE_HEIGHT * 0.5 - orb.y);
+          const proximity = Math.max(0, 1 - Math.max(0, orb.radius * 1.3 - dy) / (orb.radius * 1.3));
+          ctx.fillStyle = `rgba(200, 192, 176, ${0.45 + 0.5 * proximity})`;
+          ctx.fillText(line.text, lx, y);
+          cursor = range.end;
+          placedAny = true;
+        }
+        y += LINE_HEIGHT;
+        if (cursor.segmentIndex >= 9999) break;
+      }
+
+      requestAnimationFrame(drawFrame);
+    }
+    requestAnimationFrame(drawFrame);
+
+    // Drag interaction
+    function getPos(e) {
+      const rect = wrap.getBoundingClientRect();
+      const t = e.touches ? e.touches[0] : e;
+      return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+    }
+    wrap.addEventListener('pointerdown', (e) => {
+      orb.dragging = true;
+      const p = getPos(e);
+      orb.targetX = p.x; orb.targetY = p.y;
+      wrap.setPointerCapture(e.pointerId);
+    });
+    wrap.addEventListener('pointermove', (e) => {
+      if (!orb.dragging) return;
+      const p = getPos(e);
+      orb.targetX = Math.max(orb.radius * 0.5, Math.min(W - orb.radius * 0.5, p.x));
+      orb.targetY = Math.max(orb.radius * 0.5, Math.min(H - orb.radius * 0.5, p.y));
+    });
+    wrap.addEventListener('pointerup', () => { orb.dragging = false; });
+    wrap.addEventListener('pointercancel', () => { orb.dragging = false; });
   </script>
 
+  <!-- ============================================================
+       DOM Interactions — scramble, counters, form, FAQ, reveals
+       ============================================================ -->
   <script>
     // Text scramble / hacker decode effect
     const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-
     class TextScramble {
       constructor(el) {
         this.el = el;
@@ -1939,12 +1408,10 @@
         this.queue = [];
         this.update();
       }
-
       setText(text) {
         const len = Math.max(this.original.length, text.length);
         const promise = new Promise(resolve => this.resolve = resolve);
         this.queue = [];
-
         for (let i = 0; i < len; i++) {
           const from = this.original[i] || '';
           const to = text[i] || '';
@@ -1952,21 +1419,17 @@
           const end = start + Math.floor(Math.random() * 40);
           this.queue.push({ from, to, start, end });
         }
-
         cancelAnimationFrame(this.frameRequest);
         this.frame = 0;
         this.update();
         return promise;
       }
-
       update() {
         let output = '';
         let complete = 0;
-
         for (let i = 0; i < this.queue.length; i++) {
           let { from, to, start, end } = this.queue[i];
           let char = this.queue[i].char;
-
           if (this.frame >= end) {
             complete++;
             output += to;
@@ -1980,9 +1443,7 @@
             output += `<span style="opacity:0">${from}</span>`;
           }
         }
-
         this.el.innerHTML = output;
-
         if (complete === this.queue.length) {
           this.el.dataset.done = 'true';
           this.resolve && this.resolve();
@@ -1994,8 +1455,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const elements = document.querySelectorAll('.scramble');
-      elements.forEach((el, i) => {
+      document.querySelectorAll('.scramble').forEach((el, i) => {
         const scrambler = new TextScramble(el);
         setTimeout(() => {
           scrambler.setText(el.dataset.text).then(() => {
@@ -2005,7 +1465,63 @@
       });
     });
 
-    // RSVP form handling — sending state + progress + character counter
+    // Animated stat counters
+    (function() {
+      const stats = document.querySelectorAll('.stat-num[data-count]');
+      if (!stats.length) return;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function animate(el) {
+        const target = parseInt(el.dataset.count, 10);
+        const suffix = el.dataset.suffix || '';
+        if (reduced) { el.textContent = target + suffix; return; }
+        const duration = 1400;
+        const start = performance.now();
+        function tick(now) {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animate(entry.target);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.4 });
+      stats.forEach(s => io.observe(s));
+    })();
+
+    // Scroll reveal animations
+    (function() {
+      const reveals = document.querySelectorAll('.reveal');
+      if (!reveals.length) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.15 });
+      reveals.forEach(el => io.observe(el));
+    })();
+
+    // FAQ accordion
+    (function() {
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const btn = item.querySelector('.faq-q');
+        const panel = item.querySelector('.faq-a');
+        btn.addEventListener('click', () => {
+          const open = item.dataset.open === 'true';
+          item.dataset.open = open ? 'false' : 'true';
+          btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+          panel.style.maxHeight = open ? '0' : panel.scrollHeight + 'px';
+        });
+      });
+    })();
+
+    // RSVP form — progress, counter, submit
     (function() {
       const form = document.getElementById('rsvp-form');
       const success = document.getElementById('rsvp-success');
@@ -2017,14 +1533,12 @@
 
       if (!form) return;
 
-      // Live character counter on textarea
       if (workEl && workCount) {
         workEl.addEventListener('input', () => {
           workCount.textContent = workEl.value.length;
         });
       }
 
-      // Progress bar — counts required fields filled
       const required = form.querySelectorAll('[required]');
       function updateProgress() {
         let filled = 0;
@@ -2055,7 +1569,6 @@
             body: new FormData(form),
             headers: { Accept: 'application/json' }
           });
-
           if (response.ok) {
             form.style.display = 'none';
             success.classList.add('active');
@@ -2069,53 +1582,6 @@
           alert('Transmission failed. Try emailing hello@agentralabs.co directly.');
         }
       });
-    })();
-
-    // FAQ accordion
-    (function() {
-      document.querySelectorAll('.faq-item').forEach(item => {
-        const btn = item.querySelector('.faq-q');
-        const panel = item.querySelector('.faq-a');
-        btn.addEventListener('click', () => {
-          const open = item.dataset.open === 'true';
-          item.dataset.open = open ? 'false' : 'true';
-          btn.setAttribute('aria-expanded', open ? 'false' : 'true');
-          panel.style.maxHeight = open ? '0' : panel.scrollHeight + 'px';
-        });
-      });
-    })();
-
-    // Animated stat counters — trigger on first scroll into view
-    (function() {
-      const stats = document.querySelectorAll('.stat-num[data-count]');
-      if (!stats.length) return;
-      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      const animate = (el) => {
-        const target = parseInt(el.dataset.count, 10);
-        const suffix = el.dataset.suffix || '';
-        if (reduce) { el.textContent = target + suffix; return; }
-        const duration = 1200;
-        const start = performance.now();
-        const tick = (now) => {
-          const t = Math.min(1, (now - start) / duration);
-          const eased = 1 - Math.pow(1 - t, 3);
-          el.textContent = Math.round(target * eased) + suffix;
-          if (t < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      };
-
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            animate(entry.target);
-            io.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.4 });
-
-      stats.forEach(s => io.observe(s));
     })();
   </script>
 </body>
