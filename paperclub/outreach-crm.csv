@@ -1,10 +1,10 @@
 id,name,handle,platform,tier,role,affiliation,first_contact_date,message_template,status,response_date,response_type,follow_up_1_date,follow_up_1_sent,follow_up_2_date,follow_up_2_sent,notes,source,verified_handle
 1,Kundan Kumar,@kundan2510,X,1,presenter,Stability AI / OpenAI,,kundan_kumar,not_contacted,,,,,,,"Researcher. Formerly Stability AI, now at OpenAI. Handle verified via X search.",web_search,TRUE
-2,Rishabh Jain,,email,1,presenter,FAIR / Meta,,rishabh_jain,not_contacted,,,,,,,"ML systems at FAIR. Multiple people with this name — need manual X/LinkedIn verification.",warm_intro,FALSE
+2,Nikhil Mehta,,email,1,presenter,Meta AI,,nikhil_mehta,not_contacted,,,,,,,"AI Research Scientist at Meta. Previously Google DeepMind. Indian. Need to find X handle or use LinkedIn.",web_search,FALSE
 3,Sarvam AI (Pratyush Kumar),@pratykumar,X,2,attendee,Sarvam AI,,sarvam_team,not_contacted,,,,,,,"Co-founder @pratykumar. Hindi LLMs. Bangalore-based. 2-3 seats.",web_search,TRUE
-4,Sreeram Kannan,@sreeramkannan,X,1,presenter,EigenLayer,,sreeram_kannan,not_contacted,,,,,,,"Founder EigenLayer. @sreeramkannan verified. Consensus/crypto-economics.",web_search,TRUE
-5,Nisheeth Vishnoi,,email,1,presenter,Yale / EPFL / IIT Bombay,,nisheeth_vishnoi,not_contacted,,,,,,,"Algorithms/ML theory. IIT Bombay roots. Likely no active X — use academic email.",warm_intro,FALSE
-6,Tanmay Gupta,@tanmay2099,X,2,presenter,AI2 / IIT Kharagpur,,tanmay_gupta,not_contacted,,,,,,,"Senior Research Scientist @ AI2. @tanmay2099 verified. CVPR Best Paper.",web_search,TRUE
+4,Sreeram Kannan,@sreeramkannan,X,1,presenter,EigenLayer,,sreeram_kannan,not_contacted,,,,,,,"Founder EigenLayer. @sreeramkannan verified. Consensus/crypto-economics. Seattle-based.",web_search,TRUE
+5,Nisheeth Vishnoi,@NisheethVishnoi,X,1,presenter,Yale / EPFL / IIT Bombay,,nisheeth_vishnoi,not_contacted,,,,,,,"Algorithms/ML theory. IIT Bombay roots. Email: nisheeth.vishnoi@gmail.com. Verified via Yale CS page.",web_search,TRUE
+6,Tanmay Gupta,@tanmay2099,X,2,presenter,AI2 / IIT Kharagpur,,tanmay_gupta,not_contacted,,,,,,,"Senior Research Scientist @ AI2. @tanmay2099 verified. CVPR Best Paper. IIT KGP alum.",web_search,TRUE
 7,Ambarish Ganguly,,email,2,presenter,Google DeepMind,,ambarish_ganguly,not_contacted,,,,,,,"RL researcher. London-based Indian. No X found — use LinkedIn or DeepMind contact.",cold,FALSE
 8,Siddhartha Banerjee,,email,2,presenter,Cornell / IIT,,siddhartha_banerjee,not_contacted,,,,,,,"Stochastic optimization. ORIE Cornell. No X found — use academic email.",cold,FALSE
 9,ISI Kolkata Faculty,,email,2,attendee,ISI Kolkata,,isi_faculty,not_contacted,,,,,,,"Statistics/ML department. 2-3 people. Contact department head or faculty directory.",cold,FALSE
@@ -21,3 +21,11 @@ id,name,handle,platform,tier,role,affiliation,first_contact_date,message_templat
 20,Student Builders,,email,3,attendee,Various,,students,not_contacted,,,,,,,"Top students from IIT KGP/JU/ISI with GitHub stars. Scout via GitHub search.",cold,FALSE
 21,Vivek Raghavan (Sarvam),,email,2,attendee,Sarvam AI,,vivek_raghavan,not_contacted,,,,,,,"Co-founder Sarvam AI with Pratyush Kumar. Contact via Sarvam website.",web_search,FALSE
 22,Sarvam AI Team,,email,2,attendee,Sarvam AI,,sarvam_team_2,not_contacted,,,,,,,"General team contact. Apply for 2-3 engineering seats.",cold,FALSE
+23,Sarath Chandar,@apsarathchandar,X,1,presenter,Mila / Polytechnique Montréal / IIT Madras,,sarath_chandar,not_contacted,,,,,,,"Associate Professor @ Mila. IIT Madras alum. RL and lifelong learning. Handle verified.",web_search,TRUE
+24,Keerthana Gopalakrishnan,@keerthanpg,X,1,presenter,Google DeepMind,,keerthana_gopalakrishnan,not_contacted,,,,,,,"Research Lead Gemini Robotics @ Google DeepMind. Author 'AI for Robotics'. @keerthanpg verified.",web_search,TRUE
+25,Aditya Kusupati,@adityakusupati,X,2,presenter,Google DeepMind,,aditya_kusupati,not_contacted,,,,,,,"Researcher @ Google DeepMind. IIT background. DiLoCo team. @adityakusupati verified.",web_search,TRUE
+26,Sachin Goyal,,email,2,attendee,Anthropic,,sachin_goyal,not_contacted,,,,,,,"Pretraining @ Anthropic. PhD @ CMU. Indian. High-value researcher. Need X/LinkedIn.",web_search,FALSE
+27,Sai Koushik Guntakanti,,email,2,attendee,Anthropic,,sai_koushik,not_contacted,,,,,,,"Anthropic. CMU background. Indian researcher. Need X/LinkedIn.",web_search,FALSE
+28,Vivek Madan,,email,2,attendee,OpenAI,,vivek_madan,not_contacted,,,,,,,"Research @ OpenAI. Georgia Tech postdoc. Indian. Need X/LinkedIn.",web_search,FALSE
+29,Shikhar Kwatra,,email,2,attendee,OpenAI,,shikhar_kwatra,not_contacted,,,,,,,"AI/ML Partner Solutions Architect @ OpenAI. Columbia. Need X/LinkedIn.",web_search,FALSE
+30,Soumen Basu,,email,2,attendee,Meta AI,,soumen_basu,not_contacted,,,,,,,"AI Research Scientist @ Meta. Foundation models. Need X/LinkedIn.",web_search,FALSE
