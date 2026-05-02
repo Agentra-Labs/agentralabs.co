@@ -1,21 +1,23 @@
-id,name,handle,platform,tier,role,affiliation,first_contact_date,message_template,status,response_date,response_type,follow_up_1_date,follow_up_1_sent,follow_up_2_date,follow_up_2_sent,notes,source
-1,Kundan Kumar,@kundankumar,X,1,presenter,Stability AI,,kundan_kumar,not_contacted,,,,,,,Co-founder Stability AI. Open weights specialist.,warm_intro
-2,Rishabh Jain,@rishabh_jain,X,1,presenter,FAIR / Meta,,rishabh_jain,not_contacted,,,,,,,ML systems at FAIR. Strong open source presence.,warm_intro
-3,Sarvam AI,,email,2,attendee,Sarvam AI,,sarvam_team,not_contacted,,,,,,,Hindi LLMs. Bangalore-based. 2-3 seats.,cold
-4,Sreeram Kannan,@sreeramkannan,X,1,presenter,EigenLayer,,sreeram_kannan,not_contacted,,,,,,,Consensus research. Seattle but Indian roots.,cold
-5,Nisheeth Vishnoi,,email,1,presenter,Yale / IIT Bombay,,nisheeth_vishnoi,not_contacted,,,,,,,Algorithms/ML theory. IIT Bombay roots.,warm_intro
-6,Tanmay Gupta,@tanmaygupta,X,2,presenter,AI2 / IIT Kharagpur,,tanmay_gupta,not_contacted,,,,,,,Computer vision VLMs. IIT KGP alum.,cold
-7,Ambarish Ganguly,@ambarish_ganguly,X,2,presenter,Google DeepMind,,ambarish_ganguly,not_contacted,,,,,,,RL. London-based Indian.,cold
-8,Siddhartha Banerjee,,email,2,presenter,Cornell / IIT,,siddhartha_banerjee,not_contacted,,,,,,,Stochastic optimization. IIT background.,cold
-9,ISI Kolkata Faculty,,email,2,attendee,ISI Kolkata,,isi_faculty,not_contacted,,,,,,,Statistics/ML department. 2-3 people.,cold
-10,IIT KGP CS Faculty,,email,2,attendee,IIT Kharagpur,,iit_kgp_faculty,not_contacted,,,,,,,CS/AI department. 2-3 people + students.,cold
-11,Jadavpur Univ CS Faculty,,email,2,attendee,Jadavpur University,,jadavpur_faculty,not_contacted,,,,,,,CS department. Local Kolkata talent.,cold
-12,Krutrim AI,,email,2,attendee,Krutrim / Ola,,krutrim_team,not_contacted,,,,,,,Indian LLM from Ola. Bangalore-based.,cold
-13,CoRover.ai,,email,2,attendee,CoRover.ai,,corover_team,not_contacted,,,,,,,BharatGPT. 1-2 seats.,cold
-14,YC SSS India Founders,,email,3,attendee,YC SSS '26,,yc_founders,not_contacted,,,,,,,2-3 founders from current batch.,warm_intro
-15,Anima Anandkumar,@animaanandkumar,X,1,presenter,Caltech / NVIDIA,,anima_anandkumar,not_contacted,,,,,,,Tensor methods neural operators. Occasionally in India.,cold
-16,DeepLearning.ai India,,email,3,attendee,DeepLearning.ai,,deeplearning_india,not_contacted,,,,,,,Community builders. Might promote event.,cold
-17,Weight & Biases India,,email,3,attendee,W&B,,wandb_india,not_contacted,,,,,,,ML tooling. Good sponsor candidate too.,cold
-18,Hugging Face India,,email,2,attendee,Hugging Face,,hf_india,not_contacted,,,,,,,Open-source ML community. 2-3 seats.,cold
-19,RunPod / Paperspace users,,email,3,attendee,Independent,,gpu_builders,not_contacted,,,,,,,3-4 builders shipping on GPU clouds.,cold
-20,Student Builders,,email,3,attendee,Various,,students,not_contacted,,,,,,,Top students from IIT KGP/JU/ISI with GitHub stars.,cold
+id,name,handle,platform,tier,role,affiliation,first_contact_date,message_template,status,response_date,response_type,follow_up_1_date,follow_up_1_sent,follow_up_2_date,follow_up_2_sent,notes,source,verified_handle
+1,Kundan Kumar,@kundan2510,X,1,presenter,Stability AI / OpenAI,,kundan_kumar,not_contacted,,,,,,,"Researcher. Formerly Stability AI, now at OpenAI. Handle verified via X search.",web_search,TRUE
+2,Rishabh Jain,,email,1,presenter,FAIR / Meta,,rishabh_jain,not_contacted,,,,,,,"ML systems at FAIR. Multiple people with this name — need manual X/LinkedIn verification.",warm_intro,FALSE
+3,Sarvam AI (Pratyush Kumar),@pratykumar,X,2,attendee,Sarvam AI,,sarvam_team,not_contacted,,,,,,,"Co-founder @pratykumar. Hindi LLMs. Bangalore-based. 2-3 seats.",web_search,TRUE
+4,Sreeram Kannan,@sreeramkannan,X,1,presenter,EigenLayer,,sreeram_kannan,not_contacted,,,,,,,"Founder EigenLayer. @sreeramkannan verified. Consensus/crypto-economics.",web_search,TRUE
+5,Nisheeth Vishnoi,,email,1,presenter,Yale / EPFL / IIT Bombay,,nisheeth_vishnoi,not_contacted,,,,,,,"Algorithms/ML theory. IIT Bombay roots. Likely no active X — use academic email.",warm_intro,FALSE
+6,Tanmay Gupta,@tanmay2099,X,2,presenter,AI2 / IIT Kharagpur,,tanmay_gupta,not_contacted,,,,,,,"Senior Research Scientist @ AI2. @tanmay2099 verified. CVPR Best Paper.",web_search,TRUE
+7,Ambarish Ganguly,,email,2,presenter,Google DeepMind,,ambarish_ganguly,not_contacted,,,,,,,"RL researcher. London-based Indian. No X found — use LinkedIn or DeepMind contact.",cold,FALSE
+8,Siddhartha Banerjee,,email,2,presenter,Cornell / IIT,,siddhartha_banerjee,not_contacted,,,,,,,"Stochastic optimization. ORIE Cornell. No X found — use academic email.",cold,FALSE
+9,ISI Kolkata Faculty,,email,2,attendee,ISI Kolkata,,isi_faculty,not_contacted,,,,,,,"Statistics/ML department. 2-3 people. Contact department head or faculty directory.",cold,FALSE
+10,IIT KGP CS Faculty,,email,2,attendee,IIT Kharagpur,,iit_kgp_faculty,not_contacted,,,,,,,"CS/AI department. 2-3 people + students. Contact through alumni network.",cold,FALSE
+11,Jadavpur Univ CS Faculty,,email,2,attendee,Jadavpur University,,jadavpur_faculty,not_contacted,,,,,,,"CS department. Local Kolkata talent. Contact directly.",cold,FALSE
+12,Krutrim AI,,email,2,attendee,Krutrim / Ola,,krutrim_team,not_contacted,,,,,,,"Indian LLM from Ola. Bangalore-based. Contact via their website/LinkedIn.",cold,FALSE
+13,CoRover.ai,,email,2,attendee,CoRover.ai,,corover_team,not_contacted,,,,,,,"BharatGPT. 1-2 seats. Contact via their website.",cold,FALSE
+14,YC SSS India Founders,,email,3,attendee,YC SSS '26,,yc_founders,not_contacted,,,,,,,"2-3 founders from current batch. Use YC network/Slack.",warm_intro,FALSE
+15,Anima Anandkumar,@AnimaAnandkumar,X,1,presenter,Caltech / NVIDIA,,anima_anandkumar,not_contacted,,,,,,,"Bren Professor @ Caltech, Fmr Sr Director @ NVIDIA. @AnimaAnandkumar verified.",web_search,TRUE
+16,DeepLearning.ai India,,email,3,attendee,DeepLearning.ai,,deeplearning_india,not_contacted,,,,,,,"Community builders. Might promote event. Contact via Andrew Ng's network.",cold,FALSE
+17,Weight & Biases India,,email,3,attendee,W&B,,wandb_india,not_contacted,,,,,,,"ML tooling. Good sponsor candidate too. Contact via LinkedIn.",cold,FALSE
+18,Hugging Face India,,email,2,attendee,Hugging Face,,hf_india,not_contacted,,,,,,,"Open-source ML community. 2-3 seats. Contact via HF community channels.",cold,FALSE
+19,RunPod / Paperspace users,,email,3,attendee,Independent,,gpu_builders,not_contacted,,,,,,,"3-4 builders shipping on GPU clouds. Find via GitHub/X active builders.",cold,FALSE
+20,Student Builders,,email,3,attendee,Various,,students,not_contacted,,,,,,,"Top students from IIT KGP/JU/ISI with GitHub stars. Scout via GitHub search.",cold,FALSE
+21,Vivek Raghavan (Sarvam),,email,2,attendee,Sarvam AI,,vivek_raghavan,not_contacted,,,,,,,"Co-founder Sarvam AI with Pratyush Kumar. Contact via Sarvam website.",web_search,FALSE
+22,Sarvam AI Team,,email,2,attendee,Sarvam AI,,sarvam_team_2,not_contacted,,,,,,,"General team contact. Apply for 2-3 engineering seats.",cold,FALSE
