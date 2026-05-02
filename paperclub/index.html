@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Agentra Paper Club — Kolkata</title>
-  <meta name="description" content="Researchers and builders meet in Kolkata. Five new papers, ten minutes each, off-the-record dinner. Summer 2026. 30 seats." />
+  <meta name="description" content="Researchers and builders meet in Kolkata. Session 1: five new papers, ten minutes each, off-the-record dinner. June 28, 2026. 30 seats." />
 
   <!-- Canonical -->
   <link rel="canonical" href="https://agentralabs.co/paperclub/" />
@@ -13,14 +13,14 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Agentra Labs" />
   <meta property="og:title" content="Agentra Paper Club — Kolkata" />
-  <meta property="og:description" content="Researchers and builders meet in Kolkata. Five new papers, ten minutes each, off-the-record dinner. Summer 2026. 30 seats." />
+  <meta property="og:description" content="Researchers and builders meet in Kolkata. Session 1: five new papers, ten minutes each, off-the-record dinner. June 28, 2026. 30 seats." />
   <meta property="og:url" content="https://agentralabs.co/paperclub/" />
   <meta property="og:image" content="https://agentralabs.co/paperclub/og-image.png" />
   <meta property="og:image:secure_url" content="https://agentralabs.co/paperclub/og-image.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Agentra Paper Club — retro CRT terminal showing event details: Summer 2026, Kolkata, 30 seats, 5 papers, dinner included." />
+  <meta property="og:image:alt" content="Agentra Paper Club — retro CRT terminal showing event details: June 28, 2026, Kolkata, 30 seats, 5 papers, dinner included." />
   <meta property="og:locale" content="en_IN" />
 
   <!-- Twitter / X -->
@@ -28,9 +28,9 @@
   <meta name="twitter:site" content="@agentralabs" />
   <meta name="twitter:creator" content="@agentralabs" />
   <meta name="twitter:title" content="Agentra Paper Club — Kolkata" />
-  <meta name="twitter:description" content="Five new papers, ten minutes each, off-the-record dinner. Summer 2026. 30 seats." />
-  <meta name="twitter:image" content="https://events.agentralabs.co/paperclub/og-image.png" />
-  <meta name="twitter:image:alt" content="Agentra Paper Club — retro CRT terminal showing event details: Summer 2026, Kolkata, 30 seats, 5 papers, dinner included." />
+  <meta name="twitter:description" content="Session 1: five new papers, ten minutes each, off-the-record dinner. June 28, 2026. 30 seats." />
+    <meta name="twitter:image" content="https://agentralabs.co/paperclub/og-image.png" />
+  <meta name="twitter:image:alt" content="Agentra Paper Club — retro CRT terminal showing event details: June 28, 2026, Kolkata, 30 seats, 5 papers, dinner included." />
 
   <!-- Theme -->
   <meta name="theme-color" content="#020202" />
@@ -663,6 +663,39 @@
     }
     .rsvp-alt a:hover { border-bottom-color: var(--amber); }
 
+    /* ===== Session claim links ===== */
+    .paper-list li { position: relative; }
+    .paper-list .claim {
+      display: inline-block;
+      margin: -8px 0 12px 26px;
+      font-size: 11px;
+      color: var(--green);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.15s ease;
+    }
+    .paper-list .claim:hover { color: var(--amber); }
+
+    /* ===== People grid ===== */
+    .people-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .people-col h3 {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--amber);
+      margin-bottom: 12px;
+    }
+    .people-col p {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
     /* ===== Footer ===== */
     .site-footer {
       padding: 60px 0 48px;
@@ -713,6 +746,7 @@
       .pretext-wrap { height: 200px; }
       .timeline { padding-left: 16px; }
       .timeline-item::before { left: -21px; }
+      .people-grid { grid-template-columns: 1fr; gap: 20px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -825,6 +859,73 @@
           </a>
         </li>
       </ul>
+    </section>
+
+    <section class="panel session glass reveal">
+      <h2>Session 1 · June 28</h2>
+      <p class="lead">Five papers. Ten minutes each. One night.</p>
+      <p style="margin-bottom:24px;color:var(--text-dim);font-size:13px;">These are the five we'll dissect. Want to present one? Claim it — first come, first served. The rest of the room reads beforehand and comes ready to argue.</p>
+      <ul class="paper-list">
+        <li>
+          <a href="https://arxiv.org/abs/2512.24601v2" target="_blank" rel="noopener">
+            <span class="num">01</span>
+            <span class="title">Recursive Language Models</span>
+            <div class="meta">Prime Intellect<span class="dot">·</span>arXiv 2512.24601v2<span class="dot">·</span>Inference</div>
+          </a>
+          <a href="mailto:hello@agentralabs.co?subject=Claim%20Paper%2001%20—%20Recursive%20Language%20Models&body=Name%3A%20%0AAffiliation%3A%20%0APrevious%20talks%3A%20" class="claim" target="_blank" rel="noopener">Claim to present →</a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2501.19393" target="_blank" rel="noopener">
+            <span class="num">02</span>
+            <span class="title">s1: Simple Test-Time Scaling</span>
+            <div class="meta">Muennighoff et al. (Stanford / NAVER)<span class="dot">·</span>arXiv 2501.19393<span class="dot">·</span>Reasoning</div>
+          </a>
+          <a href="mailto:hello@agentralabs.co?subject=Claim%20Paper%2002%20—%20s1%20Simple%20Test-Time%20Scaling&body=Name%3A%20%0AAffiliation%3A%20%0APrevious%20talks%3A%20" class="claim" target="_blank" rel="noopener">Claim to present →</a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2507.20534" target="_blank" rel="noopener">
+            <span class="num">03</span>
+            <span class="title">Kimi K2: Open Agentic Intelligence</span>
+            <div class="meta">Moonshot AI<span class="dot">·</span>arXiv 2507.20534<span class="dot">·</span>Agents</div>
+          </a>
+          <a href="mailto:hello@agentralabs.co?subject=Claim%20Paper%2003%20—%20Kimi%20K2&body=Name%3A%20%0AAffiliation%3A%20%0APrevious%20talks%3A%20" class="claim" target="_blank" rel="noopener">Claim to present →</a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2601.07663" target="_blank" rel="noopener">
+            <span class="num">04</span>
+            <span class="title">Reasoning Models Will Sometimes Lie About Their Reasoning</span>
+            <div class="meta">Anthropic<span class="dot">·</span>arXiv 2601.07663<span class="dot">·</span>Faithfulness</div>
+          </a>
+          <a href="mailto:hello@agentralabs.co?subject=Claim%20Paper%2004%20—%20Reasoning%20Models%20Lie&body=Name%3A%20%0AAffiliation%3A%20%0APrevious%20talks%3A%20" class="claim" target="_blank" rel="noopener">Claim to present →</a>
+        </li>
+        <li>
+          <a href="https://arxiv.org/abs/2512.02556" target="_blank" rel="noopener">
+            <span class="num">05</span>
+            <span class="title">DeepSeek-V3.2: Pushing the Frontier of Open LLMs</span>
+            <div class="meta">DeepSeek-AI<span class="dot">·</span>arXiv 2512.02556<span class="dot">·</span>Open weights</div>
+          </a>
+          <a href="mailto:hello@agentralabs.co?subject=Claim%20Paper%2005%20—%20DeepSeek-V3.2&body=Name%3A%20%0AAffiliation%3A%20%0APrevious%20talks%3A%20" class="claim" target="_blank" rel="noopener">Claim to present →</a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="panel people glass reveal">
+      <h2>Who's in the room</h2>
+      <p style="margin-bottom:24px;color:var(--text-dim);font-size:13px;">Thirty seats, curated. The first confirmations are landing this week.</p>
+      <div class="people-grid">
+        <div class="people-col">
+          <h3>Research</h3>
+          <p>Faculty from ISI Kolkata, IIT Kharagpur, and visiting researchers from Mila, Google DeepMind, Anthropic, and Stanford. People who train models and write the papers.</p>
+        </div>
+        <div class="people-col">
+          <h3>Build</h3>
+          <p>Founders and engineers from Bangalore, YC alumni who've shipped to production, and students who've gone from reading papers to committing code in the same weekend.</p>
+        </div>
+        <div class="people-col">
+          <h3>Student</h3>
+          <p>PhD candidates and final-year undergrads with publication or shipping history. If you're early-career and obsessive, you belong here.</p>
+        </div>
+      </div>
     </section>
 
     <section class="panel schedule glass reveal">
