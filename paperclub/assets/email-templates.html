@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Paper Club — Email Templates</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #c8c0b0; max-width: 900px; margin: 0 auto; padding: 48px 24px; line-height: 1.6; }
+    h1 { font-size: 28px; font-weight: 800; color: #ffb454; letter-spacing: -1px; margin-bottom: 8px; }
+    .sub { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8a8478; margin-bottom: 40px; }
+    .template { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,180,84,0.08); border-radius: 8px; padding: 24px; margin-bottom: 32px; }
+    .template h2 { font-size: 14px; font-weight: 700; color: #ffb454; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
+    .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6fdc8c; margin-bottom: 12px; }
+    pre {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #ddd8ce;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .copy-btn {
+      float: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 4px 10px;
+      background: rgba(255,180,84,0.1);
+      border: 1px solid rgba(255,180,84,0.2);
+      color: #ffb454;
+      border-radius: 3px;
+      cursor: pointer;
+      margin-top: -8px;
+    }
+    .copy-btn:hover { background: rgba(255,180,84,0.2); }
+    .note { font-size: 12px; color: #8a8478; margin-top: 12px; padding: 10px 14px; background: rgba(111,220,140,0.05); border-left: 2px solid #6fdc8c; border-radius: 0 4px 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>Email Templates</h1>
+  <p class="sub">Copy-paste ready. Customize the [bracketed] parts.</p>
+
+  <div class="template">
+    <button class="copy-btn" onclick="copy(this)">Copy</button>
+    <h2>1. Cold Outreach — Presenter (Stability AI / Kundan Kumar type)</h2>
+    <div class="meta">Subject: Presenting at India's first Paper Club — Kolkata, June 28</div>
+    <pre>Hey [First Name],
+
+YC started a Paper Club in Mountain View. We're running the India edition in Kolkata.
+
+30 people. 5 papers, 10 min each, off-the-record dinner after.
+
+You'd be perfect to present on [diffusion / open weights / your recent work] — either your own paper or a recent one you'd want to dissect. Room will have ISI faculty, IIT KGP researchers, builders from Sarvam, and YC SSS founders.
+
+Interested? I'll hold a presenter slot for you.
+
+— Ashwin
+Agentra Labs
+
+events.agentralabs.co/paperclub</pre>
+    <div class="note">Send this via Twitter/X DM or email. If DM, keep it under 280 characters: "YC Paper Club in Kolkata, June 28. 30 people, 5 papers, off-record dinner. Would love you to present. Interested? → events.agentralabs.co/paperclub"</div>
+  </div>
+
+  <div class="template">
+    <button class="copy-btn" onclick="copy(this)">Copy</button>
+    <h2>2. Cold Outreach — Researcher (ISI / IIT Faculty)</h2>
+    <div class="meta">Subject: Paper Club — research dinner in Kolkata, June 28</div>
+    <pre>Hi [Name],
+
+We're organizing a monthly paper-reading club in Kolkata — 30 researchers and builders, 5 papers per night, 10 minutes each, then dinner off the record.
+
+The goal is to get researchers and builders actually talking. Too many panels, not enough arguments.
+
+Would you be interested in attending — or presenting a recent paper from your group? Room will have engineers from major AI labs and startup founders who want to understand the research behind what they're shipping.
+
+June 28. Details: events.agentralabs.co/paperclub
+
+— Ashwin
+Agentra Labs</pre>
+  </div>
+
+  <div class="template">
+    <button class="copy-btn" onclick="copy(this)">Copy</button>
+    <h2>3. Cold Outreach — Builder / Founder</h2>
+    <div class="meta">Subject: 30 seats — paper club for people who ship</div>
+    <pre>Hey [First Name],
+
+You build [specific thing from their profile]. You probably read papers to figure out what to build next.
+
+We're starting a small paper-reading dinner in Kolkata. 30 people. 5 papers, 10 min each, then off-the-record dinner where people actually say what they think.
+
+Curated, not first-come. Researchers from ISI/IIT KGP and builders who've shipped.
+
+If this sounds like your kind of room: events.agentralabs.co/paperclub
+
+— Ashwin</pre>
+    <div class="note">Always reference something specific they built or shipped. Generic copy-paste gets ignored.</div>
+  </div>
+
+  <div class="template">
+    <button class="copy-btn" onclick="copy(this)">Copy</button>
+    <h2>4. Sponsor Cold Email</h2>
+    <div class="meta">Subject: Sponsor the India edition of YC Paper Club</div>
+    <pre>Hi [Name],
+
+Quick question: do you sponsor events where your exact buyer persona shows up?
+
+We're running Paper Club — the India edition of YC's event — in Kolkata. 30 researchers and builders every 3 weeks. ISI faculty, IIT KGP PhDs, engineers from Sarvam and Stability AI, YC founders.
+
+Sponsor cost: ₹25,000/session (~$300). Your logo on 5 × 10-min YouTube videos. 2 guaranteed seats.
+
+Full prospectus: agentralabs.co/paperclub/assets/sponsor-prospectus.html
+
+15-min call this week?
+
+— Ashwin
+Agentra Labs
+hello@agentralabs.co</pre>
+  </div>
+
+  <div class="template">
+    <button class="copy-btn" onclick="copy(this)">Copy</button>
+    <h2>5. Interested Presenter — Follow-up Details</h2>
+    <div class="meta">Subject: Re: Paper Club India — here's everything</div>
+    <pre>Amazing! Here's what you need:
+
+Date: June 28, 2026
+Time: 5:00 PM — 9:00 PM IST
+Location: [Venue TBD — Kolkata, central]
+Your slot: 10-minute presentation + 20 min discussion
+Format: We'll record the talk (posted publicly). Dinner after is off the record.
+
+Preparation:
+- Pick your paper from the shortlist (or propose your own)
+- 8–12 slides max. No intro fluff — jump straight to the contribution.
+- We'll do a 15-min prep call 3 days before.
+
+I'll send you the paper shortlist for voting by June 7. The room will have ~30 people: ISI faculty, IIT KGP researchers, builders from Sarvam/Stability AI, YC founders.
+
+Can you hold the date? I'll add you to the private presenter channel.
+
+— Ashwin
+Agentra Labs</pre>
+  </div>
+
+  <div class="template">
+    <button class="copy-btn" onclick="copy(this)">Copy</button>
+    <h2>6. Waitlist / Rejection (Graceful)</h2>
+    <div class="meta">Subject: Paper Club — you're on the early list for Session 2</div>
+    <pre>Hi [Name],
+
+Thanks for applying to Paper Club Session 1. The room filled up faster than expected — we had 80+ applications for 30 seats.
+
+You've been added to the early-access list for Session 2 (mid-July). You'll get the paper vote + invite before the public announcement.
+
+If a seat opens up for June 28, you'll hear from us first.
+
+— Ashwin
+Agentra Labs</pre>
+    <div class="note">This builds goodwill. Many "rejected" applicants become evangelists.</div>
+  </div>
+
+  <script>
+    function copy(btn) {
+      const pre = btn.parentElement.querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 1500);
+      });
+    }
+  </script>
+</body>
+</html>
