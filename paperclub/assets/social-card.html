@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentra Paper Club — Social Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px;
+    }
+    .card {
+      width: 1080px;
+      height: 1080px;
+      background: #0a0a0a;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 80px 72px 72px 72px;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #8a8478;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .logo span { color: #ffb454; }
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #6fdc8c;
+      border: 1px solid rgba(111,220,140,0.25);
+      padding: 6px 12px;
+      border-radius: 3px;
+      letter-spacing: 0.8px;
+    }
+    .center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 0;
+    }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: #ffb454;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .headline {
+      font-size: 96px;
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -5px;
+      color: #e8e2d9;
+      margin-bottom: 32px;
+    }
+    .headline span { color: #ffb454; }
+    .details {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      color: #8a8478;
+      line-height: 1.8;
+      letter-spacing: 0.3px;
+    }
+    .details strong { color: #e8e2d9; font-weight: 500; }
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid rgba(255,180,84,0.12);
+      padding-top: 32px;
+    }
+    .url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: #ffb454;
+      letter-spacing: 0.5px;
+    }
+    .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #8a8478;
+      text-align: right;
+      line-height: 1.7;
+      letter-spacing: 0.3px;
+    }
+    .meta strong { color: #e8e2d9; font-weight: 500; }
+
+    /* Paper fragments decoration */
+    .fragments {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .frag {
+      position: absolute;
+      background: rgba(255,180,84,0.03);
+      border: 1px solid rgba(255,180,84,0.06);
+      border-radius: 2px;
+    }
+    .frag::after {
+      content: '';
+      position: absolute;
+      top: 8px; left: 8px; right: 8px;
+      height: 1px;
+      background: rgba(255,180,84,0.08);
+      box-shadow: 0 6px 0 rgba(255,180,84,0.06), 0 12px 0 rgba(255,180,84,0.04);
+    }
+    .f1 { width: 60px; height: 80px; top: 12%; right: 8%; transform: rotate(12deg); }
+    .f2 { width: 45px; height: 55px; top: 25%; left: 5%; transform: rotate(-8deg); }
+    .f3 { width: 50px; height: 70px; bottom: 20%; right: 15%; transform: rotate(6deg); }
+    .f4 { width: 35px; height: 45px; top: 60%; left: 3%; transform: rotate(-15deg); }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .card { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="grain"></div>
+    <div class="fragments">
+      <div class="frag f1"></div>
+      <div class="frag f2"></div>
+      <div class="frag f3"></div>
+      <div class="frag f4"></div>
+    </div>
+
+    <div class="top">
+      <div class="logo">◆ <span>Agentra</span> Labs</div>
+      <div class="badge">● Applications Open</div>
+    </div>
+
+    <div class="center">
+      <div class="eyebrow">The India Edition of YC Paper Club</div>
+      <div class="headline">
+        Paper<br>
+        <span>Club</span>
+      </div>
+      <div class="details">
+        <strong>5</strong> papers · <strong>10</strong> minutes each · off-the-record dinner<br>
+        June <strong>28</strong>, 2026 · Kolkata, India · <strong>30</strong> seats
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="url">events.agentralabs.co/paperclub</div>
+      <div class="meta">
+        Session 1 of 5<br>
+        Curated, not first-come
+      </div>
+    </div>
+  </div>
+</body>
+</html>
