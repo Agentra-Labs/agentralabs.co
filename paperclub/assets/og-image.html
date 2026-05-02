@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OG Image — Agentra Paper Club</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #111;
+      padding: 20px;
+    }
+    .og {
+      width: 1200px;
+      height: 630px;
+      background: #0a0a0a;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 56px 64px 48px 64px;
+    }
+    .grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: #8a8478;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .logo span { color: #ffb454; }
+    .date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #6fdc8c;
+      border: 1px solid rgba(111,220,140,0.2);
+      padding: 6px 14px;
+      border-radius: 3px;
+      letter-spacing: 0.8px;
+    }
+    .center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 0;
+    }
+    .headline {
+      font-size: 72px;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -4px;
+      color: #e8e2d9;
+      margin-bottom: 20px;
+    }
+    .headline span { color: #ffb454; }
+    .sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      color: #8a8478;
+      letter-spacing: 0.3px;
+      line-height: 1.6;
+    }
+    .sub strong { color: #e8e2d9; font-weight: 500; }
+    .bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid rgba(255,180,84,0.1);
+      padding-top: 28px;
+    }
+    .url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      color: #ffb454;
+      letter-spacing: 0.5px;
+    }
+    .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #8a8478;
+      text-align: right;
+      line-height: 1.6;
+    }
+    .meta strong { color: #e8e2d9; font-weight: 500; }
+
+    /* Decorative paper fragments */
+    .fragments {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .frag {
+      position: absolute;
+      background: rgba(255,180,84,0.02);
+      border: 1px solid rgba(255,180,84,0.04);
+      border-radius: 2px;
+    }
+    .frag::after {
+      content: '';
+      position: absolute;
+      top: 10px; left: 10px; right: 10px;
+      height: 1px;
+      background: rgba(255,180,84,0.06);
+      box-shadow: 0 8px 0 rgba(255,180,84,0.04), 0 16px 0 rgba(255,180,84,0.03);
+    }
+    .f1 { width: 70px; height: 90px; top: 8%; right: 6%; transform: rotate(15deg); }
+    .f2 { width: 50px; height: 70px; top: 20%; left: 4%; transform: rotate(-10deg); }
+    .f3 { width: 60px; height: 80px; bottom: 18%; right: 12%; transform: rotate(8deg); }
+    .f4 { width: 40px; height: 55px; top: 55%; left: 2%; transform: rotate(-18deg); }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="og">
+    <div class="grain"></div>
+    <div class="fragments">
+      <div class="frag f1"></div>
+      <div class="frag f2"></div>
+      <div class="frag f3"></div>
+      <div class="frag f4"></div>
+    </div>
+
+    <div class="top">
+      <div class="logo">◆ <span>Agentra</span> Labs</div>
+      <div class="date">● June 28, 2026</div>
+    </div>
+
+    <div class="center">
+      <div class="headline">
+        Paper<br>
+        <span>Club</span>
+      </div>
+      <div class="sub">
+        <strong>5</strong> papers · <strong>10</strong> minutes each · off-the-record dinner<br>
+        Kolkata, India · <strong>30</strong> seats · Session 1 of 5
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="url">agentralabs.co/paperclub</div>
+      <div class="meta">
+        Researchers + builders<br>
+        Curated, not first-come
+      </div>
+    </div>
+  </div>
+</body>
+</html>
