@@ -1,0 +1,2 @@
+id,name,email,linkedin,x_handle,role,what_building,company_university,city,curiosity_score,contribution_score,diversity_score,energy_score,total_score,session,status,source,notes,date_applied
+1,Example Applicant,hello@example.com,linkedin.com/in/example,@example,builder,Building a local LLM inference stack,Agentra Labs,Kolkata,8,7,6,7,28,S1,waitlist,DM,Strong GitHub + active X,2026-05-02

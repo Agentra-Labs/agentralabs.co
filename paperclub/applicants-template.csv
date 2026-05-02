@@ -1,0 +1,2 @@
+id,name,email,linkedin,x_handle,role,what_building,curiosity_score,contribution_score,diversity_score,energy_score,total_score,status,session,notes,sourced_from
+1,Example Applicant,hello@example.com,linkedin.com/in/example,@example,builder,Building a local LLM inference stack,8,7,6,7,28,waitlist,S1,Strong GitHub + active X,DM
