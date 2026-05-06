@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RecursiveMAS — Agentra-Labs Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css"/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    :root { --bg-blog: #090b10; }
+    body { background: var(--bg-blog); }
+    .desktop { max-width: 980px; }
+
+    /* Post header */
+    .post-window { margin-top: 1rem; }
+    .post-title-bar {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.6rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+    .post-content { padding: 2rem 1.5rem; }
+    @media (max-width: 640px) { .post-content { padding: 1.25rem 1rem; } }
+
+    .post-meta {
+      display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+    .post-meta .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+    h1.post-heading {
+      font-family: var(--sans);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+    .lead {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      line-height: 1.65;
+      margin-bottom: 2rem;
+      max-width: 720px;
+    }
+
+    /* Typography */
+    .prose h2 {
+      font-family: var(--sans);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 2.5rem 0 1rem;
+      color: var(--text);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .prose h2 .section-num {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .prose p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-dim);
+      margin-bottom: 1.1rem;
+      max-width: 720px;
+    }
+    .prose strong { color: var(--text); font-weight: 600; }
+    .prose code {
+      font-family: var(--mono);
+      font-size: 0.82em;
+      padding: 0.15em 0.4em;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+    }
+    .prose pre {
+      background: #05070a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      margin: 1rem 0 1.5rem;
+    }
+    .prose pre code { background: none; border: none; padding: 0; color: var(--text-dim); }
+    .prose blockquote {
+      border-left: 2px solid var(--accent);
+      padding-left: 1rem;
+      margin: 1.25rem 0;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+    .prose ul { margin: 0.75rem 0 1.25rem 1.25rem; color: var(--text-dim); }
+    .prose li { margin-bottom: 0.4rem; line-height: 1.6; }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 1rem 0 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      font-family: var(--mono);
+    }
+    th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    th { color: var(--text); font-weight: 700; background: rgba(255,255,255,0.02); }
+    td { color: var(--text-dim); }
+    tr:hover td { background: rgba(88,166,255,0.03); }
+    .tag-pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background: rgba(88,166,255,0.08);
+      color: var(--accent);
+      border: 1px solid rgba(88,166,255,0.15);
+    }
+
+    /* Visual Guide */
+    .viz-panel {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+    .viz-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.6rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+    .viz-header-title {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .step-nav {
+      display: flex; gap: 0.35rem;
+    }
+    .step-btn {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .step-btn:hover { border-color: var(--accent); color: var(--text); }
+    .step-btn.active { background: rgba(88,166,255,0.1); border-color: var(--accent); color: var(--accent); }
+
+    .viz-canvas {
+      position: relative;
+      height: 320px;
+      background: radial-gradient(ellipse at center, rgba(88,166,255,0.02) 0%, transparent 70%);
+    }
+    @media (max-width: 640px) { .viz-canvas { height: 260px; } }
+
+    .viz-caption {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-dim);
+      min-height: 80px;
+    }
+    .viz-caption strong { color: var(--text); }
+
+    /* Simulation overlay */
+    .sim-controls {
+      display: flex; gap: 0.5rem; align-items: center;
+      padding: 0.5rem 1rem;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,0.01);
+    }
+    .sim-btn {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+    }
+    .sim-btn:hover { border-color: var(--accent); color: var(--text); }
+    .sim-btn.primary { background: rgba(88,166,255,0.1); border-color: var(--accent); color: var(--accent); }
+    .speed-slider {
+      width: 80px;
+      accent-color: var(--accent);
+    }
+
+    /* SVG styles */
+    svg.viz-svg { width: 100%; height: 100%; }
+    .agent-box {
+      fill: var(--bg-window);
+      stroke: var(--border);
+      stroke-width: 1.5;
+      rx: 6;
+    }
+    .agent-box.active { stroke: var(--accent); }
+    .agent-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      fill: var(--text);
+      font-weight: 700;
+      text-anchor: middle;
+    }
+    .agent-sub {
+      font-family: var(--mono);
+      font-size: 8px;
+      fill: var(--text-dim);
+      text-anchor: middle;
+    }
+    .arrow { fill: none; stroke-width: 2; stroke-linecap: round; }
+    .arrow.text { stroke: var(--warning); stroke-dasharray: 4 3; }
+    .arrow.latent { stroke: var(--accent); }
+    .arrow.inner { stroke: var(--success); }
+    .arrowhead { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .particle { fill: var(--accent); }
+    .particle.text { fill: var(--warning); }
+    .particle.inner { fill: var(--success); }
+    .module-box {
+      fill: rgba(88,166,255,0.05);
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      stroke-dasharray: 3 2;
+      rx: 4;
+    }
+    .module-label {
+      font-family: var(--mono);
+      font-size: 8px;
+      fill: var(--accent);
+      text-anchor: middle;
+    }
+    .dimmed { opacity: 0.25; }
+    .hidden { opacity: 0; }
+
+    /* Metric cards */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .metric-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .metric-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .metric-val {
+      font-family: var(--mono);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+    }
+    .metric-lbl {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+      display: block;
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: absolute;
+      background: var(--bg-window);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 100;
+      max-width: 220px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .tooltip.show { opacity: 1; }
+
+    /* Footer nav */
+    .post-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,0.01);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+    .post-footer a { color: var(--accent); text-decoration: none; }
+    .post-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="crt-overlay"></div>
+  <div class="desktop">
+    <header class="top-bar">
+      <div class="window-controls">
+        <span class="control close">✕</span>
+        <span class="control min">—</span>
+        <span class="control max">▢</span>
+      </div>
+      <div class="breadcrumbs">
+        <span>github.com/Agentra-Labs</span>
+        <span class="separator">→</span>
+        <span><a href="/blog/" class="nav-link">blog/</a></span>
+        <span class="separator">→</span>
+        <span class="current">recursivemas.md</span>
+      </div>
+      <div class="status-right">
+        <span class="indicator online"></span>
+        <span>org</span>
+      </div>
+    </header>
+
+    <article class="window post-window">
+      <div class="post-title-bar">
+        <span class="icon">📖</span>
+        <span>recursivemas.md — 8 min read</span>
+      </div>
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="dot"></span>
+          <span>Agentra Research</span>
+          <span style="opacity:0.4;">|</span>
+          <span>2026-05-06</span>
+          <span style="opacity:0.4;">|</span>
+          <span>arXiv:2604.25917</span>
+        </div>
+
+        <h1 class="post-heading">RecursiveMAS: Latent-Space Multi-Agent Systems</h1>
+        <p class="lead">
+          What if agents didn't have to write essays to each other? RecursiveMAS replaces text handoffs with <strong>hidden-state telepathy</strong>, turning a team of LLMs into one unified computation graph. Here's how a 13M-parameter bridge module unlocks +8.3% accuracy, 2.4× speed, and −75.6% tokens.
+        </p>
+
+        <div class="prose">
+          <h2><span class="section-num">01</span> The Problem</h2>
+          <p>
+            Today's multi-agent systems are like a team of brilliant researchers forced to communicate by writing letters, sealing them in envelopes, and waiting for the postal service. Every time <code>Agent A</code> wants to hand work to <code>Agent B</code>, it must decode its thoughts into human-readable text. Agent B reads that text and re-encodes it back into its own latent space. Two expensive trips through the vocabulary bottleneck — every single handoff.
+          </p>
+          <p>
+            This is <strong>framework collapse</strong>: the coordination overhead grows linearly with the number of agents and recursion depth. By the time you've chained three agents with two rounds of reflection, most of your compute budget has been spent on serialization rather than reasoning.
+          </p>
+
+          <div class="viz-panel">
+            <div class="viz-header">
+              <div class="viz-header-title"><span>🎭</span> Text Handoff Bottleneck</div>
+              <div class="step-nav">
+                <button class="step-btn active" data-step="0" onclick="setStep(0)">Problem</button>
+                <button class="step-btn" data-step="1" onclick="setStep(1)">Insight</button>
+                <button class="step-btn" data-step="2" onclick="setStep(2)">Bridge</button>
+                <button class="step-btn" data-step="3" onclick="setStep(3)">Loop</button>
+                <button class="step-btn" data-step="4" onclick="setStep(4)">Training</button>
+                <button class="step-btn" data-step="5" onclick="setStep(5)">Results</button>
+              </div>
+            </div>
+            <div class="viz-canvas" id="vizCanvas">
+              <svg class="viz-svg" id="vizSvg" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <marker id="arrA" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="10" markerHeight="8" orient="auto">
+                    <path d="M0,0 L10,4 L0,8" fill="var(--accent)" opacity="0.9"/>
+                  </marker>
+                  <marker id="arrW" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="10" markerHeight="8" orient="auto">
+                    <path d="M0,0 L10,4 L0,8" fill="var(--warning)" opacity="0.9"/>
+                  </marker>
+                  <marker id="arrG" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="10" markerHeight="8" orient="auto">
+                    <path d="M0,0 L10,4 L0,8" fill="var(--success)" opacity="0.9"/>
+                  </marker>
+                </defs>
+                <!-- Problem layer -->
+                <g id="layer-problem">
+                  <rect x="120" y="60" width="140" height="70" class="agent-box" rx="6"/>
+                  <text x="190" y="92" class="agent-label">Agent A</text>
+                  <text x="190" y="108" class="agent-sub">decode → text</text>
+                  <rect x="540" y="60" width="140" height="70" class="agent-box" rx="6"/>
+                  <text x="610" y="92" class="agent-label">Agent B</text>
+                  <text x="610" y="108" class="agent-sub">text → encode</text>
+                  <path d="M260,95 L540,95" class="arrow text" marker-end="url(#arrW)"/>
+                  <text x="400" y="88" text-anchor="middle" fill="var(--warning)" font-family="var(--mono)" font-size="9">text prompt (slow, lossy)</text>
+                  <circle cx="350" cy="95" r="3" class="particle text" opacity="0.9"/>
+                  <circle cx="380" cy="95" r="3" class="particle text" opacity="0.6"/>
+                  <circle cx="410" cy="95" r="3" class="particle text" opacity="0.3"/>
+                </g>
+                <!-- Insight layer -->
+                <g id="layer-insight" class="hidden">
+                  <rect x="120" y="60" width="140" height="70" class="agent-box" rx="6"/>
+                  <text x="190" y="92" class="agent-label">Agent A</text>
+                  <text x="190" y="108" class="agent-sub">hidden state</text>
+                  <rect x="540" y="60" width="140" height="70" class="agent-box" rx="6"/>
+                  <text x="610" y="92" class="agent-label">Agent B</text>
+                  <text x="610" y="108" class="agent-sub">hidden state</text>
+                  <path d="M260,95 L540,95" class="arrow latent" marker-end="url(#arrA)"/>
+                  <text x="400" y="88" text-anchor="middle" fill="var(--accent)" font-family="var(--mono)" font-size="9">direct latent pass (fast, lossless)</text>
+                  <circle cx="350" cy="95" r="3" class="particle" opacity="0.9"/>
+                  <circle cx="380" cy="95" r="3" class="particle" opacity="0.6"/>
+                  <circle cx="410" cy="95" r="3" class="particle" opacity="0.3"/>
+                </g>
+                <!-- Bridge layer -->
+                <g id="layer-bridge" class="hidden">
+                  <rect x="80" y="50" width="120" height="60" class="agent-box" rx="6"/>
+                  <text x="140" y="82" class="agent-label">Planner</text>
+                  <rect x="340" y="50" width="120" height="60" class="module-box" rx="4"/>
+                  <text x="400" y="82" class="module-label">RecursiveLink</text>
+                  <text x="400" y="94" class="module-label" style="font-size:7px; fill:var(--text-dim)">~13M params</text>
+                  <rect x="600" y="50" width="120" height="60" class="agent-box" rx="6"/>
+                  <text x="660" y="82" class="agent-label">Critic</text>
+                  <path d="M200,80 L340,80" class="arrow latent" marker-end="url(#arrA)"/>
+                  <path d="M460,80 L600,80" class="arrow latent" marker-end="url(#arrA)"/>
+                </g>
+                <!-- Loop layer -->
+                <g id="layer-loop" class="hidden">
+                  <rect x="120" y="40" width="120" height="55" class="agent-box" id="loop-planner" rx="6"/>
+                  <text x="180" y="70" class="agent-label">Planner</text>
+                  <rect x="340" y="40" width="120" height="55" class="agent-box" id="loop-critic" rx="6"/>
+                  <text x="400" y="70" class="agent-label">Critic</text>
+                  <rect x="560" y="40" width="120" height="55" class="agent-box" id="loop-solver" rx="6"/>
+                  <text x="620" y="70" class="agent-label">Solver</text>
+                  <path d="M240,67 L340,67" class="arrow latent" marker-end="url(#arrA)"/>
+                  <path d="M460,67 L560,67" class="arrow latent" marker-end="url(#arrA)"/>
+                  <path d="M620,95 L620,140 L180,140 L180,95" class="arrow inner" marker-end="url(#arrG)" opacity="0.6"/>
+                  <text x="400" y="155" text-anchor="middle" fill="var(--success)" font-family="var(--mono)" font-size="9" opacity="0.8">closed-loop recursion</text>
+                </g>
+                <!-- Training layer -->
+                <g id="layer-training" class="hidden">
+                  <rect x="100" y="40" width="140" height="55" class="agent-box" rx="6"/>
+                  <text x="170" y="70" class="agent-label">Inner Loop</text>
+                  <text x="170" y="82" class="agent-sub">cosine regression</text>
+                  <rect x="340" y="40" width="140" height="55" class="agent-box" rx="6"/>
+                  <text x="410" y="70" class="agent-label">Outer Loop</text>
+                  <text x="410" y="82" class="agent-sub">cross-entropy end-to-end</text>
+                  <rect x="580" y="40" width="140" height="55" class="agent-box" rx="6"/>
+                  <text x="650" y="70" class="agent-label">Frozen</text>
+                  <text x="650" y="82" class="agent-sub">base LLM weights</text>
+                  <path d="M240,67 L340,67" class="arrow latent" marker-end="url(#arrA)"/>
+                  <path d="M480,67 L580,67" class="arrow latent" marker-end="url(#arrA)"/>
+                  <text x="400" y="125" text-anchor="middle" fill="var(--accent)" font-family="var(--mono)" font-size="9">only RecursiveLink trains (~$4.27)</text>
+                </g>
+                <!-- Results layer -->
+                <g id="layer-results" class="hidden">
+                  <text x="400" y="60" text-anchor="middle" fill="var(--text)" font-family="var(--sans)" font-size="14" font-weight="800">Empirical Results</text>
+                  <rect x="80" y="90" width="150" height="70" class="agent-box" rx="6"/>
+                  <text x="155" y="120" text-anchor="middle" fill="var(--accent)" font-family="var(--mono)" font-size="18" font-weight="800">+8.3%</text>
+                  <text x="155" y="140" text-anchor="middle" fill="var(--text-dim)" font-family="var(--mono)" font-size="9">accuracy gain</text>
+                  <rect x="270" y="90" width="150" height="70" class="agent-box" rx="6"/>
+                  <text x="345" y="120" text-anchor="middle" fill="var(--success)" font-family="var(--mono)" font-size="18" font-weight="800">2.4×</text>
+                  <text x="345" y="140" text-anchor="middle" fill="var(--text-dim)" font-family="var(--mono)" font-size="9">inference speedup</text>
+                  <rect x="460" y="90" width="150" height="70" class="agent-box" rx="6"/>
+                  <text x="535" y="120" text-anchor="middle" fill="var(--warning)" font-family="var(--mono)" font-size="18" font-weight="800">−75.6%</text>
+                  <text x="535" y="140" text-anchor="middle" fill="var(--text-dim)" font-family="var(--mono)" font-size="9">token usage</text>
+                  <rect x="650" y="90" width="100" height="70" class="agent-box" rx="6"/>
+                  <text x="700" y="120" text-anchor="middle" fill="var(--text)" font-family="var(--mono)" font-size="14" font-weight="800">$4.27</text>
+                  <text x="700" y="140" text-anchor="middle" fill="var(--text-dim)" font-family="var(--mono)" font-size="9">training cost</text>
+                </g>
+              </svg>
+              <div class="tooltip" id="tooltip"></div>
+            </div>
+            <div class="viz-caption" id="vizCaption">
+              <strong>Text handoff.</strong> Agent A decodes its hidden state into text. Agent B re-encodes that text into its own hidden state. Two expensive vocabulary projections per handoff, plus information loss.
+            </div>
+            <div class="sim-controls" id="simControls" style="display:none;">
+              <button class="sim-btn" onclick="prevStep()">← Prev</button>
+              <button class="sim-btn primary" onclick="togglePlay()" id="playBtn">▶ Play Loop</button>
+              <button class="sim-btn" onclick="nextStep()">Next →</button>
+              <span style="color:var(--text-dim); font-size:0.7rem; margin-left:auto;">Speed</span>
+              <input type="range" class="speed-slider" id="speedSlider" min="1" max="10" value="5"/>
+            </div>
+          </div>
+
+          <h2><span class="section-num">02</span> The Insight</h2>
+          <p>
+            What if agents could just <em>think at each other</em>? Instead of forcing latent reasoning through the narrow straw of vocabulary projection, <strong>RecursiveMAS</strong> passes hidden states directly from one agent to another. It treats the entire multi-agent team as a single recursive computation graph — one "mega-model" where each agent is a layer.
+          </p>
+          <p>
+            This is analogous to how ResNets skip connections work inside a single model, but scaled across model boundaries. The agents don't need to agree on a language because they speak in vectors.
+          </p>
+
+          <h2><span class="section-num">03</span> The RecursiveLink Bridge</h2>
+          <p>
+            The magic is a tiny module: <strong>RecursiveLink</strong> (~13M parameters, just 0.31% of the total system). It's a 2-layer residual network with two modes:
+          </p>
+          <ul>
+            <li><strong>Inner Link</strong> — folds an agent's own last-layer hidden state back into its input embedding space, creating an in-distribution "latent thought" stream inside the same agent.</li>
+            <li><strong>Outer Link</strong> — projects latent thoughts from one agent to another, even across different hidden dimensions, so heterogeneous models can condition on each other directly.</li>
+          </ul>
+          <p>
+            The residual branch preserves original latent semantics; the module only learns the distributional shift. Base LLM parameters stay completely frozen. You're not retraining Qwen or Llama — you're learning a <em>translation layer</em> between their internal dialects.
+          </p>
+
+          <h2><span class="section-num">04</span> The System Loop</h2>
+          <p>
+            Agents are arranged like layers in a recursive language model. The inner link feeds generated hidden states back as the next input. The outer link forwards latent thoughts to the next agent. The last agent feeds back to the first, closing the loop.
+          </p>
+          <p>
+            <strong>Only the final recursion round decodes to text.</strong> Everything intermediate stays in latent space. That means 10 rounds of deliberation between three agents costs roughly the same decode budget as a single forward pass through one agent — minus the tiny overhead of the RecursiveLink transforms.
+          </p>
+
+          <div class="table-wrap">
+            <table>
+              <tr><th>Pattern</th><th>Topology</th><th>Example Models</th></tr>
+              <tr>
+                <td><span class="tag-pill">Sequential</span></td>
+                <td>Planner → Critic → Solver</td>
+                <td>Qwen3-1.7B, Llama3.2-1B, Qwen2.5-Math-1.5B</td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill">Mixture</span></td>
+                <td>Specialists → Summarizer</td>
+                <td>DeepSeek-R1, Qwen-Coder, BioMistral-7B</td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill">Distillation</span></td>
+                <td>Expert → Learner</td>
+                <td>Qwen3.5-9B → Qwen3.5-4B</td>
+              </tr>
+              <tr>
+                <td><span class="tag-pill">Deliberation</span></td>
+                <td>Reflector ↔ Tool-Caller</td>
+                <td>Qwen3.5-4B + search tool</td>
+              </tr>
+            </table>
+          </div>
+
+          <h2><span class="section-num">05</span> How It Learns</h2>
+          <p>
+            Because the system is a closed loop, you can't train agents in isolation. RecursiveMAS uses a two-phase regime:
+          </p>
+          <ul>
+            <li><strong>Inner loop:</strong> warm-start each agent's inner link via cosine regression, aligning latent thoughts toward the ground-truth answer embedding.</li>
+            <li><strong>Outer loop:</strong> unroll the full system for <em>n</em> recursion rounds and minimize cross-entropy on the final textual output. Gradients backpropagate through the entire trace across agents and rounds.</li>
+          </ul>
+          <p>
+            The theoretical result is elegant: when token predictions are confident (low entropy), text-based recursive SFT suffers vanishing gradients because discrete token distributions saturate. RecursiveLink maintains near-constant gradient norms because it backpropagates through continuous hidden states rather than through argmax sampling.
+          </p>
+
+          <h2><span class="section-num">06</span> Results</h2>
+          <p>
+            On standard multi-agent reasoning benchmarks, RecursiveMAS shows consistent gains across all four collaboration patterns:
+          </p>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span class="metric-val" id="m1">+8.3%</span>
+              <span class="metric-lbl">accuracy gain</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-val" id="m2">2.4×</span>
+              <span class="metric-lbl">inference speedup</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-val" id="m3">−75.6%</span>
+              <span class="metric-lbl">token reduction</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-val" id="m4">$4.27</span>
+              <span class="metric-lbl">training cost</span>
+            </div>
+          </div>
+          <p>
+            The speedup comes from dropping per-step vocabulary projection. Token reduction comes from eliminating intermediate decoding. The accuracy gain comes from preserving latent nuance that text serialization destroys. The low training cost comes from only updating the 13M-parameter RecursiveLink while keeping all base LLMs frozen.
+          </p>
+
+          <h2><span class="section-num">07</span> Why It Matters for Agentra</h2>
+          <p>
+            If you're building agentic systems and wrestling with framework collapse — where multi-agent setups devolve into one long prompt — RecursiveMAS is a signal worth tracking. It treats coordination as an <strong>infrastructure layer</strong> rather than a text-formatting layer.
+          </p>
+          <p>
+            For Agentra's initiator-continuator architecture, the concepts transfer directly: lightweight micro-models (8–30M parameters) could serve as on-device initiators that pass latent context to cloud continuators via compact projection modules. The latent-space passing and whole-system backpropagation are techniques we can adapt when training coordination modules between micro initiators and cloud continuators — rather than relying purely on prompt engineering.
+          </p>
+          <p>
+            The paper's code is already public. The models are on HuggingFace. The whole system trains for less than a coffee. That's the kind of research-to-implementation gap we like to close.
+          </p>
+
+          <h2><span class="section-num">08</span> Quick Start</h2>
+          <pre><code># clone the official implementation
+$ uv venv --python 3.10
+$ source .venv/bin/activate
+$ uv pip install -r requirements.txt
+
+# load a pre-built system
+&gt;&gt;&gt; from system_loader import load_mas_system
+&gt;&gt;&gt; mas = load_mas_system(style="sequential_light", device="cuda")
+&gt;&gt;&gt; planner = mas.agents["planner"].model
+&gt;&gt;&gt; critic  = mas.agents["critic"].model
+&gt;&gt;&gt; solver  = mas.agents["solver"].model</code></pre>
+          <p style="font-size:0.8rem; color:var(--text-dim);">
+            Full implementation: <a href="https://github.com/RecursiveMAS/RecursiveMAS" target="_blank" style="color:var(--accent);">github.com/RecursiveMAS/RecursiveMAS</a> — Models: <a href="https://huggingface.co/RecursiveMAS" target="_blank" style="color:var(--accent);">huggingface.co/RecursiveMAS</a>
+          </p>
+        </div>
+      </div>
+      <div class="post-footer">
+        <a href="/blog/">← back to blog/</a>
+        <a href="https://github.com/RecursiveMAS/RecursiveMAS" target="_blank">official repo ↗</a>
+      </div>
+    </article>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <span class="separator">|</span>
+        <a href="https://github.com/Agentra-Labs" target="_blank">GitHub</a>
+        <span class="separator">|</span>
+        <a href="https://x.com/agentralabs" target="_blank">X / Twitter</a>
+      </div>
+      <p class="copyright">© 2026 Agentra-Labs. MIT License.</p>
+    </footer>
+  </div>
+
+  <script>
+    const captions = [
+      "<strong>Text handoff.</strong> Agent A decodes its hidden state into text. Agent B re-encodes that text into its own hidden state. Two expensive vocabulary projections per handoff, plus information loss.",
+      "<strong>Latent telepathy.</strong> Agents pass hidden states directly. No decode/encode bottleneck. Information stays in the native vector space of the receiving model.",
+      "<strong>The bridge.</strong> RecursiveLink (~13M params, 2-layer residual) translates between agent dialects. Inner Link recycles within an agent; Outer Link crosses agent boundaries.",
+      "<strong>Closed loop.</strong> Planner → Critic → Solver → back to Planner. Only the final round decodes to text. Intermediate recursion stays entirely in latent space.",
+      "<strong>Two-phase training.</strong> Inner loop warms up with cosine regression. Outer loop unrolls the full system and backpropagates end-to-end. Base LLMs stay frozen.",
+      "<strong>Empirical gains.</strong> +8.3% accuracy, 2.4× speedup, −75.6% tokens, trained for ~$4.27. The overhead of the bridge is negligible compared to the savings."
+    ];
+
+    let step = 0;
+    let playing = false;
+    let playInterval = null;
+    const layers = ['layer-problem','layer-insight','layer-bridge','layer-loop','layer-training','layer-results'];
+
+    function setStep(n) {
+      step = Math.max(0, Math.min(5, n));
+      layers.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (i === step) { el.classList.remove('hidden', 'dimmed'); }
+        else if (i < step) { el.classList.add('dimmed'); el.classList.remove('hidden'); }
+        else { el.classList.add('hidden'); el.classList.remove('dimmed'); }
+      });
+      document.querySelectorAll('.step-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === step);
+      });
+      document.getElementById('vizCaption').innerHTML = captions[step];
+      // show sim controls on loop step
+      document.getElementById('simControls').style.display = (step === 3) ? 'flex' : 'none';
+      stopPlay();
+    }
+    function nextStep() { setStep(step + 1); }
+    function prevStep() { setStep(step - 1); }
+
+    function togglePlay() {
+      playing = !playing;
+      const btn = document.getElementById('playBtn');
+      btn.textContent = playing ? '⏸ Pause' : '▶ Play Loop';
+      btn.classList.toggle('primary', !playing);
+      if (playing) {
+        if (step !== 3) setStep(3);
+        startParticles();
+      } else {
+        stopParticles();
+      }
+    }
+    function stopPlay() {
+      playing = false;
+      const btn = document.getElementById('playBtn');
+      if (btn) { btn.textContent = '▶ Play Loop'; btn.classList.add('primary'); }
+      stopParticles();
+    }
+
+    let particleRAF = null;
+    let particles = [];
+    function startParticles() {
+      stopParticles();
+      particles = [];
+      const svg = document.getElementById('vizSvg');
+      const speed = +document.getElementById('speedSlider').value;
+      // spawn particles along the loop path
+      const pathData = [
+        {x:240,y:67,tx:340,ty:67,color:'var(--accent)',label:'planner-critic'},
+        {x:460,y:67,tx:560,ty:67,color:'var(--accent)',label:'critic-solver'},
+        {x:620,y:95,tx:620,ty:140,color:'var(--success)',label:'solver-feedback'},
+        {x:620,y:140,tx:180,ty:140,color:'var(--success)',label:'feedback-return'},
+        {x:180,y:140,tx:180,ty:95,color:'var(--success)',label:'return-planner'}
+      ];
+      let t = 0;
+      function tick() {
+        const spd = +document.getElementById('speedSlider').value;
+        t += 0.01 * spd;
+        // clean old
+        particles.forEach(p => { if(p.el && p.el.parentNode) p.el.parentNode.removeChild(p.el); });
+        particles = [];
+        // spawn new
+        pathData.forEach((seg, i) => {
+          const phase = (t + i * 0.25) % 1;
+          const el = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          const x = seg.x + (seg.tx - seg.x) * phase;
+          const y = seg.y + (seg.ty - seg.y) * phase;
+          el.setAttribute('cx', x);
+          el.setAttribute('cy', y);
+          el.setAttribute('r', 3.5);
+          el.setAttribute('fill', seg.color);
+          el.setAttribute('opacity', 0.8);
+          svg.appendChild(el);
+          particles.push({el});
+        });
+        if (playing) particleRAF = requestAnimationFrame(tick);
+      }
+      tick();
+    }
+    function stopParticles() {
+      if (particleRAF) cancelAnimationFrame(particleRAF);
+      particleRAF = null;
+      particles.forEach(p => { if(p.el && p.el.parentNode) p.el.parentNode.removeChild(p.el); });
+      particles = [];
+    }
+
+    // Tooltip helpers
+    const tooltip = document.getElementById('tooltip');
+    const canvas = document.getElementById('vizCanvas');
+    const tipMap = {
+      'loop-planner': 'Planner: generates initial strategy. Operates in latent space until final decode.',
+      'loop-critic': 'Critic: evaluates plan quality. Receives latent states directly from Planner.',
+      'loop-solver': 'Solver: executes refined solution. Passes feedback back to Planner to close the loop.',
+    };
+    document.querySelectorAll('.agent-box').forEach(box => {
+      box.addEventListener('mouseenter', e => {
+        const msg = tipMap[box.id];
+        if (!msg) return;
+        tooltip.textContent = msg;
+        tooltip.classList.add('show');
+      });
+      box.addEventListener('mousemove', e => {
+        const rect = canvas.getBoundingClientRect();
+        tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+        tooltip.style.top = (e.clientY - rect.top + 12) + 'px';
+      });
+      box.addEventListener('mouseleave', () => tooltip.classList.remove('show'));
+    });
+
+    // animate metric cards on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.metric-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(12px)';
+      card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(card);
+    });
+
+    // init
+    setStep(0);
+  </script>
+</body>
+</html>

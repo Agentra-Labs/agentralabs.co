@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agentra-Labs — Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css"/>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    :root { --bg-blog: #090b10; }
+    body { background: var(--bg-blog); }
+    .desktop { max-width: 900px; }
+    .window.blog-list { margin-top: 1rem; }
+    .blog-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.75rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+    }
+    .blog-header h2 {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      color: var(--folder);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .post-list { padding: 0.5rem 0; }
+    .post-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      transition: background 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .post-row:last-child { border-bottom: none; }
+    .post-row:hover { background: rgba(88,166,255,0.04); }
+    .post-icon {
+      width: 32px; height: 32px;
+      display: grid; place-items: center;
+      border-radius: 6px;
+      background: rgba(88,166,255,0.08);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .post-meta h3 {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    .post-meta p {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+    .post-date {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+    .post-tags {
+      display: flex; gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+    .tag.accent { color: var(--accent); border-color: rgba(88,166,255,0.25); }
+    @media (max-width: 640px) {
+      .post-row { grid-template-columns: auto 1fr; }
+      .post-date { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scanlines"></div>
+  <div class="crt-overlay"></div>
+  <div class="desktop">
+    <header class="top-bar">
+      <div class="window-controls">
+        <span class="control close">✕</span>
+        <span class="control min">—</span>
+        <span class="control max">▢</span>
+      </div>
+      <div class="breadcrumbs">
+        <span>github.com/Agentra-Labs</span>
+        <span class="separator">→</span>
+        <span class="current">blog/</span>
+      </div>
+      <div class="status-right">
+        <span class="indicator online"></span>
+        <span>org</span>
+      </div>
+    </header>
+
+    <section class="window blog-list">
+      <div class="blog-header">
+        <h2>📁 posts/</h2>
+        <span style="font-family:var(--mono);font-size:0.75rem;color:var(--text-dim);">1 item</span>
+      </div>
+      <div class="post-list">
+        <a href="./recursivemas.html" class="post-row">
+          <div class="post-icon">📖</div>
+          <div class="post-meta">
+            <h3>RecursiveMAS: Latent-Space Multi-Agent Systems</h3>
+            <p>A visual deep-dive into why passing hidden states beats passing text — and how a 13M-parameter bridge module rewrites multi-agent collaboration.</p>
+            <div class="post-tags">
+              <span class="tag accent">#multi-agent</span>
+              <span class="tag">#latent-space</span>
+              <span class="tag">#research</span>
+            </div>
+          </div>
+          <div class="post-date">2026-05-06</div>
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <span class="separator">|</span>
+        <a href="https://github.com/Agentra-Labs" target="_blank">GitHub</a>
+        <span class="separator">|</span>
+        <a href="https://x.com/agentralabs" target="_blank">X / Twitter</a>
+      </div>
+      <p class="copyright">© 2026 Agentra-Labs. MIT License.</p>
+    </footer>
+  </div>
+</body>
+</html>
