@@ -1,66 +1,83 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Agentra-Labs — Autonomous AI Systems</title>
+  <title>Agentra Labs — R&D Intelligence for Tech Startups</title>
+  <meta name="description" content="Agentra Labs is an R&D intelligence agency. We scan arxiv, map papers to product gaps, and deliver grounded competitive research for tech startups." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css"/>
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="icon" type="image/webp" href="/favicon.webp">
   <link rel="apple-touch-icon" href="/favicon.png">
+
+  <!-- OG -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Agentra Labs — R&D Intelligence for Tech Startups" />
+  <meta property="og:description" content="We scan arxiv, map papers to product gaps, and deliver grounded competitive intelligence — so you build what matters." />
+  <meta property="og:image" content="https://image.pollinations.ai/prompt/dark%20retro%20OS%20terminal%20with%20neon%20accent%2C%20text%20AGENTRA%20LABS%2C%20R%26D%20intelligence%20agency%2C%20research%20papers%20to%20product%20mapping%2C%20grid%20pattern%2C%20industrial%20design?width=1200&height=630&seed=42&nologo=true" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Agentra Labs — R&D Intelligence for Tech Startups" />
+  <meta name="twitter:description" content="We scan arxiv, map papers to product gaps, and deliver grounded competitive intelligence." />
+  <meta name="twitter:image" content="https://image.pollinations.ai/prompt/dark%20retro%20OS%20terminal%20with%20neon%20accent%2C%20text%20AGENTRA%20LABS%2C%20R%26D%20intelligence%20agency%2C%20research%20papers%20to%20product%20mapping%2C%20grid%20pattern%2C%20industrial%20design?width=1200&height=630&seed=42&nologo=true" />
 </head>
 <body>
   <div class="scanlines"></div>
   <div class="crt-overlay"></div>
 
   <div class="desktop">
-    <!-- Header -->
+
+    <!-- Top Bar -->
     <header class="top-bar">
       <div class="window-controls">
-        <span class="control close">✕</span>
-        <span class="control min">—</span>
-        <span class="control max">▢</span>
+        <span class="control close">x</span>
+        <span class="control min">&mdash;</span>
+        <span class="control max">&square;</span>
       </div>
       <div class="breadcrumbs">
-        <span>github.com/Agentra-Labs</span>
-        <span class="separator">→</span>
-        <span><a href="/blog/" class="nav-link">blog/</a></span>
-        <span class="separator">→</span>
-        <span class="current">README.md</span>
+        <span>agentralabs.co</span>
+        <span class="separator">&rarr;</span>
+        <span class="current">INDEX.md</span>
       </div>
       <div class="status-right">
         <span class="indicator online"></span>
-        <span>org</span>
+        <span>rd.sh</span>
       </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <main class="window hero-window">
       <div class="title-bar">
-        <span class="icon">💾</span>
-        <span>about_us.exe</span>
+        <span class="icon">&#9885;</span>
+        <span>agency.rd</span>
       </div>
       <div class="content hero-content">
-        <!-- Animated Logo -->
         <div class="glitch-container">
           <div class="logo-frame">
             <img src="logo.webp" alt="Agentra Labs" class="logo-img" />
             <div class="logo-glow"></div>
           </div>
         </div>
+
+        <h1 class="hero-headline">
+          We turn <span class="highlight">research</span> into your<span class="cursor-blink">|</span><br>
+          competitive advantage.
+        </h1>
+
         <p class="tagline">
-          Open-source AI agent company.<br>
-          Radical transparency. Public collaboration. Building the agentic future.
+          Agentra Labs is an R&D intelligence agency for tech startups and companies.
+          We scan arxiv, map papers to product gaps, and deliver grounded competitive research &mdash;
+          so you build what matters, six months before everyone else catches on.
         </p>
+
         <div class="cta-row">
-          <a href="https://github.com/Agentra-Labs" class="btn primary" target="_blank"> ⌨ View GitHub </a>
-          <a href="mailto:hello@agentra.labs" class="btn secondary"> ✉ Contact </a>
+          <a href="mailto:hello@agentra.labs" class="btn primary">&#x2709; Request a sample mapping</a>
+          <a href="#services" class="btn secondary">&darr; See what we do</a>
         </div>
+
         <div class="scroll-indicator">
           <span>Scroll</span>
           <svg width="12" height="12" viewBox="0 0 12 12">
@@ -70,146 +87,168 @@
       </div>
       <div class="status-bar">
         <span id="clock">00:00:00</span>
-        <span>5 public repos</span>
+        <span>active clients: open</span>
       </div>
     </main>
 
-    <!-- Public Repos -->
-    <section class="grid-folder">
-      <h2 class="folder-title">📁 repositories/</h2>
-      <div class="projects">
-        <div class="project-card" tabindex="0">
-          <div class="card-header">
-            <span class="file-icon">📄</span>
-            <span class="file-type">.py</span>
-          </div>
-          <h3>arxiv2product</h3>
-          <p>Multi-agent pipeline: ArXiv papers → ranked startup ideas + market analysis</p>
-          <div class="meta">
-            <span class="lang">Python</span>
-            <span class="stars">★ 14</span>
-          </div>
-          <a href="https://github.com/Agentra-Labs/arxiv2product" target="_blank" class="card-link">↗ open</a>
+    <!-- Services -->
+    <section id="services" class="services-section">
+      <h2 class="section-head">&#x25C6; What we deliver</h2>
+      <div class="services-grid">
+
+        <div class="service-card">
+          <div class="service-icon">&#x1F4E6;</div>
+          <h3>Paper-to-Product Mapping</h3>
+          <p>We match arxiv papers and conference proceedings to <em>your</em> product domain. Each mapping answers: what does this paper enable that you&rsquo;re not building yet, who&rsquo;s closest to building it, and what&rsquo;s the moat?</p>
+          <div class="service-meta">avg. turnaround: 48hrs</div>
         </div>
 
-        <div class="project-card" tabindex="0">
-          <div class="card-header">
-            <span class="file-icon">📦</span>
-            <span class="file-type">.ts</span>
-          </div>
-          <h3>paper2saas</h3>
-          <p>Turns research papers into SaaS products — automated prototype generation</p>
-          <div class="meta">
-            <span class="lang">TypeScript</span>
-            <span class="stars">★ 8</span>
-          </div>
-          <a href="https://github.com/Agentra-Labs/paper2saas" target="_blank" class="card-link">↗ open</a>
+        <div class="service-card">
+          <div class="service-icon">&#x25B3;</div>
+          <h3>Competitive Intelligence</h3>
+          <p>We map research to competitor products. Find the gaps they missed, the papers they should have read, and the technical decisions they&rsquo;ll regret in six months. Delivered as a ranked threat/opportunity matrix.</p>
+          <div class="service-meta">includes YC cohort triangulation</div>
         </div>
 
-        <div class="project-card" tabindex="0">
-          <div class="card-header">
-            <span class="file-icon">🔥</span>
-            <span class="file-type">.py</span>
-          </div>
-          <h3>nova-forge</h3>
-          <p>Agent framework for building autonomous systems</p>
-          <div class="meta">
-            <span class="lang">Python</span>
-            <span class="stars">★ 1</span>
-          </div>
-          <a href="https://github.com/Agentra-Labs/nova-forge" target="_blank" class="card-link">↗ open</a>
+        <div class="service-card">
+          <div class="service-icon">&#x231B;</div>
+          <h3>Deep Technical Audits</h3>
+          <p>A single paper can change your architecture. We do a full-stack analysis: where does this approach plug into your system, what breaks, what gets faster, and what&rsquo;s the migration cost. Implementation notes included.</p>
+          <div class="service-meta">architecture diagrams + code-level recs</div>
         </div>
 
-        <div class="project-card" tabindex="0">
-          <div class="card-header">
-            <span class="file-icon">📊</span>
-            <span class="file-type">.html</span>
-          </div>
-          <h3>pyDep</h3>
-          <p>Visualize Python dependencies — trace function calls across files</p>
-          <div class="meta">
-            <span class="lang">HTML</span>
-            <span class="stars">★ 0</span>
-          </div>
-          <a href="https://github.com/Agentra-Labs/pyDep" target="_blank" class="card-link">↗ open</a>
-        </div>
-
-        <div class="project-card" tabindex="0">
-          <div class="card-header">
-            <span class="file-icon">📖</span>
-            <span class="file-type">.html</span>
-          </div>
-          <h3>LaMd</h3>
-          <p>LaTeX + Markdown + Python block viewer — structured docs made easy</p>
-          <div class="meta">
-            <span class="lang">HTML</span>
-            <span class="stars">★ 0</span>
-          </div>
-          <a href="https://github.com/Agentra-Labs/LaMd" target="_blank" class="card-link">↗ open</a>
-        </div>
       </div>
     </section>
 
-    <!-- Manifesto Window -->
-    <section class="window manifesto-window">
-      <div class="title-bar">
-        <span class="icon">📄</span>
-        <span>MANIFESTO.TXT</span>
+    <!-- Past Research -->
+    <section class="research-showcase">
+      <h2 class="section-head">&#x25C6; Past research</h2>
+      <p class="section-sub">Sample work. Each report took an arxiv paper and turned it into an actionable product and competitive intelligence briefing within 48 hours.</p>
+
+      <div class="research-grid">
+
+        <a href="https://www.notion.so/agentralabs/35ef9d6dc0a381a1adc1fdbf7966e05f" target="_blank" class="research-card">
+          <div class="research-badge">most recent</div>
+          <div class="research-meta">arXiv 2604.19642 &bull; May 2026</div>
+          <h3>Micro Language Models for Instant Responses</h3>
+          <p class="research-tagline">8.8M-parameter on-device model generates response prefixes in &lt;60ms, hands off mid-sentence to a frontier cloud model. Perceived latency drops from 1.5s to under 100ms.</p>
+          <div class="research-scope">
+            <span class="tag">6 YC startups mapped</span>
+            <span class="tag">smart earbuds deep-dive</span>
+            <span class="tag">commit-and-continue architecture</span>
+          </div>
+          <span class="research-link">&rarr; View on Notion</span>
+        </a>
+
+        <a href="#" class="research-card locked">
+          <div class="research-meta">arXiv 2310.xxxxx &bull; Apr 2026</div>
+          <h3>PersonaVLM: On-Device Personal LLMs</h3>
+          <p class="research-tagline">Mapping the on-device persona-aware LLM space across 12 YC startups, identifying product gaps in wearables, healthcare, and productivity.</p>
+          <div class="research-scope">
+            <span class="tag">12 YC startups analyzed</span>
+            <span class="tag">persona-aware edge AI</span>
+            <span class="tag">product gap matrix</span>
+          </div>
+          <span class="research-link locked-text">&#x1F512; client report</span>
+        </a>
+
+        <a href="/blog/recursivemas.html" class="research-card">
+          <div class="research-meta">technical deep-dive &bull; Apr 2026</div>
+          <h3>RecursiveMAS: Latent-Space Multi-Agent Systems</h3>
+          <p class="research-tagline">Why passing hidden states beats passing text &mdash; and how a 13M-parameter bridge module rewrites multi-agent collaboration. Interactive visualization.</p>
+          <div class="research-scope">
+            <span class="tag">architecture breakdown</span>
+            <span class="tag">interactive SVG</span>
+            <span class="tag">research blog</span>
+          </div>
+          <span class="research-link">&rarr; Read the deep-dive</span>
+        </a>
+
       </div>
-      <div class="content manifesto-content">
-        <pre class="typewriter">
-AGENTRA LABS — Autonomous Intelligence, Built Open.
+    </section>
 
-We are an open-source AI agent company.
-Everything we build is public. Every decision is visible.
-No black boxes. No proprietary lock-in.
-
-We're creating the tools that let autonomous
-systems research, code, and grow — with full
-transparency so anyone can inspect, fork, or
-contribute.
-
-This is agentic development, in the open.
-You're welcome to watch, participate, or build
-something better using what we've shared.
-
-Join us. Or fork us. Either way, the code speaks.
-        </pre>
+    <!-- How It Works -->
+    <section class="window process-window">
+      <div class="title-bar">
+        <span class="icon">&#9881;</span>
+        <span>HOW_IT_WORKS.SH</span>
+      </div>
+      <div class="content process-content">
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-num">01</div>
+            <div class="step-body">
+              <h4>You tell us your domain</h4>
+              <p>Product area, tech stack, competitors, open research questions. One 15-minute call or a Notion doc is all it takes.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <div class="step-body">
+              <h4>We scan arxiv + conferences</h4>
+              <p>We run multi-agent pipelines across arxiv, bioRxiv, NeurIPS, ICML, ACL, CVPR, and more &mdash; plus YC batch analysis for competitor signals.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <div class="step-body">
+              <h4>You get a mapping report in 48hrs</h4>
+              <p>Ranked paper-to-product matches, competitive gap analysis, and architecture-level integration notes. No fluff. Grounded citations throughout.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">04</div>
+            <div class="step-body">
+              <h4>We go deeper if you want</h4>
+              <p>Follow-up deep technical audits, implementation sprints, or ongoing research monitoring with weekly digests.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Blog teaser -->
     <section class="window blog-teaser">
       <div class="title-bar">
-        <span class="icon">📑</span>
-        <span>LATEST.md</span>
+        <span class="icon">&#x1F4D1;</span>
+        <span>OPEN_RESEARCH.md</span>
       </div>
       <div class="content blog-teaser-content">
         <a href="/blog/recursivemas.html" class="blog-teaser-link">
           <h3>RecursiveMAS: Latent-Space Multi-Agent Systems</h3>
-          <p>A visual deep-dive into why passing hidden states beats passing text — and how a 13M-parameter bridge module rewrites multi-agent collaboration.</p>
-          <span class="read-more">→ Read</span>
+          <p>A visual deep-dive into why passing hidden states beats passing text &mdash; and how a 13M-parameter bridge module rewrites multi-agent collaboration.</p>
+          <span class="read-more">&rarr; Read</span>
         </a>
+      </div>
+    </section>
+
+    <!-- CTA bottom -->
+    <section class="cta-section">
+      <div class="cta-window">
+        <h2>Want a free sample mapping for your startup?</h2>
+        <p>Tell us your domain. We'll pick one relevant arxiv paper from the last 30 days and send you a mini mapping report &mdash; no cost, no commitment.</p>
+        <a href="mailto:hello@agentra.labs" class="btn primary cta-large">&#x2709; hello@agentra.labs</a>
+        <p class="cta-footnote">Also on <a href="https://x.com/agentralabs" target="_blank">X</a> and <a href="https://github.com/Agentra-Labs" target="_blank">GitHub</a>.</p>
       </div>
     </section>
 
     <!-- Stats Bar -->
     <section class="stats-bar">
       <div class="stat-item">
-        <span class="stat-value" data-count="5">5</span>
+        <span class="stat-value" data-count="17">17</span>
         <span class="stat-label">public repos</span>
       </div>
       <div class="stat-item">
-        <span class="stat-value" data-count="23">23</span>
+        <span class="stat-value" data-count="27">27</span>
         <span class="stat-label">total stars</span>
       </div>
       <div class="stat-item">
-        <span class="stat-value" data-count="2">2</span>
-        <span class="stat-label">followers</span>
+        <span class="stat-value" data-count="3">3</span>
+        <span class="stat-label">deep mapping reports</span>
       </div>
       <div class="stat-item">
-        <span class="stat-value" data-count="6">6</span>
-        <span class="stat-label">contributors</span>
+        <span class="stat-value" data-count="13">13</span>
+        <span class="stat-label">active tools &amp; agents</span>
       </div>
     </section>
 
@@ -222,12 +261,10 @@ Join us. Or fork us. Either way, the code speaks.
         <span class="separator">|</span>
         <a href="https://x.com/agentralabs" target="_blank">X / Twitter</a>
       </div>
-      <p class="copyright">
-        © 2026 Agentra-Labs. MIT License.
-      </p>
+      <p class="copyright">&copy; 2026 Agentra Labs. MIT License.</p>
     </footer>
   </div>
 
   <script src="script.js"></script>
 </body>
-</html>
+</html></</parameter>
