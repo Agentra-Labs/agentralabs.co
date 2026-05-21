@@ -654,6 +654,16 @@ img { display: block; max-width: 100%; }
 .cta__small a { color: var(--accent); text-decoration: underline; }
 .cta__form-card { max-width: 440px; margin-left: auto; }
 
+@media (min-width: 901px) {
+  .cta__form-card {
+    transition: max-width .45s cubic-bezier(.34,1.56,.64,1), box-shadow .45s ease;
+  }
+  .cta__form-card:focus-within {
+    max-width: 520px;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.10);
+  }
+}
+
 .contact-form { display: flex; flex-direction: column; gap: .875rem; }
 .form-row { display: flex; flex-direction: column; gap: .35rem; }
 .form-label {
