@@ -1,25 +1,44 @@
 /* ========================================================================
-   Agentra Labs — Retro-Modern Terminal Blend
+   Agentra Labs — Retro-Modern Terminal Blend (Light Base)
    50% retro OS vibes + 40% modern layout + 10% YC minimal
    ======================================================================== */
 
 :root {
-  --bg:        #0B0E14;
-  --bg-2:      #11151F;
-  --bg-window: #131720;
-  --text:      #E8E4DD;
-  --text-2:    #C9D1D9;
-  --text-dim:  #8B949E;
-  --text-muted:#6B7280;
-  --border:    #2A2E38;
-  --border-2:  #30363d;
-  --accent:    #58A6FF;
+  /* Light desktop base (YC / modern) */
+  --bg:        #F5F3EE;
+  --bg-2:      #EDEAE4;
+  --bg-3:      #E5E2DA;
+  --text:      #111317;
+  --text-2:    #3A3F4B;
+  --text-dim:  #6B7280;
+  --text-muted:#9CA3AF;
+  --border:    #D8D5CE;
+  --border-2:  #C8C5BE;
+  --accent:    #2563EB;
   --accent-2:  #4F6EF7;
-  --accent-glow: rgba(88,166,255,0.25);
+  --accent-glow: rgba(37,99,235,0.12);
   --accent-warm:#E07B39;
-  --success:   #3FB950;
-  --warning:   #D29922;
-  --error:     #F85149;
+  --success:   #16A34A;
+  --warning:   #CA8A04;
+  --error:     #DC2626;
+
+  /* Window dark theme — scoped inside .window */
+  --win-bg:        #141821;
+  --win-bg-2:      #1A1D26;
+  --win-bg-window: #141821;
+  --win-bg-card:   #141821;
+  --win-text:      #E8E4DD;
+  --win-text-2:    #C9D1D9;
+  --win-text-dim:  #8B949E;
+  --win-text-muted:#6B7280;
+  --win-border:    #2A2E38;
+  --win-border-2:  #30363d;
+  --win-accent:    #58A6FF;
+  --win-accent-2:  #4F6EF7;
+  --win-accent-glow: rgba(88,166,255,0.25);
+  --win-success:   #3FB950;
+  --win-warning:   #D29922;
+  --win-error:     #F85149;
 
   --font-heading: 'Manrope', -apple-system, sans-serif;
   --font-body:    'Inter', -apple-system, sans-serif;
@@ -28,9 +47,9 @@
   --max-w: 1120px;
   --radius-sm: 6px;
   --radius-md: 8px;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
-  --shadow-md: 0 4px 24px rgba(0,0,0,0.4);
-  --shadow-lg: 0 12px 48px rgba(0,0,0,0.5);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.10);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -50,19 +69,25 @@ body {
 a { color:inherit; text-decoration:none; }
 img { display:block; max-width:100%; }
 
-::selection { background:var(--accent); color:var(--bg); }
+::selection { background:var(--accent); color:#fff; }
 
-/* CRT & Scanlines */
+/* CRT & Scanlines — subtle on light bg */
 .scanlines {
   position:fixed; inset:0;
-  background:repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  background:repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(160,150,140,0.025) 2px,
+    rgba(160,150,140,0.025) 4px
+  );
   pointer-events:none;
   z-index:9999;
-  opacity:0.6;
+  opacity:0.8;
 }
 .crt-vignette {
   position:fixed; inset:0;
-  background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%);
+  background:radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.025) 100%);
   pointer-events:none;
   z-index:9998;
 }
@@ -74,19 +99,37 @@ img { display:block; max-width:100%; }
 }
 
 /* ========================================================================
-   WINDOW FRAME (retro component)
+   WINDOW FRAME (retro component — dark mode scoped)
    ======================================================================== */
 .window {
-  background:var(--bg-window);
-  border:1px solid var(--border);
+  --bg:        var(--win-bg);
+  --bg-2:      var(--win-bg-2);
+  --bg-window: var(--win-bg-window);
+  --bg-card:   var(--win-bg-card);
+  --text:      var(--win-text);
+  --text-2:    var(--win-text-2);
+  --text-dim:  var(--win-text-dim);
+  --text-muted:var(--win-text-muted);
+  --border:    var(--win-border);
+  --border-2:  var(--win-border-2);
+  --accent:    var(--win-accent);
+  --accent-2:  var(--win-accent-2);
+  --accent-glow: var(--win-accent-glow);
+  --success:   var(--win-success);
+  --warning:   var(--win-warning);
+  --error:     var(--win-error);
+
+  background:var(--win-bg);
+  color:var(--win-text);
+  border:1px solid var(--win-border);
   border-radius:var(--radius-md);
   overflow:hidden;
-  box-shadow:var(--shadow-md);
+  box-shadow:0 8px 32px rgba(0,0,0,0.18), var(--shadow-md);
   transition:border-color .25s, box-shadow .25s;
 }
 .window:hover {
-  border-color:var(--border-2);
-  box-shadow:0 4px 32px rgba(88,166,255,0.06), var(--shadow-md);
+  border-color:var(--win-border-2);
+  box-shadow:0 8px 40px rgba(0,0,0,0.22), 0 0 0 1px rgba(88,166,255,0.04);
 }
 .title-bar {
   display:flex;
@@ -97,6 +140,7 @@ img { display:block; max-width:100%; }
   border-bottom:1px solid var(--border);
   font-family:var(--font-mono);
   font-size:.78rem;
+  font-weight:500;
   color:var(--text-dim);
 }
 .title-bar--sm { padding:.35rem .55rem; font-size:.72rem; }
@@ -149,23 +193,23 @@ img { display:block; max-width:100%; }
 .btn--block { width:100%; }
 .btn--primary {
   background:var(--accent);
-  color:var(--bg);
+  color:#fff;
   box-shadow:0 0 16px var(--accent-glow);
 }
 .btn--primary:hover {
-  background:#79B8FF;
-  box-shadow:0 0 28px rgba(88,166,255,0.35);
+  background:#3b82f6;
+  box-shadow:0 0 28px rgba(37,99,235,0.22);
   transform:translateY(-1px);
 }
 .btn--ghost {
   background:transparent;
   color:var(--text);
-  border-color:var(--border);
+  border-color:var(--border-2);
 }
 .btn--ghost:hover {
   border-color:var(--accent);
   color:var(--accent);
-  box-shadow:0 0 12px rgba(88,166,255,0.08);
+  box-shadow:0 0 12px rgba(37,99,235,0.06);
 }
 
 /* ========================================================================
@@ -175,7 +219,7 @@ img { display:block; max-width:100%; }
   position:sticky;
   top:0;
   z-index:100;
-  background:rgba(11,14,20,0.9);
+  background:rgba(245,243,238,0.92);
   backdrop-filter:blur(14px) saturate(1.2);
   -webkit-backdrop-filter:blur(14px) saturate(1.2);
   border-bottom:1px solid transparent;
@@ -198,7 +242,7 @@ img { display:block; max-width:100%; }
   letter-spacing:-.01em;
   color:var(--text);
 }
-.nav__mark { width:28px; height:28px; border-radius:6px; filter:drop-shadow(0 0 6px rgba(88,166,255,0.15)); }
+.nav__mark { width:28px; height:28px; border-radius:6px; filter:drop-shadow(0 0 6px rgba(37,99,235,0.10)); }
 .nav__links {
   display:flex;
   gap:2rem;
@@ -310,7 +354,7 @@ img { display:block; max-width:100%; }
 }
 
 /* Hero window / pipeline */
-.hero-window { border-color:var(--border-2); }
+.hero-window { border-color:var(--win-border); }
 .hero-window .window__content { padding:1.25rem; }
 .pipeline-svg {
   width:100%;
@@ -654,7 +698,7 @@ img { display:block; max-width:100%; }
 .form-input::placeholder { color:var(--text-muted); opacity:.6; }
 .form-input:focus {
   border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(88,166,255,0.1);
+  box-shadow:0 0 0 3px rgba(37,99,235,0.08);
 }
 .form-textarea { resize:vertical; min-height:90px; }
 
