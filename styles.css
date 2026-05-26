@@ -702,6 +702,27 @@ img { display: block; max-width: 100%; }
   display: inline-flex; align-items: center; gap: .3rem;
 }
 .research-card__link:hover { text-decoration: underline; }
+.research-card--featured {
+  position: relative;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), var(--shadow-lg);
+}
+.research-card--featured::after {
+  content: 'Featured';
+  position: absolute;
+  top: -.5rem;
+  right: 1rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: .2rem .65rem;
+  border-radius: 999px;
+  z-index: 2;
+}
 
 /* ============================================
    CTA
@@ -937,6 +958,7 @@ img { display: block; max-width: 100%; }
   .nav__toggle { display: flex; }
   .nav__inner { gap: 0; }
   .hero { padding: 8rem 0 4rem; min-height: auto; }
+  .hero__lede { font-size: .95rem; }
   .hero__visual {
     position: static;
     width: 100%;
