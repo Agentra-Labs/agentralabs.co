@@ -461,71 +461,6 @@ img { display: block; max-width: 100%; }
 }
 
 /* ============================================
-   SOCIAL PROOF
-   ============================================ */
-.social-proof {
-  padding: 4rem 0;
-}
-.social-proof .section-header {
-  margin-bottom: 3rem;
-}
-.social-proof__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-.testimonial-card {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: box-shadow .25s, transform .25s;
-}
-.testimonial-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-.testimonial-card .title-bar--sm {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: .5rem .875rem;
-  background: var(--bg-3);
-  border-bottom: 1px solid var(--border);
-  font-family: var(--font-heading);
-  font-size: .72rem;
-  font-weight: 600;
-  color: var(--text-2);
-  letter-spacing: .01em;
-}
-.testimonial-card .window__content {
-  padding: 1.25rem 1rem;
-}
-.testimonial__text {
-  font-size: .875rem;
-  line-height: 1.6;
-  color: var(--text);
-  font-style: italic;
-  margin-bottom: 1rem;
-}
-.testimonial__author {
-  display: flex;
-  align-items: center;
-  gap: .4rem;
-  font-size: .78rem;
-}
-.testimonial__name {
-  font-weight: 700;
-  color: var(--accent);
-}
-.testimonial__sep {
-  color: var(--text-muted);
-}
-.testimonial__role {
-  color: var(--text-2);
-}
-
-/* ============================================
    SECTION HEADERS
    ============================================ */
 .section-header { margin-bottom: 3rem; }
@@ -1013,7 +948,6 @@ img { display: block; max-width: 100%; }
   .hero-window { transform: none; }
   .stats-band__grid { grid-template-columns: repeat(2, 1fr); }
   .hero__title { font-size: clamp(2rem, 8vw, 2.8rem); }
-  .social-proof__grid { grid-template-columns: 1fr; gap: 1rem; }
   .compare-table { display: none; }
   .compare-table-wrap { display: none; }
   .compare-cards { display: block; }
